@@ -10,10 +10,10 @@ function Account() {
               <div className="relative w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] mx-auto mb-4">
                 <img
                   className="bg-white/10 w-full h-full object-cover rounded-full"
-                  src="https://cdn.pic.in.th/file/picinth/Easyphoto.jpeg"
+                  src="https://cdn.pic.in.th/file/picinth/Screenshot_2023-09-16_194045-transformed.png"
                   alt="user_profile"
                 />
-                
+                {/* <img src="https://cdn.pic.in.th/file/picinth/Easyphoto.jpeg" alt="Screenshot_2023-09-16_194045-transformed.png" border="0" /> */}
                 <div className="absolute bottom-3 right-3">
                   <div className="relative flex justify-center items-center w-[35px] h-[35px] rounded-full bg-white/10 border border-white/10 backdrop-blur-sm overflow-hidden transition duration-300 hover:bg-white/20">
                     <p className="text-xs">
@@ -87,6 +87,8 @@ function Account() {
                 </a>
               </h1>
             </div>
+            <button type="button" class="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i class="far fa-envelope"></i> ยืนยันอีเมล</button>
+            <button type="button" class="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i class="far fa-phone-alt"></i> ยืนยันเบอร์</button>
           </div>
         </div>
       </div>
@@ -110,7 +112,7 @@ function Account() {
                     className="w-full bg-white/5 pt-6 pb-2 px-4 rounded-xl h-full"
                     required=""
                   >
-                    <option selected="">นาย</option>
+                    <option defaultValue="">นาย</option>
                     <option>นาง</option>
                     <option>นางสาว</option>
                     <option>เด็กชาย</option>
@@ -190,16 +192,16 @@ function Account() {
             <div className="space-y-4 mb-6">
               <div className="relative">
                 <p className="absolute left-4 top-2 text-white/40 text-[10px]">
-                  ที่อยู่ บรรทัดที่ 1
+                  ที่อยู่
                 </p>
                 <input
                   type="text"
                   name="address_line1"
-                  className="w-full bg-white/5 pt-6 pb-2 px-4 rounded-xl"
+                  className="w-full bg-white/5 pt-6 pb-2 px-4 rounded-xl h-32"
                   required=""
                 />
               </div>
-              <div className="relative">
+              {/* <div className="relative">
                 <p className="absolute left-4 top-2 text-white/40 text-[10px]">
                   ที่อยู่ บรรทัดที่ 2
                 </p>
@@ -209,7 +211,7 @@ function Account() {
                   className="w-full bg-white/5 pt-6 pb-2 px-4 rounded-xl"
                   required=""
                 />
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2">
                 <div className="relative">
                   <p className="absolute left-4 top-2 text-white/40 text-[10px]">
