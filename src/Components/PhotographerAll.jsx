@@ -3,8 +3,7 @@ import axios from "axios";
 
 function PhotographerAll() {
   const [photoProfiles, setPhotoProfiles] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [profilesPerPage] = useState(20);
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
