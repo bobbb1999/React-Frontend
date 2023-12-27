@@ -105,8 +105,7 @@ export default function LoginForm() {
                         </h2>
 
                         <p className="mt-4 leading-relaxed text-white/90 dark:text-white">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-                            nam dolorum aliquam, quibusdam aperiam voluptatum.
+                        ค้นหาช่างภาพที่ถูกใจและใกล้คุณ
                         </p>
                     </div>
                 </section>
@@ -137,12 +136,11 @@ export default function LoginForm() {
                             </h1>
 
                             <p className="mt-4 leading-relaxed text-gray-500 dark:text-white">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+                                ค้นหาช่างภาพที่ถูกใจและใกล้คุณ
                             </p>
                         </div>
                         <div className="mb-8">
-                            <h1 className="text-5xl py-1 font-black w-fit bg-gradient-to-tr from-blue-500 to-sky-200 bg-clip-text text-transparent ">
+                            <h1 className="text-5xl py-1 font-black w-fit bg-gradient-to-tr from-red-700 to-black-500 bg-clip-text text-transparent ">
                                 Login
                             </h1>
                             <p className="text-black mb-2 dark:text-white">

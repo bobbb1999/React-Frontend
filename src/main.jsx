@@ -5,7 +5,7 @@ import { createBrowserRouter,  RouterProvider  } from "react-router-dom";
 import Home from './Pages/Home.jsx';
 import Login from './Pages/Login';
 import Register from './Pages/Register'
-import RegisterUser from './pages/RegisterUser'
+import RegisterUser from './Pages/RegisterUser';
 import RegisterPhoto from './Pages/RegisterPhoto'
 import RegisterforRent from './Pages/RegisterforRent'
 import Term from './Pages/Term';
@@ -18,6 +18,8 @@ import Admin from './Pages/Admin';
 import HomeisLogin from './Pages/HomeisLogin';
 import Photographer from './Pages/Photographer';
 import Forrent from './Pages/Forrent';
+import FormVerifyAcc from './Pages/FormVerifyAcc';
+
 
 const router = createBrowserRouter([
   {
@@ -114,6 +116,11 @@ const router = createBrowserRouter([
       </RequireAuth>
     ),
   },
+  {
+    path: "/FormVerify",
+    element: <FormVerifyAcc />
+  },
+  
 ])
 
 

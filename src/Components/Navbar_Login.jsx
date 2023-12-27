@@ -99,7 +99,7 @@ function Navbar_Login() {
                     <span className="text-2xl tracking-tighter font-black text-red-500">
                       Easy
                     </span>
-                    <span className="text-2xl tracking-tighter font-black text-black dark:text-white">
+                    <span className="text-2xl tracking-tighter font-black text-white dark:text-black">
                       Photo
                     </span>
                   </Link>
