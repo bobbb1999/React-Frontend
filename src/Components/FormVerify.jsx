@@ -581,19 +581,17 @@ function FormVerify() {
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
-            <div className="text-sm font-medium text-gray-700">
-            วันเกิด:
-            </div>
+            <div className="text-sm font-medium text-gray-700">วันเกิด:</div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.selectedDate && values.selectedDate.toDateString()}</div>
+            <div class=" ">
+              {values.selectedDate && values.selectedDate.toDateString()}
+            </div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
-            <div className="text-sm font-medium text-gray-700">
-            Line ID:
-            </div>
+            <div className="text-sm font-medium text-gray-700">Line ID:</div>
           </div>
           <div class="md:w-2/3">
             <div class=" ">{values.lineId}</div>
@@ -602,20 +600,20 @@ function FormVerify() {
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">
-            ประเภทงานที่รับ:
+              ประเภทงานที่รับ:
             </div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{" "}
-          {values.selectedJobs &&
-            values.selectedJobs.map((job) => job.name).join(", ")}</div>
+            <div class=" ">
+              {" "}
+              {values.selectedJobs &&
+                values.selectedJobs.map((job) => job.name).join(", ")}
+            </div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
-            <div className="text-sm font-medium text-gray-700">
-            อีเมล:
-            </div>
+            <div className="text-sm font-medium text-gray-700">อีเมล:</div>
           </div>
           <div class="md:w-2/3">
             <div class=" ">{values.email}</div>
@@ -623,9 +621,7 @@ function FormVerify() {
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
-            <div className="text-sm font-medium text-gray-700">
-            ที่อยู่:
-            </div>
+            <div className="text-sm font-medium text-gray-700">ที่อยู่:</div>
           </div>
           <div class="md:w-2/3">
             <div class=" ">{values.address}</div>
@@ -634,43 +630,68 @@ function FormVerify() {
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">
-            รหัสบัตรประชาชน:
+              รหัสบัตรประชาชน:
             </div>
           </div>
           <div class="md:w-2/3">
             <div class=" ">{values.idCardNumber}</div>
           </div>
         </div>
-        
-        {/* แสดงรูปโปรไฟล์ */}
-        {values.imageUrl && (
-          <Image
-            src={values.imageUrl}
-            alt="Profile"
-            width={200}
-            className="mt-4"
-          />
-        )}
-
-        {/* แสดงรูปบัตรประชาชน */}
-        {values.imageUrltwo && (
-          <Image
-            src={values.imageUrltwo}
-            alt="ID Card"
-            width={200}
-            className="mt-4"
-          />
-        )}
-
-        {/* แสดงรูปหน้าจริง */}
-        {values.imageUrlOne && (
-          <Image
-            src={values.imageUrlOne}
-            alt="Face Image"
-            width={200}
-            className="mt-4"
-          />
-        )}
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">รูปโปรไฟล์:</div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">
+              {values.imageUrl && (
+                <Image
+                  src={values.imageUrl}
+                  alt="Profile"
+                  width={120}
+                  className="mt-4"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+              รูปบัตรประชาชน:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">
+              {values.imageUrltwo && (
+                <Image
+                  src={values.imageUrltwo}
+                  alt="ID Card"
+                  width={120}
+                  className="mt-4"  
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+              รูปหน้าจริง:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">
+              {values.imageUrlOne && (
+                <Image
+                  src={values.imageUrlOne}
+                  alt="Face Image"
+                  width={120}
+                  className="mt-4"
+                />
+              )}
+            </div>
+          </div>
+        </div>
 
         <div className="flex mt-8">
           <button
