@@ -19,6 +19,7 @@ import HomeisLogin from './Pages/HomeisLogin';
 import Photographer from './Pages/Photographer';
 import Forrent from './Pages/Forrent';
 import FormVerifyAcc from './Pages/FormVerifyAcc';
+import Accounts from './Pages/Accounts';
 
 
 const router = createBrowserRouter([
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
   {
     path: "/FormVerify",
     element: <FormVerifyAcc />
+  },
+  {
+    path: "/Accounts",
+    element: <Accounts />
   },
   
 ])
