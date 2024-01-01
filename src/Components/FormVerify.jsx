@@ -568,32 +568,80 @@ function FormVerify() {
   };
   const StepFour = ({ prevStep, values }) => {
     return (
-      <div className="flex flex-col  py-10">
-        <div className="row mt-3">
-          <div className="text-sm font-medium text-gray-700 mb-2">
-            ชื่อ-นามสกุล: {values.fullName}
+      <div className="w-full py-10">
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+              ชื่อ-นามสกุล:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.fullName}</div>
           </div>
         </div>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          วันเกิด: {values.selectedDate && values.selectedDate.toDateString()}
-        </p>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          Line ID: {values.lineId}
-        </p>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          ประเภทงานที่รับ:{" "}
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            วันเกิด:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.selectedDate && values.selectedDate.toDateString()}</div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            Line ID:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.lineId}</div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            ประเภทงานที่รับ:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{" "}
           {values.selectedJobs &&
-            values.selectedJobs.map((job) => job.name).join(", ")}
-        </p>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          อีเมล: {values.email}
-        </p>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          ที่อยู่: {values.address}
-        </p>
-        <p className="text-sm font-medium text-gray-700 mb-2">
-          รหัสบัตรประชาชน: {values.idCardNumber}
-        </p>
+            values.selectedJobs.map((job) => job.name).join(", ")}</div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            อีเมล:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.email}</div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            ที่อยู่:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.address}</div>
+          </div>
+        </div>
+        <div className="md:flex md:items-center mb-6 mt-3">
+          <div className="md:w-1/3">
+            <div className="text-sm font-medium text-gray-700">
+            รหัสบัตรประชาชน:
+            </div>
+          </div>
+          <div class="md:w-2/3">
+            <div class=" ">{values.idCardNumber}</div>
+          </div>
+        </div>
+        
         {/* แสดงรูปโปรไฟล์ */}
         {values.imageUrl && (
           <Image
