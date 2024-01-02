@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import axios from "axios";
 
 function Account1() {
   const getBase64 = (file) =>
@@ -167,10 +168,42 @@ function Account1() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Extract data from the form
+    const formData = {
+      username: e.target.username.value,
+      about: e.target.about.value,
+      lineId: e.target.lineId.value,
+      Facebook: e.target.Facebook.value,
+      Instagram: e.target.Instagram.value,
+      selectedOptions: selected.map((option) => option.value),
+      selectedOptions2: selected2.map((option) => option.value),
+      // Add the image file to the formData
+      image: fileList.length > 0 ? fileList[0].originFileObj : null,
+    };
+  
+    // Prepare form data for image upload
+    const imageFormData = new FormData();
+    imageFormData.append("image", formData.image);
+  
+    // Example: send the form data (including image) to the specified API endpoint using Axios
+    try {
+      const response = await axios.post("http://localhost:3000/api/accountprofile", formData);
+  
+      // Handle the response as needed (e.g., show a success message)
+      console.log("Response from server:", response.data);
+    } catch (error) {
+      // Handle errors (e.g., show an error message)
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <div className="mx-auto h-auto pt-20 px-20 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-start mb-4">แก้ไขข้อมูลโปรไฟล์</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div

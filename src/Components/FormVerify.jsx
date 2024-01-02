@@ -65,7 +65,7 @@ function FormVerify() {
 
     const [loading, setLoading] = useState(false);
 
-    const [imageUrl, setImageUrl] = useState(values.imageUrl || null);
+    const [imageProfile, setimageProfile] = useState(values.imageProfile || null);
     const handleChanges = (info) => {
       if (info.file.status === "uploading") {
         setLoading(true);
@@ -75,10 +75,10 @@ function FormVerify() {
         // Get this url from response in real world.
         getBase64(info.file.originFileObj, (url) => {
           setLoading(false);
-          setImageUrl(url);
+          setimageProfile(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageUrl: url,
+            imageProfile: url,
           }));
         });
       }
@@ -121,9 +121,9 @@ function FormVerify() {
             beforeUpload={beforeUpload}
             onChange={handleChanges}
           >
-            {imageUrl ? (
+            {imageProfile ? (
               <img
-                src={imageUrl}
+                src={imageProfile}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -296,7 +296,7 @@ function FormVerify() {
     };
 
     const [loadingOne, setLoadingOne] = useState(false);
-    const [imageUrlOne, setImageUrlOne] = useState(values.imageUrlOne || null);
+    const [imageFace, setimageFace] = useState(values.imageFace || null);
     const handleChangesOne = (info) => {
       if (info.file.status === "uploading") {
         setLoadingOne(true);
@@ -306,10 +306,10 @@ function FormVerify() {
         // Get this url from response in real world.
         getBase64(info.file.originFileObj, (url) => {
           setLoadingOne(false);
-          setImageUrlOne(url);
+          setimageFace(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageUrlOne: url,
+            imageFace: url,
           }));
         });
       }
@@ -353,7 +353,7 @@ function FormVerify() {
     };
 
     const [loadingtwo, setLoadingtwo] = useState(false);
-    const [imageUrltwo, setImageUrltwo] = useState(values.imageUrltwo || null);
+    const [imageCardId, setimageCardId] = useState(values.imageCardId || null);
 
     const handleChangestwo = (info) => {
       if (info.file.status === "uploading") {
@@ -364,10 +364,10 @@ function FormVerify() {
         // Get this url from response in real world.
         getBase64two(info.file.originFileObj, (url) => {
           setLoadingtwo(false);
-          setImageUrltwo(url);
+          setimageCardId(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageUrltwo: url,
+            imageCardId: url,
           }));
         });
       }
@@ -445,9 +445,9 @@ function FormVerify() {
             beforeUpload={beforeUploadtwo}
             onChange={handleChangestwo}
           >
-            {imageUrltwo ? (
+            {imageCardId ? (
               <img
-                src={imageUrltwo}
+                src={imageCardId}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -473,9 +473,9 @@ function FormVerify() {
             beforeUpload={beforeUpload}
             onChange={handleChangesOne}
           >
-            {imageUrlOne ? (
+            {imageFace ? (
               <img
-                src={imageUrlOne}
+                src={imageFace}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -611,9 +611,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageUrl && (
+              {values.imageProfile && (
                 <Image
-                  src={values.imageUrl}
+                  src={values.imageProfile}
                   alt="Profile"
                   width={120}
                   className="mt-4"
@@ -630,9 +630,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageUrltwo && (
+              {values.imageCardId && (
                 <Image
-                  src={values.imageUrltwo}
+                  src={values.imageCardId}
                   alt="ID Card"
                   width={120}
                   className="mt-4"  
@@ -649,9 +649,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageUrlOne && (
+              {values.imageFace && (
                 <Image
-                  src={values.imageUrlOne}
+                  src={values.imageFace}
                   alt="Face Image"
                   width={120}
                   className="mt-4"
