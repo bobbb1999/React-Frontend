@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { BsFillSunFill, BsMoonFill, BsCheck } from "react-icons/bs";
 
 const navigation = [
-  { name: "Account", to: "/Account", current: false },
+  { name: "Verify", to: "/formverify", current: false },
   { name: "Admin", to: "/Admin", current: false },
   { name: "Photograhper", to: "/Photograhper", current: false },
   { name: "Forrent", to: "/Forrent", current: false },

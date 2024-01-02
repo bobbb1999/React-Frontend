@@ -6,6 +6,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { Image } from "antd";
+import axios from "axios";
 
 function FormVerify() {
   const StepOne = ({ nextStep, handleChange, values, setValues }) => {
@@ -132,23 +133,6 @@ function FormVerify() {
               uploadButton
             )}
           </Upload>
-
-          {/* <div className="col">
-            <input
-              type="file"
-              id="profileImage"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mb-2"
-            />
-            {values.profileImage && (
-              <img
-                src={URL.createObjectURL(values.profileImage)}
-                alt="Profile"
-                className="w-16 h-16 rounded-full object-cover"
-              />
-            )}
-          </div> */}
         </div>
         <div className="field grid w-64 mt-4">
           <label
@@ -241,41 +225,9 @@ function FormVerify() {
             />
           </div>
 
-          {/* <div className="col">
-            <select
-              id="jobTypes"
-              name="jobTypes"
-              value={values.jobTypes}
-              onChange={handleChange}
-              multiple
-              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            >
-              <option value="portrait">ถ่ายภาพบุคคล</option>
-              <option value="event">ถ่ายภาพงานอีเว้นท์</option>
-              
-            </select>
-          </div> */}
+          
         </div>
-        {/* <div className="field grid w-64 mt-4">
-          <label
-            htmlFor="provinces"
-            className="col-fixed text-sm font-medium text-gray-700 mb-2"
-          >
-            จังหวัดที่รับงาน
-          </label>
-          <div className="col">
-            <select
-              id="provinces"
-              name="provinces"
-              value={values.provinces}
-              onChange={handleChange}
-              multiple
-              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            >
-              
-            </select>
-          </div>
-        </div> */}
+        
         <button
           onClick={nextStep}
           className="mt-8 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
@@ -505,13 +457,7 @@ function FormVerify() {
               uploadButtontwo
             )}
           </Upload>
-          {/* <input
-            type="file"
-            accept="image/*"
-            name="idCardImage"
-            onChange={handleChange}
-            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          /> */}
+          
         </div>
 
         <div className="w-80 mt-4">
@@ -540,13 +486,7 @@ function FormVerify() {
             )}
           </Upload>
 
-          {/* <input
-            type="file"
-            accept="image/*"
-            name="faceImage"
-            onChange={handleChange}
-            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          /> */}
+          
         </div>
 
         <div className="flex mt-8">
@@ -567,6 +507,34 @@ function FormVerify() {
     );
   };
   const StepFour = ({ prevStep, values }) => {
+    const handleSubmit = () => {
+      // Combine the data from all steps
+      const postData = {
+        ...values, // Include values from StepFour
+        // Add any additional data you want to send
+      };
+  
+      // Call the submitData function to send the data to the API
+      submitData(postData);
+    };
+    const submitData = async (data) => {
+      try {
+        const token = localStorage.getItem("token");
+
+      // Set up headers with the token
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      };
+        // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
+        const response = await axios.post("http://localhost:3000/api/submitData", data,{ headers });
+        console.log("API Response:", response.data);
+        // You can handle the response as needed
+      } catch (error) {
+        console.error("API Error:", error);
+        // You can handle errors as needed
+      }
+    };
     return (
       <div className="w-full py-10">
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -701,7 +669,7 @@ function FormVerify() {
             ย้อนกลับ
           </button>
           <button
-            // onClick={nextStep}
+            onClick={handleSubmit}
             className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
           >
             ยืนยันข้อมูล
@@ -771,7 +739,7 @@ function FormVerify() {
     // สร้าง state สำหรับเก็บข้อมูลของแต่ละ step
     const [values, setValues] = useState({
       fullName: "",
-      jobTypes: [],
+      
     });
     // สร้าง state สำหรับเก็บข้อมูลของ step ปัจจุบัน
     const [step, setStep] = useState(1);
