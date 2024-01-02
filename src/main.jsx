@@ -20,6 +20,7 @@ import Photographer from './Pages/Photographer';
 import Forrent from './Pages/Forrent';
 import FormVerifyAcc from './Pages/FormVerifyAcc';
 import Accounts from './Pages/Accounts';
+import Profile from './Pages/Profile';
 
 
 const router = createBrowserRouter([
@@ -124,6 +125,10 @@ const router = createBrowserRouter([
   {
     path: "/Accounts",
     element: <Accounts />
+  },
+  {
+    path: "/Profile",
+    element: <Profile />
   },
   
 ])
