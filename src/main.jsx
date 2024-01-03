@@ -21,6 +21,7 @@ import Forrent from './Pages/Forrent';
 import FormVerifyAcc from './Pages/FormVerifyAcc';
 import Accounts from './Pages/Accounts';
 import Profile from './Pages/Profile';
+import Userlist from './Pages/Userlist';
 
 
 const router = createBrowserRouter([
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
   {
     path: "/Profile",
     element: <Profile />
+  },
+  {
+    path: "/Userlist",
+    element: <Userlist />
   },
   
 ])
