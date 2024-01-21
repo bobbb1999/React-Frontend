@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { BsFillSunFill, BsMoonFill, BsCheck } from "react-icons/bs";
 
 const navigation = [
-  { name: "Verify", to: "/formverify", current: false },
+  // { name: "Verify", to: "/formverify", current: false },
   { name: "Admin", to: "/Admin", current: false },
   { name: "Photograhper", to: "/Photograhper", current: false },
   { name: "Forrent", to: "/Forrent", current: false },
@@ -157,7 +157,7 @@ function Navbar_Login() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            to="/Account"
+                            to="/Accounts"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700 flex items-center"
@@ -169,19 +169,47 @@ function Navbar_Login() {
                         )}
                       </Menu.Item>
                       <Menu.Item>
+                        {({ active }) => {
+                          const role = localStorage.getItem('role');
+
+                          let linkTo = "/VerifyPhotograhper";
+                          if (role === "rent") {
+                            linkTo = "/VerifyEquipmentRental";
+                          }
+
+                          return (
+                            <Link
+                              to={linkTo}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                              )}
+                            >
+                              {role === "photo" ? (
+                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                              ) : (
+                                <UserCircleIcon className="h-5 w-5 mr-2" /> 
+                              )}
+                              {role === "photo" ? "ยืนยันตัวตน" : "ยืนยันตัวตน"} {/* เปลี่ยนข้อความที่แสดงตาม role */}
+                            </Link>
+                          );
+                        }}
+                      </Menu.Item>
+                      <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            to="/UploadWorkings"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700 flex items-center"
                             )}
                           >
-                            <PowerIcon className="h-5 w-5 mr-2" />
-                            จัดการข้อมูล
-                          </a>
+                            <UserCircleIcon className="h-5 w-5 mr-2" />
+                            <span>อัพโหลดผลงาน</span>
+                          </Link>
                         )}
                       </Menu.Item>
+
                       <Menu.Item>
                         {({ active }) => (
                           <a

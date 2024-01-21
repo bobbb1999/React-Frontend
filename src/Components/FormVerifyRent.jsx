@@ -4,46 +4,24 @@ import "primereact/resources/themes/saga-blue/theme.css"; // นำเข้า 
 import "primereact/resources/primereact.min.css"; // นำเข้า CSS ของ PrimeReact
 import { MultiSelect } from "primereact/multiselect";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload , Modal  } from "antd";
+import { message, Upload } from "antd";
 import { Image } from "antd";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
-
-function FormVerify() {
+function FormVerifyRent() {
   const StepOne = ({ nextStep, handleChange, values, setValues }) => {
-    const [selectedDate, setSelectedDate] = useState(
-      values.selectedDate || null
-    );
-    const [selectedJobs, setSelectedJobs] = useState(
-      values.selectedJobs || null
+    const [Date, setSelectedDate] = useState(
+      values.Date || null
     );
 
-    const Jobs = [
-      { value: "Portraits", label: "ถ่ายภาพบุคคล" },
-      { value: "Event", label: "ถ่ายภาพงานอีเว้นท์" },
-      { value: "Landscapes", label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง"},
-      { value: "Aerial", label: "ถ่ายภาพทางอากาศ" },
-      { value: "Product", label: "ถ่ายภาพสินค้า" },
-      { value: "Food", label: "ถ่ายภาพอาหาร" },
-      { value: "Realty", label: "ถ่ายภาพอสังหาริมทรัพย์" },
-      { value: "Fashion", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
-    ];
-
-    const handleJobTypesChange = (e) => {
-      setSelectedJobs(e.value);
-      setValues((prevValues) => ({
-        ...prevValues,
-        selectedJobs: e.value, // เก็บประเภทงานที่รับใน state
-      }));
-    };
 
     const handleDateChange = (e) => {
       setSelectedDate(e.value);
       // ทำสิ่งที่คุณต้องการเมื่อวันที่เปลี่ยน
       setValues((prevValues) => ({
         ...prevValues,
-        selectedDate: e.value, // Save the selected date to the state
+        Date: e.value, // Save the selected date to the state
       }));
     };
 
@@ -67,7 +45,7 @@ function FormVerify() {
 
     const [loading, setLoading] = useState(false);
 
-    const [imageProfile, setimageProfile] = useState(values.imageProfile || null);
+    const [imgProfile, setimageProfile] = useState(values.imgProfile || null);
     const handleChanges = (info) => {
       if (info.file.status === "uploading") {
         setLoading(true);
@@ -80,7 +58,7 @@ function FormVerify() {
           setimageProfile(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageProfile: url,
+            imgProfile: url,
           }));
         });
       }
@@ -123,9 +101,9 @@ function FormVerify() {
             beforeUpload={beforeUpload}
             onChange={handleChanges}
           >
-            {imageProfile ? (
+            {imgProfile ? (
               <img
-                src={imageProfile}
+                src={imgProfile}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -138,7 +116,7 @@ function FormVerify() {
         </div>
         <div className="field grid w-64 mt-4">
           <label
-            htmlFor="fullName"
+            htmlFor="Name"
             className="col-fixed text-sm font-medium text-gray-700 mb-2"
           >
             ชื่อ-นามสกุล
@@ -146,9 +124,9 @@ function FormVerify() {
           <div className="col">
             <input
               type="text"
-              id="fullName"
-              name="fullName"
-              value={values.fullName}
+              id="Name"
+              name="Name"
+              value={values.Name}
               onChange={handleChange}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
@@ -166,7 +144,7 @@ function FormVerify() {
             <Calendar
               id="birthdate"
               name="birthdate"
-              value={selectedDate}
+              value={Date}
               onChange={handleDateChange}
               className="p-inputtext p-component border-gray-300 rounded-md"
               pt={{
@@ -180,7 +158,7 @@ function FormVerify() {
 
         <div className="field grid w-64 mt-4">
           <label
-            htmlFor="lineId"
+            htmlFor="line"
             className="col-fixed text-sm font-medium text-gray-700 mb-2"
           >
             Line ID
@@ -188,46 +166,13 @@ function FormVerify() {
           <div className="col">
             <input
               type="text"
-              id="lineId"
-              name="lineId"
-              value={values.lineId}
+              id="line"
+              name="line"
+              value={values.line}
               onChange={handleChange}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
           </div>
-        </div>
-        <div className="field grid w-64 mt-4">
-          <label
-            htmlFor="jobTypes"
-            className="col-fixed text-sm font-medium text-gray-700 mb-2"
-          >
-            ประเภทงานที่รับ
-          </label>
-
-          <div className="col">
-            <MultiSelect
-              id="jobTypes"
-              name="jobTypes"
-              value={selectedJobs}
-              onChange={handleJobTypesChange}
-              options={Jobs}
-              maxSelectedLabels={2}
-              optionLabel="name"
-              display="chip"
-              placeholder="Select Jobs"
-              className="w-full md:w-20rem border-gray-300 rounded-md"
-              pt={{
-                root: {
-                  className: "w-full md:w-14rem border-gray-500 rounded-md",
-                },
-                item: ({ context }) => ({
-                  className: context.selected ? "bg-blue-100" : undefined,
-                }),
-              }}
-            />
-          </div>
-
-          
         </div>
         
         <button
@@ -248,9 +193,9 @@ function FormVerify() {
             อีเมล
           </label>
           <input
-            type="email"
-            name="email"
-            value={values.email}
+            type="Email"
+            name="Email"
+            value={values.Email}
             onChange={handleChange}
             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           />
@@ -298,7 +243,7 @@ function FormVerify() {
     };
 
     const [loadingOne, setLoadingOne] = useState(false);
-    const [imageFace, setimageFace] = useState(values.imageFace || null);
+    const [imgFace, setimageFace] = useState(values.imgFace || null);
     const handleChangesOne = (info) => {
       if (info.file.status === "uploading") {
         setLoadingOne(true);
@@ -311,7 +256,7 @@ function FormVerify() {
           setimageFace(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageFace: url,
+            imgFace: url,
           }));
         });
       }
@@ -355,7 +300,7 @@ function FormVerify() {
     };
 
     const [loadingtwo, setLoadingtwo] = useState(false);
-    const [imageCardId, setimageCardId] = useState(values.imageCardId || null);
+    const [imgCard, setimageCardId] = useState(values.imgCard || null);
 
     const handleChangestwo = (info) => {
       if (info.file.status === "uploading") {
@@ -369,7 +314,7 @@ function FormVerify() {
           setimageCardId(url);
           setValues((prevValues) => ({
             ...prevValues,
-            imageCardId: url,
+            imgCard: url,
           }));
         });
       }
@@ -400,8 +345,8 @@ function FormVerify() {
           </label>
           <input
             type="text"
-            name="fullName"
-            value={values.fullName}
+            name="Name"
+            value={values.Name}
             onChange={handleChange}
             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-3/4 sm:text-sm border-gray-300 rounded-md"
           />
@@ -413,8 +358,8 @@ function FormVerify() {
           </label>
           <input
             type="text"
-            name="address"
-            value={values.address}
+            name="Address"
+            value={values.Address}
             onChange={handleChange}
             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           />
@@ -426,8 +371,8 @@ function FormVerify() {
           </label>
           <input
             type="text"
-            name="idCardNumber"
-            value={values.idCardNumber}
+            name="CardNumber"
+            value={values.CardNumber}
             onChange={handleChange}
             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
           />
@@ -447,9 +392,9 @@ function FormVerify() {
             beforeUpload={beforeUploadtwo}
             onChange={handleChangestwo}
           >
-            {imageCardId ? (
+            {imgCard ? (
               <img
-                src={imageCardId}
+                src={imgCard}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -475,9 +420,9 @@ function FormVerify() {
             beforeUpload={beforeUpload}
             onChange={handleChangesOne}
           >
-            {imageFace ? (
+            {imgFace ? (
               <img
-                src={imageFace}
+                src={imgFace}
                 alt="avatar"
                 style={{
                   width: "100%",
@@ -517,9 +462,9 @@ function FormVerify() {
       };
   
       // Call the submitData function to send the data to the API
-      submitData(postData);
+      submitLessor(postData);
     };
-    const submitData = async (data) => {
+    const submitLessor = async (data) => {
       try {
         const token = localStorage.getItem("token");
 
@@ -529,7 +474,7 @@ function FormVerify() {
         "Content-Type": "application/json",
       };
         // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
-        const response = await axios.post("http://localhost:3001/api/VerifyPhotograhper", data,{ headers });
+        const response = await axios.post("http://localhost:3001/api/VerifyEquipmentRental", data,{ headers });
         console.log("API Response:", response.data);
         Swal.fire({
           title: 'Success!',
@@ -551,7 +496,7 @@ function FormVerify() {
             </div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.fullName}</div>
+            <div class=" ">{values.Name}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -560,7 +505,7 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.selectedDate && values.selectedDate.toDateString()}
+              {values.Date && values.Date.toDateString()}
             </div>
           </div>
         </div>
@@ -569,21 +514,7 @@ function FormVerify() {
             <div className="text-sm font-medium text-gray-700">Line ID:</div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.lineId}</div>
-          </div>
-        </div>
-        <div className="md:flex md:items-center mb-6 mt-3">
-          <div className="md:w-1/3">
-            <div className="text-sm font-medium text-gray-700">
-              ประเภทงานที่รับ:
-            </div>
-          </div>
-          <div class="md:w-2/3">
-            <div class=" ">
-              {" "}
-              {values.selectedJobs &&
-                values.selectedJobs.map((job) => job.name).join(", ")}
-            </div>
+            <div class=" ">{values.line}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -591,7 +522,7 @@ function FormVerify() {
             <div className="text-sm font-medium text-gray-700">อีเมล:</div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.email}</div>
+            <div class=" ">{values.Email}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -599,7 +530,7 @@ function FormVerify() {
             <div className="text-sm font-medium text-gray-700">ที่อยู่:</div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.address}</div>
+            <div class=" ">{values.Address}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -609,7 +540,7 @@ function FormVerify() {
             </div>
           </div>
           <div class="md:w-2/3">
-            <div class=" ">{values.idCardNumber}</div>
+            <div class=" ">{values.CardNumber}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -618,9 +549,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageProfile && (
+              {values.imgProfile && (
                 <Image
-                  src={values.imageProfile}
+                  src={values.imgProfile}
                   alt="Profile"
                   width={120}
                   className="mt-4"
@@ -637,9 +568,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageCardId && (
+              {values.imgCard && (
                 <Image
-                  src={values.imageCardId}
+                  src={values.imgCard}
                   alt="ID Card"
                   width={120}
                   className="mt-4"  
@@ -656,9 +587,9 @@ function FormVerify() {
           </div>
           <div class="md:w-2/3">
             <div class=" ">
-              {values.imageFace && (
+              {values.imgFace && (
                 <Image
-                  src={values.imageFace}
+                  src={values.imgFace}
                   alt="Face Image"
                   width={120}
                   className="mt-4"
@@ -718,7 +649,7 @@ function FormVerify() {
             2
           )}`}
         >
-          ยืนยัน email
+          ยืนยัน Email
         </button>
         <button
           value={3}
@@ -745,7 +676,7 @@ function FormVerify() {
   const MultiStepForm = () => {
     // สร้าง state สำหรับเก็บข้อมูลของแต่ละ step
     const [values, setValues] = useState({
-      fullName: "",
+      Name: "",
       
     });
     // สร้าง state สำหรับเก็บข้อมูลของ step ปัจจุบัน
@@ -824,4 +755,4 @@ function FormVerify() {
   );
 }
 
-export default FormVerify;
+export default FormVerifyRent;

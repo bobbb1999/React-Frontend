@@ -9,7 +9,6 @@ const navigation = [
     { name: 'หน้าหลัก', to: '/' },
     { name: 'ช่างภาพ', to: '/Photograhper' },
     { name: 'เช่าอุปกรณ์', to: '/Forrent' },
-    { name: '.......', to: '/' },
   ]
   
 function Nav() {

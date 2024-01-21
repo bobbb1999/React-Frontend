@@ -7,7 +7,7 @@ function ForrentAll() {
   useEffect(() => {
     // เรียก API เพื่อดึงข้อมูลผู้ใช้ที่มีบทบาทเป็น "photo"
     axios
-      .get("http://localhost:3000/rent", {
+      .get("http://localhost:3001/rent", {
         headers: {
           Authorization: `Bearer ${token}`, // ใส่ Token ที่ถูกต้องที่นี่
         },

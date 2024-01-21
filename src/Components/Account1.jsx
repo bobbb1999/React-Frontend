@@ -4,6 +4,7 @@ import { Modal, Upload } from "antd";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 function Account1() {
   const getBase64 = (file) =>
@@ -53,97 +54,94 @@ function Account1() {
 
   // สร้างอาร์เรย์ของตัวเลือก
   const options = [
-    { value: "ถ่ายภาพบุคคล", label: "ถ่ายภาพบุคคล" },
-    { value: "ถ่ายภาพงานอีเว้นท์", label: "ถ่ายภาพงานอีเว้นท์" },
-    {
-      value: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง",
-      label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง",
-    },
-    { value: "ถ่ายภาพทางอากาศ", label: "ถ่ายภาพทางอากาศ" },
-    { value: "ถ่ายภาพสินค้า", label: "ถ่ายภาพสินค้า" },
-    { value: "ถ่ายภาพอาหาร", label: "ถ่ายภาพอาหาร" },
-    { value: "ถ่ายภาพอสังหาริมทรัพย์", label: "ถ่ายภาพอสังหาริมทรัพย์" },
-    { value: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
+    { value: "Portraits", label: "ถ่ายภาพบุคคล" },
+    { value: "Event", label: "ถ่ายภาพงานอีเว้นท์" },
+    { value: "Landscapes", label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง"},
+    { value: "Aerial", label: "ถ่ายภาพทางอากาศ" },
+    { value: "Product", label: "ถ่ายภาพสินค้า" },
+    { value: "Food", label: "ถ่ายภาพอาหาร" },
+    { value: "Realty", label: "ถ่ายภาพอสังหาริมทรัพย์" },
+    { value: "Fashion", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
   ];
 
   const thaiProvinces = [
-    { value: "Bangkok", label: "กรุงเทพมหานคร" },
-    { value: "Samut Prakan", label: "สมุทรปราการ" },
-    { value: "Nonthaburi", label: "นนทบุรี" },
-    { value: "Pathum Thani", label: "ปทุมธานี" },
-    { value: "Phra Nakhon Si Ayutthaya", label: "พระนครศรีอยุธยา" },
-    { value: "Ang Thong", label: "อ่างทอง" },
-    { value: "Lop Buri", label: "ลพบุรี" },
-    { value: "Sing Buri", label: "สิงห์บุรี" },
-    { value: "Chai Nat", label: "ชัยนาท" },
-    { value: "Saraburi", label: "สระบุรี" },
-    { value: "Chon Buri", label: "ชลบุรี" },
-    { value: "Rayong", label: "ระยอง" },
-    { value: "Chanthaburi", label: "จันทบุรี" },
-    { value: "Trat", label: "ตราด" },
-    { value: "Chachoengsao", label: "ฉะเชิงเทรา" },
-    { value: "Prachin Buri", label: "ปราจีนบุรี" },
-    { value: "Nakhon Nayok", label: "นครนายก" },
-    { value: "Sa Kaeo", label: "สระแก้ว" },
-    { value: "Nakhon Ratchasima", label: "นครราชสีมา" },
-    { value: "Buri Ram", label: "บุรีรัมย์" },
-    { value: "Surin", label: "สุรินทร์" },
-    { value: "Si Sa Ket", label: "ศรีสะเกษ" },
-    { value: "Ubon Ratchathani", label: "อุบลราชธานี" },
-    { value: "Yasothon", label: "ยโสธร" },
-    { value: "Chaiyaphum", label: "ชัยภูมิ" },
-    { value: "Amnat Charoen", label: "อำนาจเจริญ" },
-    { value: "Bueng Kan", label: "บึงกาฬ" },
-    { value: "Nong Bua Lam Phu", label: "หนองบัวลำภู" },
-    { value: "Khon Kaen", label: "ขอนแก่น" },
-    { value: "Udon Thani", label: "อุดรธานี" },
-    { value: "Loei", label: "เลย" },
-    { value: "Nong Khai", label: "หนองคาย" },
-    { value: "Maha Sarakham", label: "มหาสารคาม" },
-    { value: "Roi Et", label: "ร้อยเอ็ด" },
-    { value: "Kalasin", label: "กาฬสินธุ์" },
-    { value: "Sakon Nakhon", label: "สกลนคร" },
-    { value: "Nakhon Phanom", label: "นครพนม" },
-    { value: "Mukdahan", label: "มุกดาหาร" },
-    { value: "Chiang Mai", label: "เชียงใหม่" },
-    { value: "Lamphun", label: "ลำพูน" },
-    { value: "Lampang", label: "ลำปาง" },
-    { value: "Uttaradit", label: "อุตรดิตถ์" },
-    { value: "Phrae", label: "แพร่" },
-    { value: "Nan", label: "น่าน" },
-    { value: "Phayao", label: "พะเยา" },
-    { value: "Chiang Rai", label: "เชียงราย" },
-    { value: "Mae Hong Son", label: "แม่ฮ่องสอน" },
-    { value: "Nakhon Sawan", label: "นครสวรรค์" },
-    { value: "Uthai Thani", label: "อุทัยธานี" },
-    { value: "Kamphaeng Phet", label: "กำแพงเพชร" },
-    { value: "Tak", label: "ตาก" },
-    { value: "Sukhothai", label: "สุโขทัย" },
-    { value: "Phitsanulok", label: "พิษณุโลก" },
-    { value: "Phichit", label: "พิจิตร" },
-    { value: "Phetchabun", label: "เพชรบูรณ์" },
-    { value: "Ratchaburi", label: "ราชบุรี" },
-    { value: "Kanchanaburi", label: "กาญจนบุรี" },
-    { value: "Suphan Buri", label: "สุพรรณบุรี" },
-    { value: "Nakhon Pathom", label: "นครปฐม" },
-    { value: "Samut Sakhon", label: "สมุทรสาคร" },
-    { value: "Samut Songkhram", label: "สมุทรสงคราม" },
-    { value: "Phetchaburi", label: "เพชรบุรี" },
-    { value: "Prachuap Khiri Khan", label: "ประจวบคีรีขันธ์" },
-    { value: "Nakhon Si Thammarat", label: "นครศรีธรรมราช" },
-    { value: "Krabi", label: "กระบี่" },
-    { value: "Phang Nga", label: "พังงา" },
-    { value: "Phuket", label: "ภูเก็ต" },
-    { value: "Surat Thani", label: "สุราษฎร์ธานี" },
-    { value: "Ranong", label: "ระนอง" },
-    { value: "Chumphon", label: "ชุมพร" },
-    { value: "Songkhla", label: "สงขลา" },
-    { value: "Satun", label: "สตูล" },
-    { value: "Trang", label: "ตรัง" },
-    { value: "Phatthalung", label: "พัทลุง" },
-    { value: "Pattani", label: "ปัตตานี" },
-    { value: "Yala", label: "ยะลา" },
-    { value: "Narathiwat", label: "นราธิวาส" },
+    { value: "BKK", label: "กรุงเทพมหานคร" },
+    { value: "SPK", label: "สมุทรปราการ" },
+    { value: "NBI", label: "นนทบุรี" },
+    { value: "PTE", label: "ปทุมธานี" },
+    { value: "AYA", label: "พระนครศรีอยุธยา" },
+    { value: "ATG", label: "อ่างทอง" },
+    { value: "LRI", label: "ลพบุรี" },
+    { value: "SBR", label: "สิงห์บุรี" },
+    { value: "CNT", label: "ชัยนาท" },
+    { value: "SRI", label: "สระบุรี" },
+    { value: "CBI", label: "ชลบุรี" },
+    { value: "RYG", label: "ระยอง" },
+    { value: "CTI", label: "จันทบุรี" },
+    { value: "TRT", label: "ตราด" },
+    { value: "CCO", label: "ฉะเชิงเทรา" },
+    { value: "PRI", label: "ปราจีนบุรี" },
+    { value: "NYK", label: "นครนายก" },
+    { value: "SKW", label: "สระแก้ว" },
+    { value: "NMA", label: "นครราชสีมา" },
+    { value: "BRM", label: "บุรีรัมย์" },
+    { value: "SRN", label: "สุรินทร์" },
+    { value: "SSK", label: "ศรีสะเกษ" },
+    { value: "UBN", label: "อุบลราชธานี" },
+    { value: "YST", label: "ยโสธร" },
+    { value: "CPM", label: "ชัยภูมิ" },
+    { value: "ACR", label: "อำนาจเจริญ" },
+    { value: "BKN", label: "บึงกาฬ" },
+    { value: "NBP", label: "หนองบัวลำภู" },
+    { value: "KKN", label: "ขอนแก่น" },
+    { value: "UDN", label: "อุดรธานี" },
+    { value: "LEI", label: "เลย" },
+    { value: "NKI", label: "หนองคาย" },
+    { value: "MKM", label: "มหาสารคาม" },
+    { value: "RET", label: "ร้อยเอ็ด" },
+    { value: "KSN", label: "กาฬสินธุ์" },
+    { value: "SNK", label: "สกลนคร" },
+    { value: "NPM", label: "นครพนม" },
+    { value: "MDH", label: "มุกดาหาร" },
+    { value: "CMI", label: "เชียงใหม่" },
+    { value: "LPN", label: "ลำพูน" },
+    { value: "LPG", label: "ลำปาง" },
+    { value: "UTD", label: "อุตรดิตถ์" },
+    { value: "PRE", label: "แพร่" },
+    { value: "NAN", label: "น่าน" },
+    { value: "PYO", label: "พะเยา" },
+    { value: "CRI", label: "เชียงราย" },
+    { value: "MSN", label: "แม่ฮ่องสอน" },
+    { value: "NSN", label: "นครสวรรค์" },
+    { value: "UTI", label: "อุทัยธานี" },
+    { value: "KPT", label: "กำแพงเพชร" },
+    { value: "TAK", label: "ตาก" },
+    { value: "STI", label: "สุโขทัย" },
+    { value: "PLK", label: "พิษณุโลก" },
+    { value: "PCT", label: "พิจิตร" },
+    { value: "PNB", label: "เพชรบูรณ์" },
+    { value: "RBR", label: "ราชบุรี" },
+    { value: "KRI", label: "กาญจนบุรี" },
+    { value: "SPB", label: "สุพรรณบุรี" },
+    { value: "NPT", label: "นครปฐม" },
+    { value: "SKN", label: "สมุทรสาคร" },
+    { value: "SKM", label: "สมุทรสงคราม" },
+    { value: "PBI", label: "เพชรบุรี" },
+    { value: "PKN", label: "ประจวบคีรีขันธ์" },
+    { value: "NRT", label: "นครศรีธรรมราช" },
+    { value: "KBI", label: "กระบี่" },
+    { value: "PNA", label: "พังงา" },
+    { value: "PKT", label: "ภูเก็ต" },
+    { value: "SNI", label: "สุราษฎร์ธานี" },
+    { value: "RNG", label: "ระนอง" },
+    { value: "CPN", label: "ชุมพร" },
+    { value: "SKA", label: "สงขลา" },
+    { value: "STN", label: "สตูล" },
+    { value: "TRG", label: "ตรัง" },
+    { value: "PLG", label: "พัทลุง" },
+    { value: "PTN", label: "ปัตตานี" },
+    { value: "YLA", label: "ยะลา" },
+    { value: "NWT", label: "นราธิวาส" },
   ];
 
   // สร้าง state สำหรับเก็บค่าที่เลือก
@@ -172,33 +170,43 @@ function Account1() {
     e.preventDefault();
   
     // Extract data from the form
-    const formData = {
-      username: e.target.username.value,
-      about: e.target.about.value,
-      lineId: e.target.lineId.value,
-      Facebook: e.target.Facebook.value,
-      Instagram: e.target.Instagram.value,
-      selectedOptions: selected.map((option) => option.value),
-      selectedOptions2: selected2.map((option) => option.value),
-      // Add the image file to the formData
-      image: fileList.length > 0 ? fileList[0].originFileObj : null,
-    };
+    const formData = new FormData();
+    formData.append("username", e.target.username.value);
+    formData.append("about", e.target.about.value);
+    formData.append("lineId", e.target.lineId.value);
+    formData.append("Facebook", e.target.Facebook.value);
+    formData.append("Instagram", e.target.Instagram.value);
+    formData.append("selectedOptions", selected.map((option) => option.value));
+    formData.append("selectedOptions2", selected2.map((option) => option.value));
   
-    // Prepare form data for image upload
-    const imageFormData = new FormData();
-    imageFormData.append("image", formData.image);
+    // Append the image file to FormData
+    if (fileList.length > 0) {
+      formData.append("imgProfile", fileList[0].originFileObj);
+    }
   
-    // Example: send the form data (including image) to the specified API endpoint using Axios
     try {
-      const response = await axios.post("http://localhost:3000/api/accountprofile", formData);
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", // Add this header for file upload
+      };
   
-      // Handle the response as needed (e.g., show a success message)
+      // Now, send the complete form data to the server
+      const response = await axios.post("http://localhost:3001/api/accountprofile", formData, { headers });
+  
+      // Handle the response as needed
       console.log("Response from server:", response.data);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Data submitted successfully',
+        icon: 'success',
+      });
     } catch (error) {
       // Handle errors (e.g., show an error message)
       console.error("Error submitting form:", error);
     }
   };
+  
 
   return (
     <div className="mx-auto h-auto pt-20 px-20 flex flex-col items-center">

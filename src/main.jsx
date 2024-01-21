@@ -18,25 +18,17 @@ import Admin from './Pages/Admin';
 import HomeisLogin from './Pages/HomeisLogin';
 import Photographer from './Pages/Photographer';
 import Forrent from './Pages/Forrent';
-import FormVerifyAcc from './Pages/FormVerifyAcc';
 import Accounts from './Pages/Accounts';
 import Profile from './Pages/Profile';
 import Userlist from './Pages/Userlist';
+import PhotographerDetail from './Pages/PhotographerDetail.jsx';
+import FormWorking from './Pages/FormWorking.jsx';
+import FormVerifyPhoto from './Pages/FormVerifyPhoto.jsx';
+import FormVerifyRent from './Pages/FormVerifyRent.jsx';
+
 
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />
-  },
-  {
-    path: "/",
-    element: <Home />
-  },
-  {
-    path: "/",
-    element: <Home />
-  },
   {
     path: "/",
     element: <Home />
@@ -89,7 +81,6 @@ const router = createBrowserRouter([
           <Account />
         </AllowRole>
       </RequireAuth>
-
     ),
   },
   {
@@ -120,10 +111,6 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/FormVerify",
-    element: <FormVerifyAcc />
-  },
-  {
     path: "/Accounts",
     element: <Accounts />
   },
@@ -135,6 +122,23 @@ const router = createBrowserRouter([
     path: "/Userlist",
     element: <Userlist />
   },
+  {
+    path: "/Photograhpers/:id",
+    element: <PhotographerDetail />
+  },
+  {
+    path: "/UploadWorkings",
+    element: <FormWorking />
+  },
+  {
+    path: "/VerifyPhotograhper",
+    element: <FormVerifyPhoto />
+  },
+  {
+    path: "/VerifyEquipmentRental",
+    element: <FormVerifyRent />
+  }
+
   
 ])
 

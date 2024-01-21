@@ -1,152 +1,196 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Upload, Avatar, Select, message } from "antd";
-import { Rating } from "primereact/rating";
-// นำเข้า TailwindCSS สำหรับการตกแต่ง
-import "tailwindcss/tailwind.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Select from "react-select";
+import { Link } from 'react-router-dom';
 
-function Profiles() {
-    
-        // สร้าง state สำหรับเก็บข้อมูลของผู้ใช้
-        const [user, setUser] = useState({
-          profileImage: "", // ภาพโปรไฟล์
-          name: "", // ชื่อผู้ใช้
-          bio: "", // คำแนะนำตัวเอง
-          jobType: "", // ประเภทที่รับงาน
-          province: "", // จังหวัดที่รับงาน
-          facebook: "", // facebook
-          instagram: "", // instagram
-          line: "", // line
-          phone: "", // เบอร์โทรศัพท์
-          rating: 0, // คะแนน
+const Profiles = () => {
+  const [allProfilesData, setAllProfilesData] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions2, setSelectedOptions2] = useState([]);
+
+
+  const jobTypesOptions = [
+    { value: "Portraits", label: "ถ่ายภาพบุคคล" },
+    { value: "Event", label: "ถ่ายภาพงานอีเว้นท์" },
+    { value: "Landscapes", label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง" },
+    { value: "Aerial", label: "ถ่ายภาพทางอากาศ" },
+    { value: "Product", label: "ถ่ายภาพสินค้า" },
+    { value: "Food", label: "ถ่ายภาพอาหาร" },
+    { value: "Realty", label: "ถ่ายภาพอสังหาริมทรัพย์" },
+    { value: "Fashion", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
+  ];
+  const provinceOptions = [
+    { value: "BKK", label: "กรุงเทพมหานคร" },
+    { value: "SPK", label: "สมุทรปราการ" },
+    { value: "NBI", label: "นนทบุรี" },
+    { value: "PTE", label: "ปทุมธานี" },
+    { value: "AYA", label: "พระนครศรีอยุธยา" },
+    { value: "ATG", label: "อ่างทอง" },
+    { value: "LRI", label: "ลพบุรี" },
+    { value: "SBR", label: "สิงห์บุรี" },
+    { value: "CNT", label: "ชัยนาท" },
+    { value: "SRI", label: "สระบุรี" },
+    { value: "CBI", label: "ชลบุรี" },
+    { value: "RYG", label: "ระยอง" },
+    { value: "CTI", label: "จันทบุรี" },
+    { value: "TRT", label: "ตราด" },
+    { value: "CCO", label: "ฉะเชิงเทรา" },
+    { value: "PRI", label: "ปราจีนบุรี" },
+    { value: "NYK", label: "นครนายก" },
+    { value: "SKW", label: "สระแก้ว" },
+    { value: "NMA", label: "นครราชสีมา" },
+    { value: "BRM", label: "บุรีรัมย์" },
+    { value: "SRN", label: "สุรินทร์" },
+    { value: "SSK", label: "ศรีสะเกษ" },
+    { value: "UBN", label: "อุบลราชธานี" },
+    { value: "YST", label: "ยโสธร" },
+    { value: "CPM", label: "ชัยภูมิ" },
+    { value: "ACR", label: "อำนาจเจริญ" },
+    { value: "BKN", label: "บึงกาฬ" },
+    { value: "NBP", label: "หนองบัวลำภู" },
+    { value: "KKN", label: "ขอนแก่น" },
+    { value: "UDN", label: "อุดรธานี" },
+    { value: "LEI", label: "เลย" },
+    { value: "NKI", label: "หนองคาย" },
+    { value: "MKM", label: "มหาสารคาม" },
+    { value: "RET", label: "ร้อยเอ็ด" },
+    { value: "KSN", label: "กาฬสินธุ์" },
+    { value: "SNK", label: "สกลนคร" },
+    { value: "NPM", label: "นครพนม" },
+    { value: "MDH", label: "มุกดาหาร" },
+    { value: "CMI", label: "เชียงใหม่" },
+    { value: "LPN", label: "ลำพูน" },
+    { value: "LPG", label: "ลำปาง" },
+    { value: "UTD", label: "อุตรดิตถ์" },
+    { value: "PRE", label: "แพร่" },
+    { value: "NAN", label: "น่าน" },
+    { value: "PYO", label: "พะเยา" },
+    { value: "CRI", label: "เชียงราย" },
+    { value: "MSN", label: "แม่ฮ่องสอน" },
+    { value: "NSN", label: "นครสวรรค์" },
+    { value: "UTI", label: "อุทัยธานี" },
+    { value: "KPT", label: "กำแพงเพชร" },
+    { value: "TAK", label: "ตาก" },
+    { value: "STI", label: "สุโขทัย" },
+    { value: "PLK", label: "พิษณุโลก" },
+    { value: "PCT", label: "พิจิตร" },
+    { value: "PNB", label: "เพชรบูรณ์" },
+    { value: "RBR", label: "ราชบุรี" },
+    { value: "KRI", label: "กาญจนบุรี" },
+    { value: "SPB", label: "สุพรรณบุรี" },
+    { value: "NPT", label: "นครปฐม" },
+    { value: "SKN", label: "สมุทรสาคร" },
+    { value: "SKM", label: "สมุทรสงคราม" },
+    { value: "PBI", label: "เพชรบุรี" },
+    { value: "PKN", label: "ประจวบคีรีขันธ์" },
+    { value: "NRT", label: "นครศรีธรรมราช" },
+    { value: "KBI", label: "กระบี่" },
+    { value: "PNA", label: "พังงา" },
+    { value: "PKT", label: "ภูเก็ต" },
+    { value: "SNI", label: "สุราษฎร์ธานี" },
+    { value: "RNG", label: "ระนอง" },
+    { value: "CPN", label: "ชุมพร" },
+    { value: "SKA", label: "สงขลา" },
+    { value: "STN", label: "สตูล" },
+    { value: "TRG", label: "ตรัง" },
+    { value: "PLG", label: "พัทลุง" },
+    { value: "PTN", label: "ปัตตานี" },
+    { value: "YLA", label: "ยะลา" },
+    { value: "NWT", label: "นราธิวาส" },
+  ];
+
+  useEffect(() => {
+    const fetchAllProfilesData = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        const response = await axios.get('http://localhost:3001/api/getAllPhotographerProfiles', {
+          headers: {
+            Authorization: `Bearer ${token}`, // แทน yourAuthToken ด้วย token ของคุณ
+          },
         });
-        // สร้างฟังก์ชันสำหรับการอัปเดต state ของผู้ใช้
-        const handleChange = (e) => {
-          // ดึงชื่อและค่าของ input ที่เปลี่ยนแปลง
-          const { name, value } = e.target;
-          // อัปเดต state ของผู้ใช้
-          setUser({ ...user, [name]: value });
-        };
-        // สร้างฟังก์ชันสำหรับการอัปโหลดภาพโปรไฟล์
-        const handleUpload = (info) => {
-          // ตรวจสอบสถานะของการอัปโหลด
-          if (info.file.status === "done") {
-            // แสดงข้อความเมื่ออัปโหลดสำเร็จ
-            message.success(`${info.file.name} อัปโหลดสำเร็จ`);
-            // อัปเดต state ของผู้ใช้
-            setUser({ ...user, profileImage: info.file.response.url });
-          } else if (info.file.status === "error") {
-            // แสดงข้อความเมื่ออัปโหลดไม่สำเร็จ
-            message.error(`${info.file.name} อัปโหลดไม่สำเร็จ`);
-          }
-        };
-        // สร้างฟังก์ชันสำหรับการส่งข้อมูลผู้ใช้
-        const handleSubmit = (e) => {
-          // ป้องกันการรีเฟรชหน้า
-          e.preventDefault();
-          // ส่งข้อมูลผู้ใช้ไปยัง API หรือฐานข้อมูล
-          // ใช้ axios หรือ fetch สำหรับการส่งข้อมูล
-          // ตัวอย่าง: axios.post("/api/users", user);
-          // แสดงข้อความเมื่อส่งข้อมูลสำเร็จ
-          message.success("บันทึกข้อมูลสำเร็จ");
-        };
-        // สร้างตัวแปรสำหรับเก็บข้อมูลของภาพโปรไฟล์
-        const profileImage = {
-          // กำหนด URL ของภาพโปรไฟล์
-          // ถ้ายังไม่มีภาพโปรไฟล์ ใช้ภาพเริ่มต้น
-          url: user.profileImage || "https://via.placeholder.com/150",
-          // กำหนดชื่อของภาพโปรไฟล์
-          name: user.name || "Anonymous",
-        };
-        // สร้างตัวแปรสำหรับเก็บข้อมูลของประเภทที่รับงาน
-        const jobTypes = [
-          { label: "Web Developer", value: "Web Developer" },
-          { label: "Graphic Designer", value: "Graphic Designer" },
-          { label: "Content Writer", value: "Content Writer" },
-          { label: "Translator", value: "Translator" },
-          { label: "Other", value: "Other" },
-        ];
-        // สร้างตัวแปรสำหรับเก็บข้อมูลของจังหวัดที่รับงาน
-        const provinces = [
-          { label: "กรุงเทพมหานคร", value: "กรุงเทพมหานคร" },
-          { label: "นนทบุรี", value: "นนทบุรี" },
-          { label: "ปทุมธานี", value: "ปทุมธานี" },
-          { label: "สมุทรปราการ", value: "สมุทรปราการ" },
-          { label: "อื่นๆ", value: "อื่นๆ" },
-        ];
-        // สร้างตัวแปรสำหรับเก็บข้อมูลของไอคอนสำหรับการอัปโหลด
-        const uploadIcon = (
-          <div className="flex flex-col items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-            <span className="text-gray-400">อัปโหลดภาพ</span>
-          </div>
-        );
-    
-  return (
-    <div className="container mx-auto px-4 py-8">
-    <h1 className="text-3xl font-bold text-center mb-4">แก้ไขข้อมูลโปรไฟล์</h1>
-    <Form layout="vertical" onFinish={handleSubmit}>
-      <div className="flex flex-col items-center">
-        <Avatar size={150} src={profileImage.url} />
-        <Form.Item name="profileImage">
-          <Upload
-            name="profileImage"
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188" // URL สำหรับการอัปโหลดภาพ
-            showUploadList={false} // ซ่อนรายการภาพที่อัปโหลด
-            onChange={handleUpload} // เรียกฟังก์ชัน handleUpload เมื่อมีการเปลี่ยนแปลง
-          >
-            <Button icon={uploadIcon}>อัปโหลดภาพโปรไฟล์</Button>
-          </Upload>
-        </Form.Item>
-      </div>
-      {/* ส่วนของข้อมูลผู้ใช้ */}
-      <Form.Item label="ชื่อผู้ใช้" name="name" rules={[{ required: true, message: 'กรุณากรอกชื่อผู้ใช้' }]}>
-        <Input value={user.name} onChange={handleChange} />
-      </Form.Item>
-      <Form.Item label="คำแนะนำตัวเอง" name="bio">
-        <Input.TextArea value={user.bio} onChange={handleChange} />
-      </Form.Item>
-      <Form.Item label="ประเภทที่รับงาน" name="jobType">
-        <Select options={jobTypes} value={user.jobType} onChange={(value) => setUser({ ...user, jobType: value })} />
-      </Form.Item>
-      <Form.Item label="จังหวัดที่รับงาน" name="province">
-        <Select options={provinces} value={user.province} onChange={(value) => setUser({ ...user, province: value })} />
-      </Form.Item>
-      <Form.Item label="Facebook" name="facebook">
-        <Input value={user.facebook} onChange={handleChange} />
-      </Form.Item>
-      <Form.Item label="Instagram" name="instagram">
-        <Input value={user.instagram} onChange={handleChange} />
-      </Form.Item>
-      <Form.Item label="Line" name="line">
-        <Input value={user.line} onChange={handleChange} />
-      </Form.Item>
-      <Form.Item label="เบอร์โทรศัพท์" name="phone">
-        <Input value={user.phone} onChange={handleChange} />
-      </Form.Item>
-      {/* ส่วนของคะแนน */}
-      <Form.Item label="คะแนน" name="rating">
-        <Rating value={user.rating} onChange={(e) => setUser({ ...user, rating: e.value })} />
-      </Form.Item>
-      {/* ปุ่มสำหรับ submit แบบฟอร์ม */}
-      <Form.Item>
-        <Button type="primary" htmlType="submit">บันทึกข้อมูล</Button>
-      </Form.Item>
-    </Form>
-  </div>
-  )
-}
 
-export default Profiles
+        setAllProfilesData(response.data);
+      } catch (error) {
+        console.error('Error fetching PhotographerProfiles data:', error);
+      }
+    };
+
+    fetchAllProfilesData();
+  }, []); // ให้ useEffect ทำงานเฉพาะครั้งแรก
+
+
+  const handleSelectChange = (selectedOptions, actionMeta) => {
+    console.log('Selected Options:', selectedOptions);
+    if (actionMeta.name === 'selectedOptions') {
+      setSelectedOptions(selectedOptions);
+    } else if (actionMeta.name === 'selectedOptions2') {
+      setSelectedOptions2(selectedOptions);
+    }
+  };
+
+
+  return (
+    <div>
+      <div className="border rounded p-4 w-2/4 mx-auto mt-4 ">
+  <Select
+    options={jobTypesOptions}
+    isMulti
+    name="selectedOptions"
+    onChange={(selectedOptions, actionMeta) => handleSelectChange(selectedOptions, actionMeta)}
+    value={selectedOptions}
+    placeholder="เลือกประเภทงาน"
+  />
+  <div className="mt-4">
+  <Select
+    options={provinceOptions}
+    isMulti
+    name="selectedOptions2"
+    onChange={(selectedOptions2, actionMeta) => handleSelectChange(selectedOptions2, actionMeta)}
+    value={selectedOptions2}
+    placeholder="เลือกจังหวัด"
+  />
+  </div>
+</div>
+
+{allProfilesData ? (
+        <div className="grid gap-2 lg:grid-cols-4 p-10">
+          {allProfilesData.photographerProfiles.map(profile => {
+            const filterOptions = selectedOptions.map(option => option.value);
+            const filterOptions2 = selectedOptions2.map(option => option.value);
+
+            return (
+              (filterOptions.length === 0 || filterOptions.some(option => profile.selectedOptions.includes(option))) &&
+              (filterOptions2.length === 0 || filterOptions2.some(option => profile.selectedOptions2.includes(option))) && (
+                <div
+                  className="w-full rounded-lg shadow-md lg:max-w-sm"
+                  key={profile.id}
+                >
+                  <img
+                    className="mx-auto w-32 h-32 mt-6 relative border-4 border-gray/40 rounded-full overflow-hidden"
+                    src={profile.imgProfileURL}
+                    alt="Profile image"
+                  />
+                  <div className="p-4">
+                    <h4 className="text-xl font-semibold text-blue-600">
+                      {profile.username}
+                    </h4>
+                    <Link to={`/Photographers/${profile.id}`}>
+                      <button className="px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow">
+                        ดูข้อมูลเพิ่มเติม
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              )
+            );
+          })}
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+export default Profiles;
+

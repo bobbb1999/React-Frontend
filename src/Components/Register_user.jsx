@@ -25,7 +25,7 @@ function Register_user() {
 
     try {
       // ส่งค่าที่ผู้ใช้กรอกไปยัง API registerforuser บนเซิร์ฟเวอร์
-      const response = await axios.post('http://localhost:3000/registerforuser', formData);
+      const response = await axios.post('http://localhost:3001/registerforuser', formData);
       
       // หากสมัครสมาชิกสำเร็จ
       console.log('สมัครสมาชิกสำเร็จ', response.data);
