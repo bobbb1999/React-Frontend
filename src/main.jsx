@@ -25,6 +25,7 @@ import PhotographerDetail from './Pages/PhotographerDetail.jsx';
 import FormWorking from './Pages/FormWorking.jsx';
 import FormVerifyPhoto from './Pages/FormVerifyPhoto.jsx';
 import FormVerifyRent from './Pages/FormVerifyRent.jsx';
+import AddProduct from './Pages/AddProduct.jsx';
 
 
 
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
   {
     path: "/VerifyEquipmentRental",
     element: <FormVerifyRent />
+  },
+  {
+    path: "/AddProduct",
+    element: <AddProduct />
   }
 
   
