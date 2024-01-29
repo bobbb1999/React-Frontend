@@ -60,7 +60,7 @@ const FormWorkings = () => {
         onChange={handleFileChange} 
         multiple
         >
-          <Button icon={<UploadOutlined />}>Upload (Max: 12)</Button>
+          <Button icon={<UploadOutlined />}>อัพโหลดรูปภาพ (สูงสุด : 12 รูปภาพ)</Button>
         </Upload>
       </Space>
 
