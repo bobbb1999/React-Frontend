@@ -3,18 +3,45 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import axios from "axios"; // เพิ่ม import axios มาใช้งาน
 
 export default function AddNewProduct() {
-  const { register, handleSubmit, control } = useForm();
+  const { register, handleSubmit, control, reset } = useForm(); // เพิ่ม reset เพื่อล้างค่าฟอร์มหลังจาก submit
   const [fileList, setFileList] = React.useState([]);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const formData = new FormData();
+      formData.append("product_name", data.name);
+      formData.append("price", data.price);
+      formData.append("category", data.category.value);
+      formData.append("description", data.description);
+      fileList.forEach((file) => {
+        formData.append("file", file.originFileObj);
+      });
+      const token = localStorage.getItem("token");
+      const response = await axios.post("http://localhost:3001/api/uploadproduct", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data); // แสดงข้อมูลที่ได้จากการโพสต์
+      message.success("สินค้าถูกเพิ่มเรียบร้อยแล้ว");
+      reset(); // ล้างค่าฟอร์มหลังจาก submit สำเร็จ
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาดในการเพิ่มสินค้า:", error);
+      message.error("มีบางอย่างผิดพลาด กรุณาลองใหม่อีกครั้ง");
+    }
+  };
+
   console.log(fileList);
 
   const props = {
     name: "file",
     multiple: true,
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188", // replace with your upload URL
+    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
     onChange(info) {
       let fileList = [...info.fileList];
       fileList = fileList.slice(-5);
@@ -58,6 +85,7 @@ export default function AddNewProduct() {
       };
     },
   };
+
   const categoryOptions = [
     { value: "camera", label: "กล้องถ่ายรูป/วีดีโอ" },
     { value: "lens", label: "เลนส์" },
@@ -144,7 +172,7 @@ export default function AddNewProduct() {
         type="submit"
         className="w-full mx-auto bg-blue-600 hover:bg-pink-dark text-black py-3 px-4 mt-8 rounded"
       >
-        Save product
+        บันทึกสินค้า
       </button>
     </form>
   );

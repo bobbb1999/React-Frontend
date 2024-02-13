@@ -26,6 +26,7 @@ import FormWorking from './Pages/FormWorking.jsx';
 import FormVerifyPhoto from './Pages/FormVerifyPhoto.jsx';
 import FormVerifyRent from './Pages/FormVerifyRent.jsx';
 import AddProduct from './Pages/AddProduct.jsx';
+import Product from './Pages/Product.jsx';
 
 
 
@@ -142,6 +143,10 @@ const router = createBrowserRouter([
   {
     path: "/AddProduct",
     element: <AddProduct />
+  },
+  {
+    path: "/Product",
+    element: <Product />
   }
 
   
