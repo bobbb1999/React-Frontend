@@ -1,21 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { Dropdown } from 'primereact/dropdown';
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const Productmanage = () => {
   const [fileList, setFileList] = React.useState([]);
-  const [productName, setProductName] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
+  const [productName, setProductName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [products, setProducts] = useState([]);
+  const token = localStorage.getItem("token");
+  // สร้าง state สำหรับเก็บข้อมูลสินค้าที่จะแสดงในหน้านั้น ๆ
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+  // คำนวณรายการสินค้าที่จะแสดงตามหน้า
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  // ฟังก์ชันเปลี่ยนหน้า
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
 
+  const prevPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
   const categoryOptions = [
     { value: "camera", label: "กล้องถ่ายรูป/วีดีโอ" },
     { value: "lens", label: "เลนส์" },
     { value: "lighting", label: "ไฟแฟรช/ไฟ LED" },
+    { value: "power", label: "Power/Battery" },
+    { value: "gopro", label: "GoPro" },
+    { value: "mic", label: "Mic/Wireless" },
+    { value: "accessory_camera", label: "อุปกรณ์ถ่ายรูป" },
+    { value: "accessory_video", label: "อุปกรณ์ถ่ายวีดีโอ" },
   ];
 
   const props = {
@@ -65,25 +88,33 @@ const Productmanage = () => {
       };
     },
   };
-  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/api/getproducts/:id",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setProducts(response.data.products);
+        console.log(response.data.products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [newProduct, setNewProduct] = useState([]);
   const [isAddProductModalOpen, setAddProductModalOpen] = useState(false);
   const openAddProductModal = () => {
     setAddProductModalOpen(true);
   };
-
-  const onSubmit = async (data) => { // ส่งข้อมูล form ไปยัง onSubmit ให้ React Hook Form ดูแล
-    try {
-      const response = await axios.post('http://localhost:3001/api/uploadporduct', {
-        ...data,
-        fileList
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error uploading product:', error);
-    }
-  };
-  
 
   const closeAddProductModal = () => {
     setAddProductModalOpen(false);
@@ -93,31 +124,47 @@ const Productmanage = () => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('product_name', productName);
-    formData.append('category', category);
-    formData.append('price', price);
-    formData.append('description', description);
+    formData.append("product_name", productName);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("description", description);
 
     fileList.forEach((file) => {
-      formData.append('file', file.originFileObj);
+      formData.append("file", file.originFileObj);
     });
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post('http://localhost:3001/api/uploadproduct', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3001/api/uploadproduct",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      message.success("สินค้าถูกเพิ่มเรียบร้อยแล้ว");
       console.log(response.data);
     } catch (error) {
-      console.error('Error uploading product:', error);
+      console.error("Error uploading product:", error);
     }
   };
-  
-  const editItem = (id) => {
-    // Add your logic here to edit an item
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isEditProductModalOpen, setEditProductModalOpen] = useState(false);
+  const openEditProductModal = () => {
+    setEditProductModalOpen(true);
+  };
+
+  const closeEditProductModal = () => {
+    setEditProductModalOpen(false);
+  };
+  const editItem = (product) => {
+    setSelectedProduct(product);
+    // เปิด modal สำหรับแก้ไขข้อมูล
+    openEditProductModal();
   };
 
   const deleteItem = (id) => {
@@ -170,7 +217,7 @@ const Productmanage = () => {
 
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <form>
+                    <form>
                       <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-3">
                           <label
@@ -197,12 +244,16 @@ const Productmanage = () => {
                           >
                             Category
                           </label>
-                              <Select
-                                value={category}
-                                onChange={(selectedOption) => setCategory(selectedOption.value)}
-                                options={categoryOptions}
-                                placeholder="เลือกประเภทของอุปกรณ์"
-                              />
+                          <Select
+                            value={categoryOptions.find(
+                              (option) => option.value === category
+                            )}
+                            onChange={(selectedOption) =>
+                              setCategory(selectedOption.value)
+                            }
+                            options={categoryOptions}
+                            placeholder="เลือกประเภทของอุปกรณ์"
+                          />
                         </div>
 
                         <div className="col-span-6 sm:col-span-3">
@@ -276,6 +327,248 @@ const Productmanage = () => {
             </div>
           )}
         </div>
+        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+          <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+            <table className="min-w-full leading-normal">
+              <thead>
+                <tr>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Product Name
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Category
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    details
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Image
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    edit
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    delete
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentProducts.map((product) => (
+                  <tr key={product.id}>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <div className="ml-3">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {product.product_name}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {product.category}
+                      </p>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {product.description}
+                      </p>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {product.price}
+                      </p>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        {product.imageUrls.map((imageUrl, idx) => (
+                          <img
+                            key={idx}
+                            src={imageUrl}
+                            alt={`Product ${idx + 1}`}
+                            className="h-8 w-8 mr-2"
+                          />
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <button
+                        onClick={() => editItem(product)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-4"
+                      >
+                        Edit item
+                      </button>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <button
+                        onClick={() => deleteItem(product.id)}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+                      >
+                        Delete item
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          Previous
+        </button>
+
+        <button
+          onClick={nextPage}
+          disabled={indexOfLastProduct >= products.length}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+            indexOfLastProduct >= products.length
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+          }`}
+        >
+          Next
+        </button>
+        {isEditProductModalOpen && (
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              {selectedProduct && (
+                <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:max-w-lg">
+                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <form>
+                      <div className="grid grid-cols-6 gap-6">
+                        <div className="col-span-6 sm:col-span-3">
+                          <label
+                            htmlFor="product-name"
+                            className="text-sm font-medium text-gray-900 block mb-2"
+                          >
+                            Product Name
+                          </label>
+                          <input
+                            value={selectedProduct.product_name}
+                            onChange={(e) =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                product_name: e.target.value,
+                              })
+                            }
+                            type="text"
+                            name="product_name"
+                            id="product_name"
+                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                            placeholder="Sony Alpha 6700"
+                            required
+                          />
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <label
+                            htmlFor="category"
+                            className="text-sm font-medium text-gray-900 block mb-2"
+                          >
+                            Category
+                          </label>
+                          <Select
+                            value={categoryOptions.find(
+                              (option) =>
+                                option.value === selectedProduct.category
+                            )}
+                            onChange={(selectedOption) =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                category: selectedOption.value,
+                              })
+                            }
+                            options={categoryOptions}
+                            placeholder="เลือกประเภทของอุปกรณ์"
+                          />
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                          <label
+                            htmlFor="price"
+                            className="text-sm font-medium text-gray-900 block mb-2"
+                          >
+                            Price
+                          </label>
+                          <input
+                            type="number"
+                            name="price"
+                            id="price"
+                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                            placeholder="ราคาต่อ 1 วัน"
+                            value={selectedProduct.price}
+                            onChange={(e) =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                price: e.target.value,
+                              })
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="col-span-full">
+                          <label
+                            htmlFor="description"
+                            className="text-sm font-medium text-gray-900 block mb-2"
+                          >
+                            Product Details
+                          </label>
+                          <textarea
+                            id="description"
+                            rows="6"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-4"
+                            placeholder="กล้อง APS-C sensor 26MP APS-C/Super 35mm 4K 120fps 10-bit 4:2:2 ระบบ Focus Real-time Eye AF and Real-time Tracking สำหรับงานถ่ายภาพยนตร์ บันทึก VDO ทั่วไป มีพัดลมระบายความร้อน"
+                            value={selectedProduct.description}
+                            onChange={(e) =>
+                              setSelectedProduct({
+                                ...selectedProduct,
+                                description: e.target.value,
+                              })
+                            }
+                          ></textarea>
+                        </div>
+                        <div className="col-span-full">
+                          <Upload.Dragger {...props} fileList={fileList}>
+                            <p className="ant-upload-drag-icon">
+                              <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">
+                              Click or drag file to this area to upload
+                            </p>
+                            <p className="ant-upload-hint">
+                              Support for a single or bulk upload.
+                            </p>
+                          </Upload.Dragger>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button
+                      type="submit"
+                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    >
+                      Update Product
+                    </button>
+                    <button
+                      onClick={closeEditProductModal}
+                      className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
