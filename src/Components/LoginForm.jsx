@@ -55,7 +55,7 @@ export default function LoginForm() {
 
                 
                 // Redirect ไปที่หน้า Homepage
-                Navigate("/Homepage");
+                Navigate("/Photograhper");
 
             } else {
 

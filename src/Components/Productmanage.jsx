@@ -3,7 +3,7 @@ import Select from "react-select";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import axios from "axios";
-
+import Swal from 'sweetalert2';
 const Productmanage = () => {
   const [fileList, setFileList] = React.useState([]);
   const [productName, setProductName] = useState("");
@@ -167,9 +167,83 @@ const Productmanage = () => {
     openEditProductModal();
   };
 
-  const deleteItem = (id) => {
-    // Add your logic here to delete an item
+  const updateProduct = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3001/api/updateproduct/${selectedProduct.id}`,
+        {
+          product_name: selectedProduct.product_name,
+          category: selectedProduct.category,
+          description: selectedProduct.description,
+          price: selectedProduct.price
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
+  
+      console.log(response.data);
+      message.success("Product updated successfully");
+      closeEditProductModal();
+      fetchData();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
+
+  const deleteItem = async (id) => {
+    // ใช้ SweetAlert ถามก่อนลบสินค้า
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่?',
+      text: 'คุณต้องการลบสินค้านี้ใช่หรือไม่?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'ใช่, ฉันต้องการลบ!',
+      cancelButtonText: 'ยกเลิก'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(
+            `http://localhost:3001/api/deleteproduct/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+          console.log(response.data);
+          message.success("Product deleted successfully");
+          fetchData();
+          // หลังจากลบสำเร็จแล้ว อาจจะต้องโหลดสินค้าใหม่อีกครั้งโดยเรียก fetchData() หรือเมื่อไหร่ที่เหมาะสม
+        } catch (error) {
+          console.error("Error deleting product:", error);
+        }
+      }
+    });
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/api/getproducts/:id",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setProducts(response.data.products);
+      console.log(response.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
@@ -534,25 +608,13 @@ const Productmanage = () => {
                             }
                           ></textarea>
                         </div>
-                        <div className="col-span-full">
-                          <Upload.Dragger {...props} fileList={fileList}>
-                            <p className="ant-upload-drag-icon">
-                              <InboxOutlined />
-                            </p>
-                            <p className="ant-upload-text">
-                              Click or drag file to this area to upload
-                            </p>
-                            <p className="ant-upload-hint">
-                              Support for a single or bulk upload.
-                            </p>
-                          </Upload.Dragger>
-                        </div>
                       </div>
                     </form>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <button
                       type="submit"
+                      onClick={updateProduct}
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
                     >
                       Update Product

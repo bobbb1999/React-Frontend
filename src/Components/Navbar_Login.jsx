@@ -6,6 +6,7 @@ import {
   InboxArrowDownIcon,
   LifebuoyIcon,
   PowerIcon,
+  CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -15,10 +16,9 @@ import { Link } from "react-router-dom";
 import { BsFillSunFill, BsMoonFill, BsCheck } from "react-icons/bs";
 
 const navigation = [
-  // { name: "Verify", to: "/formverify", current: false },
-  { name: "Admin", to: "/Admin", current: false },
-  { name: "Photograhper", to: "/Photograhper", current: false },
-  { name: "Forrent", to: "/Forrent", current: false },
+  { name: "Photographer", to: "/Photograhper", roles: ["user", "photo", "rent","admin"] },
+  { name: "Forrent", to: "/Forrent", roles: ["rent", "photo","admin"] },
+  { name: "Admin", to: "/Admin", roles: ["admin"] },
 ];
 
 function classNames(...classes) {
@@ -106,31 +106,38 @@ function Navbar_Login() {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        to={item.to}
-                        key={item.name}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                    {navigation.map((item) => {
+                      // เช็คว่าบทบาทของผู้ใช้ปัจจุบันสามารถเห็นเมนูนี้ได้หรือไม่
+                      if (item.roles.includes(localStorage.getItem("role"))) {
+                        return (
+                          <Link
+                            to={item.to}
+                            key={item.name}
+                            className={classNames(
+                              item.current
+                                ? "bg-gray-900 text-white"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+                          </Link>
+                        );
+                      } else {
+                        return null; // ไม่แสดงเมนู
+                      }
+                    })}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button
-                        onClick={handleThemeSwitch}
-                        className="p-3  text-black dark:text-white rounded-full w-12 h-8 flex justify-center items-center"
-                      >
-                        {theme === "light" ? <BsMoonFill /> : <BsFillSunFill />}
-                      </button>
+                <button
+                  onClick={handleThemeSwitch}
+                  className="p-3  text-black dark:text-white rounded-full w-12 h-8 flex justify-center items-center"
+                >
+                  {theme === "light" ? <BsMoonFill /> : <BsFillSunFill />}
+                </button>
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
@@ -170,7 +177,7 @@ function Navbar_Login() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => {
-                          const role = localStorage.getItem('role');
+                          const role = localStorage.getItem("role");
 
                           let linkTo = "/VerifyPhotograhper";
                           if (role === "rent") {
@@ -186,28 +193,43 @@ function Navbar_Login() {
                               )}
                             >
                               {role === "photo" ? (
-                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <CheckBadgeIcon className="h-5 w-5 mr-2" />
                               ) : (
-                                <UserCircleIcon className="h-5 w-5 mr-2" /> 
+                                <CheckBadgeIcon className="h-5 w-5 mr-2" />
                               )}
-                              {role === "photo" ? "ยืนยันตัวตน" : "ยืนยันตัวตน"} {/* เปลี่ยนข้อความที่แสดงตาม role */}
+                              {role === "photo" ? "ยืนยันตัวตน" : "ยืนยันตัวตน"}{" "}
+                              {/* เปลี่ยนข้อความที่แสดงตาม role */}
                             </Link>
                           );
                         }}
                       </Menu.Item>
                       <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="/UploadWorkings"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 flex items-center"
-                            )}
-                          >
-                            <UserCircleIcon className="h-5 w-5 mr-2" />
-                            <span>อัพโหลดผลงาน</span>
-                          </Link>
-                        )}
+                        {({ active }) => {
+                          const role = localStorage.getItem("role");
+                          let linkTo = "";
+                          let displayText = "";
+
+                          if (role === "photo") {
+                            linkTo = "/UploadWorkings";
+                            displayText = "อัพโหลดผลงาน";
+                          } else if (role === "rent") {
+                            linkTo = "/Product";
+                            displayText = "จัดการสินค้า";
+                          }
+
+                          return (
+                            <Link
+                              to={linkTo}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                              )}
+                            >
+                              <UserCircleIcon className="h-5 w-5 mr-2" />
+                              <span>{displayText}</span>
+                            </Link>
+                          );
+                        }}
                       </Menu.Item>
 
                       <Menu.Item>
