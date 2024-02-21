@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Datepicker from "tailwind-datepicker-react"
 import axios from 'axios';
-
+import { message } from "antd";
 
 
 // สร้าง schema สำหรับ validate ข้อมูล
@@ -100,6 +100,7 @@ const Verifyphotograhper = () => {
 
       // Handle the response as needed
       console.log(response.data);
+      message.success("ยืนยันตัวตนสำเร็จ");
     } catch (error) {
       // Handle errors
       console.error('Error submitting data:', error);

@@ -71,6 +71,36 @@ function Navbar_Login() {
     }
   };
 
+  const [imageProfile, setImageProfile] = useState("");
+  const token = localStorage.getItem("token");
+  // ดึงข้อมูลโปรไฟล์เมื่อคอมโพเนนต์ถูกโหลด
+  useEffect(() => {
+    // เรียกใช้ API เพื่อดึงข้อมูลโปรไฟล์
+    fetchProfileImage();
+  }, []);
+  
+  // ฟังก์ชันสำหรับเรียกใช้ API เพื่อดึงข้อมูลโปรไฟล์
+  const fetchProfileImage = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/getImagePhotoProfile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`, // ใส่ token ที่ใช้ในการ authenticate
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImageProfile(data.photographerProfile.imgProfileURL); // เซ็ต URL ของรูปโปรไฟล์
+      } else {
+        // กรณีที่เกิดข้อผิดพลาดในการดึงข้อมูลโปรไฟล์
+        console.error('Failed to fetch profile image');
+      }
+    } catch (error) {
+      console.error('Error fetching profile image:', error);
+    }
+  };
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -146,8 +176,8 @@ function Navbar_Login() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={imageProfile || "https://img2.pic.in.th/pic/Screenshot-2023-09-16-194045.png"}
+                        alt="imageProfile"
                       />
                     </Menu.Button>
                   </div>
