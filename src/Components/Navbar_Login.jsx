@@ -16,8 +16,12 @@ import { Link } from "react-router-dom";
 import { BsFillSunFill, BsMoonFill, BsCheck } from "react-icons/bs";
 
 const navigation = [
-  { name: "Photographer", to: "/Photograhper", roles: ["user", "photo", "rent","admin"] },
-  { name: "Forrent", to: "/Forrent", roles: ["rent", "photo","admin"] },
+  {
+    name: "Photographer",
+    to: "/Photograhper",
+    roles: ["user", "photo", "rent", "admin"],
+  },
+  { name: "Forrent", to: "/Forrent", roles: ["rent", "photo", "admin"] },
   { name: "Admin", to: "/Admin", roles: ["admin"] },
 ];
 
@@ -78,26 +82,29 @@ function Navbar_Login() {
     // เรียกใช้ API เพื่อดึงข้อมูลโปรไฟล์
     fetchProfileImage();
   }, []);
-  
+
   // ฟังก์ชันสำหรับเรียกใช้ API เพื่อดึงข้อมูลโปรไฟล์
   const fetchProfileImage = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/getImagePhotoProfile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`, // ใส่ token ที่ใช้ในการ authenticate
-        },
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/getImagePhotoProfile",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // ใส่ token ที่ใช้ในการ authenticate
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         setImageProfile(data.photographerProfile.imgProfileURL); // เซ็ต URL ของรูปโปรไฟล์
       } else {
         // กรณีที่เกิดข้อผิดพลาดในการดึงข้อมูลโปรไฟล์
-        console.error('Failed to fetch profile image');
+        console.error("Failed to fetch profile image");
       }
     } catch (error) {
-      console.error('Error fetching profile image:', error);
+      console.error("Error fetching profile image:", error);
     }
   };
 
@@ -176,7 +183,10 @@ function Navbar_Login() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src={imageProfile || "https://img2.pic.in.th/pic/Screenshot-2023-09-16-194045.png"}
+                        src={
+                          imageProfile ||
+                          "https://img2.pic.in.th/pic/Screenshot-2023-09-16-194045.png"
+                        }
                         alt="imageProfile"
                       />
                     </Menu.Button>
@@ -192,19 +202,27 @@ function Navbar_Login() {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to="/Accounts"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700 flex items-center"
-                            )}
-                          >
-                            <UserCircleIcon className="h-5 w-5 mr-2" />
-                            <span>โปรไฟล์</span>
-                          </Link>
-                        )}
+                        {({ active }) => {
+                          const role = localStorage.getItem("role");
+                          // ตัดสินใจเส้นทางตามบทบาทของผู้ใช้
+                          let profileLink =
+                            role === "photo" ? "/Accounts" : "/Profilerent";
+
+                          return (
+                            <Link
+                              to={profileLink}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                              )}
+                            >
+                              <UserCircleIcon className="h-5 w-5 mr-2" />
+                              <span>โปรไฟล์</span>
+                            </Link>
+                          );
+                        }}
                       </Menu.Item>
+
                       <Menu.Item>
                         {({ active }) => {
                           const role = localStorage.getItem("role");

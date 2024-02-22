@@ -1,62 +1,77 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-function ForrentAll() {
-  const [RentProfiles, setRentProfiles] = useState([]);
+import { Link } from "react-router-dom";
+const ForrentAll = () => {
+  const [profiles, setProfiles] = useState([]);
   const token = localStorage.getItem("token");
   useEffect(() => {
-    // เรียก API เพื่อดึงข้อมูลผู้ใช้ที่มีบทบาทเป็น "photo"
-    axios
-      .get("http://localhost:3001/rent", {
-        headers: {
-          Authorization: `Bearer ${token}`, // ใส่ Token ที่ถูกต้องที่นี่
-        },
-      })
-      .then((response) => {
-        setRentProfiles(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    const fetchProfiles = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/api/getAllRentProfiles",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setProfiles(response.data.RentEquipmentProfiles);
+      } catch (error) {
+        console.error("Error fetching rent profiles:", error);
+      }
+    };
+
+    fetchProfiles();
   }, []);
+
   return (
-    <div className="grid gap-2 lg:grid-cols-4 p-10">
-      {RentProfiles.map((profile, key) => (
-        <div
-          className="w-full rounded-lg shadow-md lg:max-w-sm  "
-          key={profile.id}
-        >
-          <img
-            className="mx-auto w-32 h-32 mt-6 relative border-4 border-gray/40 rounded-full overflow-hidden"
-            src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
-            alt="Profile image"
-          />
-          <div className="p-4">
-            <h4 className="text-xl font-semibold text-blue-600">
-              {profile.firstname}
-            </h4>
-            <p className="mb-2 leading-normal">{profile.lastname}</p>
+    // <div className="flex flex-wrap justify-center">
+      <div class="flex flex-wrap h-[100vh] ">
+      {profiles.map((profile) => (
+            <div 
+            key={profile.username}
+             class="relative flex flex-col items-center rounded-[20px] w-[400px] mx-auto p-4 bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none">
+                <div class="relative flex h-32 w-full justify-center rounded-xl bg-cover" >
+                    <img src='https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/banner.ef572d78f29b0fee0a09.png' class="absolute flex h-32 w-full justify-center rounded-xl bg-cover"/> 
+                    <div class="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400 dark:!border-navy-700">
+                        <img class="h-full w-full rounded-full" src={profile.imgProfileURL} alt="" />
+                    </div>
+                </div> 
+                <div class="mt-16 flex flex-col items-center">
+                    <h4 class="text-xl font-bold text-navy-700 dark:text-white">
+                    {profile.username}
+                    </h4>
+                    {/* <p class="text-base font-normal text-gray-600">Product Manager</p> */}
+                </div> 
+                <Link to={`/EquipmentRental/${profile.id}`}>
             <button className="px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow">
               ดูข้อมูลเพิ่มเติม
             </button>
-          </div>
+          </Link>
+                {/* <div class="mt-6 mb-3 flex gap-14 md:!gap-14">
+                    <div class="flex flex-col items-center justify-center">
+                    <p class="text-2xl font-bold text-navy-700 dark:text-white">17</p>
+                    <p class="text-sm font-normal text-gray-600">Posts</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                    <p class="text-2xl font-bold text-navy-700 dark:text-white">
+                        9.7K
+                    </p>
+                    <p class="text-sm font-normal text-gray-600">Followers</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                    <p class="text-2xl font-bold text-navy-700 dark:text-white">
+                        434
+                    </p>
+                    <p class="text-sm font-normal text-gray-600">Following</p>
+                    </div>
+                </div> */}
+            </div>  
+            ))}
         </div>
-      ))}
-    </div>
-
-    // <div>
-    //     <h2>Forrent</h2>
-    //         <div className="Forrent-profiles">
-    //             {RentProfiles.map((profile) => (
-    //                 <div key={profile.id} className="card">
-    //                     <h3>{profile.firstname} {profile.lastname}</h3>
-    //                     <p>Email: {profile.email}</p>
-    //                     <p>Role: {profile.role}</p>
-    //                 </div>
-    //             ))}
-    //         </div>
+      
     // </div>
   );
-}
+};
 
 export default ForrentAll;

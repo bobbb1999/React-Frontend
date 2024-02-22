@@ -27,7 +27,8 @@ import FormVerifyPhoto from './Pages/FormVerifyPhoto.jsx';
 import FormVerifyRent from './Pages/FormVerifyRent.jsx';
 import AddProduct from './Pages/AddProduct.jsx';
 import Product from './Pages/Product.jsx';
-
+import ProfileRental from './Pages/ProfileRental.jsx';
+import ForrentDetial from './Pages/ForrentDetail.jsx'
 
 
 const router = createBrowserRouter([
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
     element: <PhotographerDetail />
   },
   {
+    path: "/EquipmentRental/:id",
+    element: <ForrentDetial />
+  },
+  {
     path: "/UploadWorkings",
     element: <FormWorking />
   },
@@ -147,7 +152,11 @@ const router = createBrowserRouter([
   {
     path: "/Product",
     element: <Product />
-  }
+  },
+  {
+    path: "/Profilerent",
+    element: <ProfileRental />
+  },
 
   
 ])

@@ -1,10 +1,10 @@
-import React , { useState } from 'react'
+import React , { useState , useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Datepicker from "tailwind-datepicker-react"
 import axios from 'axios';
-
+import { message } from 'antd';
 
 
 // สร้าง schema สำหรับ validate ข้อมูล
@@ -100,6 +100,7 @@ const Verifyrent = () => {
 
       // Handle the response as needed
       console.log(response.data);
+      message.success("ยืนยันตัวตนสำเร็จ");
     } catch (error) {
       // Handle errors
       console.error('Error submitting data:', error);
@@ -120,6 +121,109 @@ const Verifyrent = () => {
     e.target.nextElementSibling.src = image;
   };
   // สร้าง UI ของฟอร์ม
+
+  const [userData, setUserData] = useState({});
+  const [verified, setVerified] = useState(false);
+  const [imgCardURL, setImgCardURL] = useState("");
+  const [imgFaceURL, setImgFaceURL] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "http://localhost:3001/api/getVerifyRent",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { EquipmentRentalVerifys, imgCardURL, imgFaceURL } = response.data;
+        if (EquipmentRentalVerifys) {
+          setVerified(true);
+          setUserData(EquipmentRentalVerifys);
+          setImgCardURL(imgCardURL);
+          setImgFaceURL(imgFaceURL);
+        }
+      } catch (error) {
+        console.error("Error fetching verification data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+  
+  if (verified) {
+    let statusMessage = '';
+    let statusColor = '';
+  
+    switch (userData.status) {
+      case 'pending':
+        statusMessage = 'รอแอดมินอนุมัติการยืนยันตัวตน';
+        statusColor = 'text-yellow-600';
+        break;
+      case 'success':
+        statusMessage = 'แอดมินอนุมัติเรียบร้อยแล้ว';
+        statusColor = 'text-green-600';
+        break;
+      case 'rejected':
+        statusMessage = 'ไม่ผ่านการอนุมัติ';
+        statusColor = 'text-red-600';
+        break;
+      default:
+        break;
+    }
+    return (
+      <div className="container mx-auto p-6 max-w-screen-sm bg-white shadow-md rounded-lg">
+        <h1 className="text-center text-3xl font-bold mb-4 text-blue-600">
+          ข้อมูลการยืนยันตัวตน
+        </h1>
+        <div className="space-y-2">
+          <p >
+            <span className="font-bold">สถานะ :</span>{" "}
+            <span className={statusColor}>{statusMessage}</span>
+          </p>
+          <p>
+            <span className="font-bold">ชื่อ-นามสกุล :</span> {userData.fullName}
+          </p>
+          <p>
+            <span className="font-bold">วันเกิด :</span> {formatDate(userData.birthdate)}
+          </p>
+          <p>
+            <span className="font-bold">Line ID :</span> {userData.lineId}
+          </p>
+          <p>
+            <span className="font-bold">อีเมล :</span> {userData.email}
+          </p>
+          <p>
+            <span className="font-bold">ที่อยู่ :</span> {userData.address}
+          </p>
+          <p>
+            <span className="font-bold">รหัสบัตรประชาชน :</span>{" "}
+            {userData.idCardNumber}
+          </p>
+          <div className="flex space-x-2 mt-2">
+            <img
+              src={imgCardURL}
+              alt="imgCard"
+              className="w-36 h-36 rounded object-cover cursor-pointer border-2 border-blue-300"
+            />
+            <img
+              src={imgFaceURL}
+              alt="face"
+              className="w-36 h-36 rounded object-cover cursor-pointer border-2 border-blue-300"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-4 max-w-screen-sm ">
       <h1 className="text-center text-3xl font-bold mb-4 ">ยืนยันตัวตน</h1>
