@@ -14,7 +14,6 @@ import ResetPW from './Pages/ResetPW';
 import Account from './Pages/Account';
 import { AuthProvider } from './Components/AuthProvider';
 import { RequireAuth , AllowRole  } from './Components/RequireAuth';
-import Admin from './Pages/Admin';
 import HomeisLogin from './Pages/HomeisLogin';
 import Photographer from './Pages/Photographer';
 import Forrent from './Pages/Forrent';
@@ -30,6 +29,8 @@ import Product from './Pages/Product.jsx';
 import ProfileRental from './Pages/ProfileRental.jsx';
 import ForrentDetial from './Pages/ForrentDetail.jsx'
 import ProductDetail from './Pages/ProductDetail.jsx';
+import Admin_Verify_Photo from './Pages/Admin_Verify_Photo.jsx';
+import Admin_Verify_Rent from './Pages/Admin_Verify_Rent.jsx';
 
 
 const router = createBrowserRouter([
@@ -88,11 +89,22 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/Admin",
+    path: "/Admin/VerifyPhotographer",
     element: (
       <RequireAuth>
         <AllowRole allowedRoles={['admin']}>
-          <Admin />
+          <Admin_Verify_Photo />
+        </AllowRole>
+      </RequireAuth>
+
+    ),
+  },
+  {
+    path: "/Admin/VerifyEquipmentRental",
+    element: (
+      <RequireAuth>
+        <AllowRole allowedRoles={['admin']}>
+          <Admin_Verify_Rent />
         </AllowRole>
       </RequireAuth>
 

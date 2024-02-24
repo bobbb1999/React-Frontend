@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ModalImage from "react-modal-image";
 
-function Adminpage() {
+function Admin_VerifyRent() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -10,7 +10,7 @@ function Adminpage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:3001/api/getDataVerify", {
+      const result = await axios("http://localhost:3001/api/getDataVerifyRent", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -29,7 +29,7 @@ function Adminpage() {
   const handleStatusChange = async (id, status) => {
     try {
       await axios.patch(
-        `http://localhost:3001/api/UpdatePhotographerStatus/${id}`,
+        `http://localhost:3001/api/UpdateEquipmentRentalStatus/${id}`,
         { status },
         {
           headers: {
@@ -38,7 +38,7 @@ function Adminpage() {
         }
       );
       // Reload data after status update
-      const result = await axios("http://localhost:3001/api/getDataVerify", {
+      const result = await axios("http://localhost:3001/api/getDataVerifyRent", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -116,22 +116,22 @@ function Adminpage() {
             {data.map((item, i) => (
               <tr key={i}>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {item.photographerVerify.fullName}
+                  {item.EquipmentRentalVerify.fullName}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {formatDate(item.photographerVerify.birthdate)}
+                  {formatDate(item.EquipmentRentalVerify.birthdate)}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {item.photographerVerify.lineId}
+                  {item.EquipmentRentalVerify.lineId}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {item.photographerVerify.email}
+                  {item.EquipmentRentalVerify.email}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {item.photographerVerify.address}
+                  {item.EquipmentRentalVerify.address}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
-                  {item.photographerVerify.idCardNumber}
+                  {item.EquipmentRentalVerify.idCardNumber}
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
                   <ModalImage
@@ -151,10 +151,10 @@ function Adminpage() {
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
                   <select
-                    value={item.photographerVerify.status}
+                    value={item.EquipmentRentalVerify.status}
                     onChange={(e) => {
                       setSelectedStatus(e.target.value);
-                      setSelectedId(item.photographerVerify.id); // Store id to update later
+                      setSelectedId(item.EquipmentRentalVerify.id); // Store id to update later
                     }}
                   >
                     <option value="success">Success</option>
@@ -178,4 +178,5 @@ function Adminpage() {
   );
 }
 
-export default Adminpage;
+export default Admin_VerifyRent;
+

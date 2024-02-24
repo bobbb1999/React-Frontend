@@ -22,7 +22,6 @@ const navigation = [
     roles: ["user", "photo", "rent", "admin"],
   },
   { name: "Forrent", to: "/Forrent", roles: ["rent", "photo", "admin"] },
-  { name: "Admin", to: "/Admin", roles: ["admin"] },
 ];
 
 function classNames(...classes) {
@@ -201,82 +200,129 @@ function Navbar_Login() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
+                      {localStorage.getItem("role") === "admin" && (
+                        <div>
+                          {/* ข้อมูลยืนยันตัวตนสำหรับช่างภาพ */}
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/Admin/VerifyPhotographer"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />{" "}
+                                <span>ข้อมูลยืนยันตัวตนสำหรับช่างภาพ</span>{" "}
+                              </Link>
+                            )}
+                          </Menu.Item>
+
+                          {/* ข้อมูลยืนยันตัวตนสำหรับผู้ให้เช่าอุปกรณ์ */}
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/Admin/VerifyEquipmentRental"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />{" "}
+                                <span>
+                                  ข้อมูลยืนยันตัวตนสำหรับผู้ให้เช่าอุปกรณ์
+                                </span>{" "}
+                              </Link>
+                            )}
+                          </Menu.Item>
+                        </div>
+                      )}
+                      <Menu.Item as="div">
                         {({ active }) => {
                           const role = localStorage.getItem("role");
-                          // ตัดสินใจเส้นทางตามบทบาทของผู้ใช้
-                          let profileLink =
-                            role === "photo" ? "/Accounts" : "/Profilerent";
-
-                          return (
-                            <Link
-                              to={profileLink}
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
-                              )}
-                            >
-                              <UserCircleIcon className="h-5 w-5 mr-2" />
-                              <span>โปรไฟล์</span>
-                            </Link>
-                          );
+                          if (role === "photo" || role === "rent") {
+                            let profileLink =
+                              role === "photo" ? "/Accounts" : "/Profilerent";
+                            return (
+                              <Link
+                                to={profileLink}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <span>โปรไฟล์</span>
+                              </Link>
+                            );
+                          } else {
+                            return null;
+                          }
                         }}
                       </Menu.Item>
 
-                      <Menu.Item>
+                      <Menu.Item as="div">
                         {({ active }) => {
                           const role = localStorage.getItem("role");
-
-                          let linkTo = "/VerifyPhotograhper";
-                          if (role === "rent") {
-                            linkTo = "/VerifyEquipmentRental";
+                          if (role === "photo" || role === "rent") {
+                            let linkTo = "/VerifyPhotograhper";
+                            if (role === "rent") {
+                              linkTo = "/VerifyEquipmentRental";
+                            }
+                            return (
+                              <Link
+                                to={linkTo}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                {role === "photo" ? (
+                                  <CheckBadgeIcon className="h-5 w-5 mr-2" />
+                                ) : (
+                                  <CheckBadgeIcon className="h-5 w-5 mr-2" />
+                                )}
+                                {role === "photo"
+                                  ? "ยืนยันตัวตน"
+                                  : "ยืนยันตัวตน"}{" "}
+                              </Link>
+                            );
+                          } else {
+                            return null;
                           }
-
-                          return (
-                            <Link
-                              to={linkTo}
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
-                              )}
-                            >
-                              {role === "photo" ? (
-                                <CheckBadgeIcon className="h-5 w-5 mr-2" />
-                              ) : (
-                                <CheckBadgeIcon className="h-5 w-5 mr-2" />
-                              )}
-                              {role === "photo" ? "ยืนยันตัวตน" : "ยืนยันตัวตน"}{" "}
-                              {/* เปลี่ยนข้อความที่แสดงตาม role */}
-                            </Link>
-                          );
                         }}
                       </Menu.Item>
-                      <Menu.Item>
+
+                      <Menu.Item as="div">
                         {({ active }) => {
                           const role = localStorage.getItem("role");
-                          let linkTo = "";
-                          let displayText = "";
+                          if (role === "photo" || role === "rent") {
+                            let linkTo = "";
+                            let displayText = "";
 
-                          if (role === "photo") {
-                            linkTo = "/UploadWorkings";
-                            displayText = "อัพโหลดผลงาน";
-                          } else if (role === "rent") {
-                            linkTo = "/Product";
-                            displayText = "จัดการสินค้า";
+                            if (role === "photo") {
+                              linkTo = "/UploadWorkings";
+                              displayText = "อัพโหลดผลงาน";
+                            } else if (role === "rent") {
+                              linkTo = "/Product";
+                              displayText = "จัดการสินค้า";
+                            }
+
+                            return (
+                              <Link
+                                to={linkTo}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <span>{displayText}</span>
+                              </Link>
+                            );
+                          } else {
+                            return null;
                           }
-
-                          return (
-                            <Link
-                              to={linkTo}
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 flex items-center"
-                              )}
-                            >
-                              <UserCircleIcon className="h-5 w-5 mr-2" />
-                              <span>{displayText}</span>
-                            </Link>
-                          );
                         }}
                       </Menu.Item>
 
