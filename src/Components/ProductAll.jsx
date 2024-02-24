@@ -1,87 +1,143 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { message } from 'antd';
+
 function ProductAll() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    const fetchWorkings = async () => {
+    const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:3001/api/getproducts/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        let url = `http://localhost:3001/api/getAllProducts/${id}`;
+        if (selectedCategory) {
+          url += `?category=${selectedCategory}`;
+        }
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setProducts(response.data.products);
       } catch (error) {
-        console.error("Error fetching workings:", error);
+        message.error("ไม่มีสินค้า");
+        console.error("Error fetching products:", error);
       }
     };
 
-    fetchWorkings();
-  }, [id]);
+    fetchProducts();
+  }, [id, selectedCategory]);
+
+  const categories = [
+    { value: "", label: "All" },
+    {
+      value: "camera",
+      label: "กล้องถ่ายรูป/วีดีโอ",
+      image: "/svg/photo-camera-svgrepo-com.svg",
+    },
+    {
+      value: "lens",
+      label: "เลนส์",
+      image: "/svg/lens-camera-lens-svgrepo-com.svg",
+    },
+    {
+      value: "lighting",
+      label: "ไฟแฟรช/ไฟ LED",
+      image: "/svg/spotlight-svgrepo-com.svg",
+    },
+    {
+      value: "power",
+      label: "Power/Battery",
+      image: "/svg/battery-75-svgrepo-com.svg",
+    },
+    { value: "gopro", label: "GoPro", image: "/svg/gopro-svgrepo-com.svg" },
+    {
+      value: "mic",
+      label: "Mic/Wireless",
+      image: "/svg/microphone-svgrepo-com.svg",
+    },
+    {
+      value: "accessory_camera",
+      label: "อุปกรณ์ถ่ายรูป",
+      image: "/svg/photo-camera-svgrepo-com.svg",
+    },
+    {
+      value: "accessory_video",
+      label: "อุปกรณ์ถ่ายวีดีโอ",
+      image: "/svg/video-camera-video-svgrepo-com.svg",
+    },
+  ];
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleProductClick = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`http://localhost:3001/api/getRentEquipmentProfileByProductId/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate(`/ProductDetail/${productId}`, { state: { product: response.data.product } });
+    } catch (error) {
+      message.error("ไม่สามารถแสดงข้อมูลสินค้าได้");
+      console.error("Error fetching product details:", error);
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {products.map((product, index) => (
-        <div
-          key={index}
-          className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-4 mx-auto"
-        >
-          <a href="#">
+    <div className="bg-[#f6f9fc]">
+      <div className="flex flex-wrap justify-center">
+        {categories.map((category) => (
+          <button
+            key={category.value}
+            onClick={() => handleCategoryChange(category.value)}
+            className={`bg-white hover:bg-blue-700 text-black font-bold py-2 px-4 rounded flex items-center justify-center m-2 md:w-auto`}
+          >
             <img
-              className="p-8 rounded-t-lg max-w-72 max-h-72"
-              src={product.imageUrls[0]} // Assuming imageUrls is an array and we're taking the first image
-              alt="product image"
+              src={category.image}
+              className="w-6 h-6 mr-2"
+              alt={category.label}
             />
-          </a>
-          <div className="px-5 pb-5 ">
+            <span className="hidden md:inline">{category.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-4 "
+            onClick={() => handleProductClick(product.id)}
+          >
             <a href="#">
-              <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                {product.product_name}
-              </h5>
+              <img
+                className="p-8 rounded-t-lg w-full w-52 h-52 object-cover object-right"
+                src={product.imageUrls[0]}
+                alt="product image"
+              />
             </a>
-            <div class="flex items-center mt-2.5 mb-5">
-            <div class="flex items-center space-x-1 rtl:space-x-reverse">
-                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                </svg>
-                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                </svg>
-                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                </svg>
-                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                </svg>
-                <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                </svg>
-            </div>
-            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
-        </div>
-            <div className="flex items-center mt-2.5 mb-5">
-              <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                {product.price} บาท / 1 วัน
-              </span>
-            </div>
-            {/* <div className="flex items-center justify-between">
-              <a
-                href="#"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Add to cart
+            <div className="px-5 pb-5 ">
+              <a href="#">
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {product.product_name}
+                </h5>
               </a>
-            </div> */}
+              <div className="flex items-center mt-2.5 mb-5">
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                  ค่าเช่า {product.price} บาท/วัน
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

@@ -87,8 +87,8 @@ function Account() {
                 </a>
               </h1>
             </div>
-            <button type="button" class="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i class="far fa-envelope"></i> ยืนยันอีเมล</button>
-            <button type="button" class="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i class="far fa-phone-alt"></i> ยืนยันเบอร์</button>
+            <button type="button" className="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i className="far fa-envelope"></i> ยืนยันอีเมล</button>
+            <button type="button" className="w-full bg-white/10 p-2.5 rounded-xl transition duration-300 hover:bg-white/20"><i className="far fa-phone-alt"></i> ยืนยันเบอร์</button>
           </div>
         </div>
       </div>

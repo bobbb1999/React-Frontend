@@ -29,6 +29,7 @@ import AddProduct from './Pages/AddProduct.jsx';
 import Product from './Pages/Product.jsx';
 import ProfileRental from './Pages/ProfileRental.jsx';
 import ForrentDetial from './Pages/ForrentDetail.jsx'
+import ProductDetail from './Pages/ProductDetail.jsx';
 
 
 const router = createBrowserRouter([
@@ -156,6 +157,10 @@ const router = createBrowserRouter([
   {
     path: "/Profilerent",
     element: <ProfileRental />
+  },
+  {
+    path: "/ProductDetail/:id",
+    element: <ProductDetail />
   },
 
   

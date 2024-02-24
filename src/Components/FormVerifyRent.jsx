@@ -495,16 +495,16 @@ function FormVerifyRent() {
               ชื่อ-นามสกุล:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.Name}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.Name}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">วันเกิด:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.Date && values.Date.toDateString()}
             </div>
           </div>
@@ -513,24 +513,24 @@ function FormVerifyRent() {
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">Line ID:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.line}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.line}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">อีเมล:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.Email}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.Email}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">ที่อยู่:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.Address}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.Address}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -539,16 +539,16 @@ function FormVerifyRent() {
               รหัสบัตรประชาชน:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.CardNumber}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.CardNumber}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">รูปโปรไฟล์:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imgProfile && (
                 <Image
                   src={values.imgProfile}
@@ -566,8 +566,8 @@ function FormVerifyRent() {
               รูปบัตรประชาชน:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imgCard && (
                 <Image
                   src={values.imgCard}
@@ -585,8 +585,8 @@ function FormVerifyRent() {
               รูปหน้าจริง:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imgFace && (
                 <Image
                   src={values.imgFace}

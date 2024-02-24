@@ -550,16 +550,16 @@ function FormVerify() {
               ชื่อ-นามสกุล:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.fullName}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.fullName}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">วันเกิด:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.selectedDate && values.selectedDate.toDateString()}
             </div>
           </div>
@@ -568,8 +568,8 @@ function FormVerify() {
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">Line ID:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.lineId}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.lineId}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -578,8 +578,8 @@ function FormVerify() {
               ประเภทงานที่รับ:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {" "}
               {values.selectedJobs &&
                 values.selectedJobs.map((job) => job.name).join(", ")}
@@ -590,16 +590,16 @@ function FormVerify() {
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">อีเมล:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.email}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.email}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">ที่อยู่:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.address}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.address}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
@@ -608,16 +608,16 @@ function FormVerify() {
               รหัสบัตรประชาชน:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">{values.idCardNumber}</div>
+          <div className="md:w-2/3">
+            <div className=" ">{values.idCardNumber}</div>
           </div>
         </div>
         <div className="md:flex md:items-center mb-6 mt-3">
           <div className="md:w-1/3">
             <div className="text-sm font-medium text-gray-700">รูปโปรไฟล์:</div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imageProfile && (
                 <Image
                   src={values.imageProfile}
@@ -635,8 +635,8 @@ function FormVerify() {
               รูปบัตรประชาชน:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imageCardId && (
                 <Image
                   src={values.imageCardId}
@@ -654,8 +654,8 @@ function FormVerify() {
               รูปหน้าจริง:
             </div>
           </div>
-          <div class="md:w-2/3">
-            <div class=" ">
+          <div className="md:w-2/3">
+            <div className=" ">
               {values.imageFace && (
                 <Image
                   src={values.imageFace}
