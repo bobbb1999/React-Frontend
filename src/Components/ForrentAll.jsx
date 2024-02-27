@@ -30,7 +30,7 @@ const ForrentAll = () => {
       <div className="flex flex-wrap h-[100vh] ">
       {profiles.map((profile) => (
             <div 
-            key={profile.username}
+            key={profile.user_id}
              className="relative flex flex-col items-center rounded-[20px] w-[400px] mx-auto p-4 bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none">
                 <div className="relative flex h-32 w-full justify-center rounded-xl bg-cover" >
                     <img src='https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/banner.ef572d78f29b0fee0a09.png' className="absolute flex h-32 w-full justify-center rounded-xl bg-cover"/> 

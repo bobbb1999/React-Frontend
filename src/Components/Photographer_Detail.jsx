@@ -176,9 +176,19 @@ function Photographer_Detail() {
                 <h5 className="text-xl font-semibold mb-2">
                   {working.work_name}
                 </h5>
-                <p>{working.description}</p>
+                {working.description &&
+                  working.description.split("\n").map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
                 {/* Add a button to show the Galleria */}
-                <Button label="Show" icon="pi pi-external-link" onClick={() => galleria.current.show()} />
+                <Button
+                  label="Show"
+                  icon="pi pi-external-link"
+                  onClick={() => galleria.current.show()}
+                />
               </div>
               <div className="w-1/3 rounded shadow overflow-hidden">
                 {/* Add a Galleria component with a ref */}
