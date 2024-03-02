@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { message } from 'antd';
+import { message } from "antd";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 
 function ProductAll() {
   const { id } = useParams();
@@ -9,10 +11,10 @@ function ProductAll() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const token = localStorage.getItem("token");
         let url = `http://localhost:3001/api/getAllProducts/${id}`;
         if (selectedCategory) {
           url += `?category=${selectedCategory}`;
@@ -22,7 +24,44 @@ function ProductAll() {
             Authorization: `Bearer ${token}`,
           },
         });
-        setProducts(response.data.products);
+
+        // ดึงค่าเฉลี่ยของคะแนนดาวของแต่ละสินค้าแล้วเก็บไว้ในข้อมูลสินค้า
+        const productsWithAverageRating = await Promise.all(
+          response.data.products.map(async (product) => {
+            try {
+              const ratingResponse = await axios.get(
+                `http://localhost:3001/api/product/average-rating/${product.id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              const reviewCountResponse = await axios.get(
+                `http://localhost:3001/api/getReviewCount/${product.id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              let  averageRating = ratingResponse.data.averageRating;
+              let reviewCount = reviewCountResponse.data.reviewCount;
+              if (isNaN(averageRating)) {
+                averageRating = 0;
+              }
+              return { ...product, averageRating, reviewCount };
+            } catch (error) {
+              console.error(
+                "Error fetching average rating for product:",
+                error
+              );
+              return product;
+            }
+          })
+        );
+
+        setProducts(productsWithAverageRating);
       } catch (error) {
         message.error("ไม่มีสินค้า");
         console.error("Error fetching products:", error);
@@ -79,12 +118,17 @@ function ProductAll() {
   const handleProductClick = async (productId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:3001/api/getRentEquipmentProfileByProductId/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await axios.get(
+        `http://localhost:3001/api/getRentEquipmentProfileByProductId/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigate(`/ProductDetail/${productId}`, {
+        state: { product: response.data.product },
       });
-      navigate(`/ProductDetail/${productId}`, { state: { product: response.data.product } });
     } catch (error) {
       message.error("ไม่สามารถแสดงข้อมูลสินค้าได้");
       console.error("Error fetching product details:", error);
@@ -129,6 +173,21 @@ function ProductAll() {
                   {product.product_name}
                 </h5>
               </a>
+              <Stack direction="row" spacing={1} alignItems="center">
+              <span className="text-lg text-gray-600">
+                  {product.averageRating}
+                </span>
+                <Rating
+                  name="read-only"
+                  value={product.averageRating}
+                  precision={0.1}
+                  readOnly
+                />
+                <span className="text-lg text-gray-600">
+                  ({product.reviewCount} รีวิว)
+                </span>
+                
+              </Stack>
               <div className="flex items-center mt-2.5 mb-5">
                 <span className="text-xl font-bold text-gray-900 dark:text-white">
                   ค่าเช่า {product.price} บาท/วัน

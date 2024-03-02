@@ -61,7 +61,7 @@ const Reveiws_Product = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3001/api/reviews",
+        "http://localhost:3001/api/reviewsProduct",
         reviewDataToSend,
         {
           headers: {

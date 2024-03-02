@@ -50,11 +50,13 @@ function Photographer_Detail() {
     const fetchWorkings = async () => {
       try {
         const token = localStorage.getItem("token");
+        const user_id = photographerProfile.user_id; // ดึง user_id จาก photographerProfile
         const response = await axios.get(
-          `http://localhost:3001/api/getworkings/${id}`,
+          `http://localhost:3001/api/getworkings/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              
             },
           }
         );
@@ -63,9 +65,12 @@ function Photographer_Detail() {
         console.error("Error fetching workings:", error);
       }
     };
+  
+    if (photographerProfile) { // ตรวจสอบว่ามีข้อมูล photographerProfile มาแล้ว
+      fetchWorkings();
+    }
+  }, [id, photographerProfile]);
 
-    fetchWorkings();
-  }, [id]);
   useEffect(() => {
     // Initialize activeIndexes for each works item
     const initialIndexes = {};
