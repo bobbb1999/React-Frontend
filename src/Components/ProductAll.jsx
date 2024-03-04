@@ -38,7 +38,7 @@ function ProductAll() {
                 }
               );
               const reviewCountResponse = await axios.get(
-                `http://localhost:3001/api/getReviewCount/${product.id}`,
+                `http://localhost:3001/api/product/getReviewCount/${product.id}`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
