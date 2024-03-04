@@ -72,13 +72,15 @@ function Photographer_Detail() {
   }, [id, photographerProfile]);
 
   useEffect(() => {
-    // Initialize activeIndexes for each works item
-    const initialIndexes = {};
-    imageUrls.forEach((working, index) => {
-      initialIndexes[index] = 0;
-    });
-    setActiveIndexes(initialIndexes);
+    if (imageUrls.length > 0) {
+      const initialIndexes = {};
+      imageUrls.forEach((working, index) => {
+        initialIndexes[index] = 0;
+      });
+      setActiveIndexes(initialIndexes);
+    }
   }, [imageUrls]);
+
   const itemTemplate = (item) => {
     return (
       <img

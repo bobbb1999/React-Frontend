@@ -2,11 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
+
 
 const PhotographerAll = () => {
   const [allProfilesData, setAllProfilesData] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOptions2, setSelectedOptions2] = useState([]);
+  const [averageRatings, setAverageRatings] = useState({});
+  const [ReviewCounts, setReviewCounts] = useState({});
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [hover, setHover] = useState(-1);
 
   const jobTypesOptions = [
     { value: "Portraits", label: "ถ่ายภาพบุคคล" },
@@ -120,6 +129,50 @@ const PhotographerAll = () => {
     fetchAllProfilesData();
   }, []); // ให้ useEffect ทำงานเฉพาะครั้งแรก
 
+  useEffect(() => {
+    const fetchAverageRating = async (photographerId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/photographer/average-rating/${photographerId}`
+        );
+        setAverageRatings((prevRatings) => ({
+          ...prevRatings,
+          [photographerId]: response.data.averageRating,
+        }));
+      } catch (error) {
+        console.error("Error fetching average rating:", error);
+      }
+    };
+
+    if (allProfilesData) {
+      allProfilesData.photographerProfiles.forEach((profile) => {
+        fetchAverageRating(profile.id);
+      });
+    }
+  }, [allProfilesData]);
+
+  useEffect(() => {
+    const fetchReviewCount = async (photographerId) => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/photographer/getReviewCount/${photographerId}`
+        );
+        setReviewCounts((prevCounts) => ({
+          ...prevCounts,
+          [photographerId]: response.data.reviewCount,
+        }));
+      } catch (error) {
+        console.error("Error fetching review count:", error);
+      }
+    };
+
+    if (allProfilesData) {
+      allProfilesData.photographerProfiles.forEach((profile) => {
+        fetchReviewCount(profile.id);
+      });
+    }
+  }, [allProfilesData]);
+
   const handleSelectChange = (selectedOptions, actionMeta) => {
     console.log("Selected Options:", selectedOptions);
     if (actionMeta.name === "selectedOptions") {
@@ -127,6 +180,10 @@ const PhotographerAll = () => {
     } else if (actionMeta.name === "selectedOptions2") {
       setSelectedOptions2(selectedOptions);
     }
+  };
+
+  const handleRatingChange = (newRating) => {
+    setSelectedRating(newRating);
   };
 
   return (
@@ -154,10 +211,29 @@ const PhotographerAll = () => {
             placeholder="เลือกจังหวัด"
           />
         </div>
+        <div className="mt-4 flex items-center justify-center">
+        <p className="text-lg mr-2">ค้นหาจากคะแนนดาว:</p>
+          <Rating
+            name="search-rating"
+            value={selectedRating}
+            onChange={(event, newRating) => {
+              handleRatingChange(newRating);
+            }}
+            precision={0.5} // เพิ่มความละเอียดให้คะแนนอยู่ที่ 0.5
+            size="large" // ขนาดของ Rating
+            emptyIcon={<StarBorderIcon className="text-yellow-400" />} // ไอคอนที่ไม่ได้รับการเติมคะแนน
+            icon={<StarIcon className="text-yellow-500" />} // ไอคอนที่ได้รับการเติมคะแนน
+            className="inline-block"
+            onChangeActive={(event, newHover) => {
+              setHover(newHover);
+            }}
+          />
+          
+        </div>
       </div>
 
       {allProfilesData ? (
-        <div className="grid gap-2 lg:grid-cols-4 p-10">
+        <div className="grid gap-2 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 p-10">
           {allProfilesData.photographerProfiles.map((profile) => {
             const filterOptions = selectedOptions.map((option) => option.value);
             const filterOptions2 = selectedOptions2.map(
@@ -172,7 +248,12 @@ const PhotographerAll = () => {
               (filterOptions2.length === 0 ||
                 filterOptions2.some((option) =>
                   profile.selectedOptions2.includes(option)
-                )) && (
+                )) &&
+              (selectedRating === null ||
+                (averageRatings[profile.id] !== undefined &&
+                  averageRatings[profile.id] >= selectedRating)) && (
+                // รายการผ่านการกรองจากคะแนนดาวที่ถูกเลือก
+
                 <div
                   className="w-full rounded-lg shadow-md lg:max-w-sm"
                   key={profile.id}
@@ -186,8 +267,35 @@ const PhotographerAll = () => {
                     <h4 className="text-xl font-semibold text-blue-600">
                       {profile.username}
                     </h4>
+                    {averageRatings[profile.id] === undefined ||
+                    isNaN(averageRatings[profile.id]) ? (
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <span className="text-lg text-gray-600">0</span>
+                        <Rating
+                          name="read-only"
+                          value={0}
+                          precision={0.1}
+                          readOnly
+                        />
+                        <span>({ReviewCounts[profile.id] || 0} รีวิว)</span>
+                      </Stack>
+                    ) : (
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <span className="text-lg text-gray-600">
+                          {averageRatings[profile.id]}
+                        </span>
+                        <Rating
+                          name="read-only"
+                          value={averageRatings[profile.id]}
+                          precision={0.1}
+                          readOnly
+                        />
+                        <span>({ReviewCounts[profile.id] || 0} รีวิว)</span>
+                      </Stack>
+                    )}
+
                     <Link to={`/Photograhpers/${profile.id}`}>
-                      <button className="px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded shadow">
+                      <button className="mt-4 px-4 py-2 text-sm text-blue-100 bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                         ดูข้อมูลเพิ่มเติม
                       </button>
                     </Link>
