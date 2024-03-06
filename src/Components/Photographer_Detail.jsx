@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Galleria } from "primereact/galleria";
 import { Button } from "primereact/button";
+import { FaFacebook, FaInstagram, FaLine } from 'react-icons/fa'; 
+
 
 function Photographer_Detail() {
   const { id } = useParams();
@@ -168,6 +170,42 @@ function Photographer_Detail() {
                 <h4 className="mb-3.5 font-medium text-black dark:text-white">
                   Follow me on
                 </h4>
+              </div>
+              <div className="mt-6.5 flex items-center justify-center space-x-4">
+                {/* Display follow links */}
+                {photographerProfile.Facebook && (
+                  <a
+                    href={photographerProfile.Facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 flex flex-col items-center space-x-1" 
+                  >
+                    <FaFacebook size={24} />
+                    <span>{photographerProfile.Facebook}</span>
+                  </a>
+                )}
+                {photographerProfile.Instagram && (
+                  <a
+                    href={photographerProfile.Instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-pink-500 hover:text-pink-700 flex flex-col items-center space-x-1"
+                  >
+                    <FaInstagram size={24} />
+                    {photographerProfile.Instagram}
+                  </a>
+                )}
+                {photographerProfile.lineId && (
+                  <a
+                    href={`https://line.me/ti/p/${photographerProfile.lineId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-500 hover:text-green-700 flex flex-col items-center space-x-1"
+                  >
+                    <FaLine size={24} />
+                    {photographerProfile.lineId}
+                  </a>
+                )}
               </div>
             </div>
           </div>
