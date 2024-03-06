@@ -212,7 +212,7 @@ const PhotographerAll = () => {
           />
         </div>
         <div className="mt-4 flex items-center justify-center">
-        <p className="text-lg mr-2">ค้นหาจากคะแนนดาว:</p>
+          
           <Rating
             name="search-rating"
             value={selectedRating}
@@ -223,7 +223,6 @@ const PhotographerAll = () => {
             size="large" // ขนาดของ Rating
             emptyIcon={<StarBorderIcon className="text-yellow-400" />} // ไอคอนที่ไม่ได้รับการเติมคะแนน
             icon={<StarIcon className="text-yellow-500" />} // ไอคอนที่ได้รับการเติมคะแนน
-            className="inline-block"
             onChangeActive={(event, newHover) => {
               setHover(newHover);
             }}
