@@ -31,6 +31,8 @@ import ForrentDetial from './Pages/ForrentDetail.jsx'
 import ProductDetail from './Pages/ProductDetail.jsx';
 import Admin_Verify_Photo from './Pages/Admin_Verify_Photo.jsx';
 import Admin_Verify_Rent from './Pages/Admin_Verify_Rent.jsx';
+import ProfilePhotographer from './Pages/ProfilePhotographer.jsx';
+import ProfileEditPhotographer from './Pages/ProfileEditPhotographer.jsx';
 
 
 const router = createBrowserRouter([
@@ -174,7 +176,15 @@ const router = createBrowserRouter([
     path: "/ProductDetail/:id",
     element: <ProductDetail />
   },
-
+  {
+    path: "/ProfilePhotograhper",
+    element: <ProfilePhotographer />
+  },
+  {
+    path: "/EditProfilePhotographer",
+    element: <ProfileEditPhotographer />
+  },
+  
   
 ])
 
