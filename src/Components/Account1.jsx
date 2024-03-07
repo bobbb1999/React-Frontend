@@ -5,6 +5,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Profile_Photographer from "./Profile_Photographer";
 
 function Account1() {
   const getBase64 = (file) =>
@@ -54,94 +55,94 @@ function Account1() {
 
   // สร้างอาร์เรย์ของตัวเลือก
   const options = [
-    { value: "Portraits", label: "ถ่ายภาพบุคคล" },
-    { value: "Event", label: "ถ่ายภาพงานอีเว้นท์" },
-    { value: "Landscapes", label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง" },
-    { value: "Aerial", label: "ถ่ายภาพทางอากาศ" },
-    { value: "Product", label: "ถ่ายภาพสินค้า" },
-    { value: "Food", label: "ถ่ายภาพอาหาร" },
-    { value: "Realty", label: "ถ่ายภาพอสังหาริมทรัพย์" },
-    { value: "Fashion", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
+    { value: "ถ่ายภาพบุคคล", label: "ถ่ายภาพบุคคล" },
+    { value: "ถ่ายภาพงานอีเว้นท์", label: "ถ่ายภาพงานอีเว้นท์" },
+    { value: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง", label: "ถ่ายภาพทิวทัศน์และสิ่งปลูกสร้าง" },
+    { value: "ถ่ายภาพทางอากาศ", label: "ถ่ายภาพทางอากาศ" },
+    { value: "ถ่ายภาพสินค้า", label: "ถ่ายภาพสินค้า" },
+    { value: "ถ่ายภาพอาหาร", label: "ถ่ายภาพอาหาร" },
+    { value: "ถ่ายภาพอสังหาริมทรัพย์", label: "ถ่ายภาพอสังหาริมทรัพย์" },
+    { value: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น", label: "ถ่ายภาพไลฟ์สไตล์และแฟชั่น" },
   ];
 
   const thaiProvinces = [
-    { value: "BKK", label: "กรุงเทพมหานคร" },
-    { value: "SPK", label: "สมุทรปราการ" },
-    { value: "NBI", label: "นนทบุรี" },
-    { value: "PTE", label: "ปทุมธานี" },
-    { value: "AYA", label: "พระนครศรีอยุธยา" },
-    { value: "ATG", label: "อ่างทอง" },
-    { value: "LRI", label: "ลพบุรี" },
-    { value: "SBR", label: "สิงห์บุรี" },
-    { value: "CNT", label: "ชัยนาท" },
-    { value: "SRI", label: "สระบุรี" },
-    { value: "CBI", label: "ชลบุรี" },
-    { value: "RYG", label: "ระยอง" },
-    { value: "CTI", label: "จันทบุรี" },
-    { value: "TRT", label: "ตราด" },
-    { value: "CCO", label: "ฉะเชิงเทรา" },
-    { value: "PRI", label: "ปราจีนบุรี" },
-    { value: "NYK", label: "นครนายก" },
-    { value: "SKW", label: "สระแก้ว" },
-    { value: "NMA", label: "นครราชสีมา" },
-    { value: "BRM", label: "บุรีรัมย์" },
-    { value: "SRN", label: "สุรินทร์" },
-    { value: "SSK", label: "ศรีสะเกษ" },
-    { value: "UBN", label: "อุบลราชธานี" },
-    { value: "YST", label: "ยโสธร" },
-    { value: "CPM", label: "ชัยภูมิ" },
-    { value: "ACR", label: "อำนาจเจริญ" },
-    { value: "BKN", label: "บึงกาฬ" },
-    { value: "NBP", label: "หนองบัวลำภู" },
-    { value: "KKN", label: "ขอนแก่น" },
-    { value: "UDN", label: "อุดรธานี" },
-    { value: "LEI", label: "เลย" },
-    { value: "NKI", label: "หนองคาย" },
-    { value: "MKM", label: "มหาสารคาม" },
-    { value: "RET", label: "ร้อยเอ็ด" },
-    { value: "KSN", label: "กาฬสินธุ์" },
-    { value: "SNK", label: "สกลนคร" },
-    { value: "NPM", label: "นครพนม" },
-    { value: "MDH", label: "มุกดาหาร" },
-    { value: "CMI", label: "เชียงใหม่" },
-    { value: "LPN", label: "ลำพูน" },
-    { value: "LPG", label: "ลำปาง" },
-    { value: "UTD", label: "อุตรดิตถ์" },
-    { value: "PRE", label: "แพร่" },
-    { value: "NAN", label: "น่าน" },
-    { value: "PYO", label: "พะเยา" },
-    { value: "CRI", label: "เชียงราย" },
-    { value: "MSN", label: "แม่ฮ่องสอน" },
-    { value: "NSN", label: "นครสวรรค์" },
-    { value: "UTI", label: "อุทัยธานี" },
-    { value: "KPT", label: "กำแพงเพชร" },
-    { value: "TAK", label: "ตาก" },
-    { value: "STI", label: "สุโขทัย" },
-    { value: "PLK", label: "พิษณุโลก" },
-    { value: "PCT", label: "พิจิตร" },
-    { value: "PNB", label: "เพชรบูรณ์" },
-    { value: "RBR", label: "ราชบุรี" },
-    { value: "KRI", label: "กาญจนบุรี" },
-    { value: "SPB", label: "สุพรรณบุรี" },
-    { value: "NPT", label: "นครปฐม" },
-    { value: "SKN", label: "สมุทรสาคร" },
-    { value: "SKM", label: "สมุทรสงคราม" },
-    { value: "PBI", label: "เพชรบุรี" },
-    { value: "PKN", label: "ประจวบคีรีขันธ์" },
-    { value: "NRT", label: "นครศรีธรรมราช" },
-    { value: "KBI", label: "กระบี่" },
-    { value: "PNA", label: "พังงา" },
-    { value: "PKT", label: "ภูเก็ต" },
-    { value: "SNI", label: "สุราษฎร์ธานี" },
-    { value: "RNG", label: "ระนอง" },
-    { value: "CPN", label: "ชุมพร" },
-    { value: "SKA", label: "สงขลา" },
-    { value: "STN", label: "สตูล" },
-    { value: "TRG", label: "ตรัง" },
-    { value: "PLG", label: "พัทลุง" },
-    { value: "PTN", label: "ปัตตานี" },
-    { value: "YLA", label: "ยะลา" },
-    { value: "NWT", label: "นราธิวาส" },
+    { value: "กรุงเทพมหานคร", label: "กรุงเทพมหานคร" },
+    { value: "สมุทรปราการ", label: "สมุทรปราการ" },
+    { value: "นนทบุรี", label: "นนทบุรี" },
+    { value: "ปทุมธานี", label: "ปทุมธานี" },
+    { value: "พระนครศรีอยุธยา", label: "พระนครศรีอยุธยา" },
+    { value: "อ่างทอง", label: "อ่างทอง" },
+    { value: "ลพบุรี", label: "ลพบุรี" },
+    { value: "สิงห์บุรี", label: "สิงห์บุรี" },
+    { value: "ชัยนาท", label: "ชัยนาท" },
+    { value: "สระบุรี", label: "สระบุรี" },
+    { value: "ชลบุรี", label: "ชลบุรี" },
+    { value: "ระยอง", label: "ระยอง" },
+    { value: "จันทบุรี", label: "จันทบุรี" },
+    { value: "ตราด", label: "ตราด" },
+    { value: "ฉะเชิงเทรา", label: "ฉะเชิงเทรา" },
+    { value: "ปราจีนบุรี", label: "ปราจีนบุรี" },
+    { value: "นครนายก", label: "นครนายก" },
+    { value: "สระแก้ว", label: "สระแก้ว" },
+    { value: "นครราชสีมา", label: "นครราชสีมา" },
+    { value: "บุรีรัมย์", label: "บุรีรัมย์" },
+    { value: "สุรินทร์", label: "สุรินทร์" },
+    { value: "ศรีสะเกษ", label: "ศรีสะเกษ" },
+    { value: "อุบลราชธานี", label: "อุบลราชธานี" },
+    { value: "ยโสธร", label: "ยโสธร" },
+    { value: "ชัยภูมิ", label: "ชัยภูมิ" },
+    { value: "อำนาจเจริญ", label: "อำนาจเจริญ" },
+    { value: "บึงกาฬ", label: "บึงกาฬ" },
+    { value: "หนองบัวลำภู", label: "หนองบัวลำภู" },
+    { value: "ขอนแก่น", label: "ขอนแก่น" },
+    { value: "อุดรธานี", label: "อุดรธานี" },
+    { value: "เลย", label: "เลย" },
+    { value: "หนองคาย", label: "หนองคาย" },
+    { value: "มหาสารคาม", label: "มหาสารคาม" },
+    { value: "ร้อยเอ็ด", label: "ร้อยเอ็ด" },
+    { value: "กาฬสินธุ์", label: "กาฬสินธุ์" },
+    { value: "สกลนคร", label: "สกลนคร" },
+    { value: "นครพนม", label: "นครพนม" },
+    { value: "มุกดาหาร", label: "มุกดาหาร" },
+    { value: "เชียงใหม่", label: "เชียงใหม่" },
+    { value: "ลำพูน", label: "ลำพูน" },
+    { value: "ลำปาง", label: "ลำปาง" },
+    { value: "อุตรดิตถ์", label: "อุตรดิตถ์" },
+    { value: "แพร่", label: "แพร่" },
+    { value: "น่าน", label: "น่าน" },
+    { value: "พะเยา", label: "พะเยา" },
+    { value: "เชียงราย", label: "เชียงราย" },
+    { value: "แม่ฮ่องสอน", label: "แม่ฮ่องสอน" },
+    { value: "นครสวรรค์", label: "นครสวรรค์" },
+    { value: "อุทัยธานี", label: "อุทัยธานี" },
+    { value: "กำแพงเพชร", label: "กำแพงเพชร" },
+    { value: "ตาก", label: "ตาก" },
+    { value: "สุโขทัย", label: "สุโขทัย" },
+    { value: "พิษณุโลก", label: "พิษณุโลก" },
+    { value: "พิจิตร", label: "พิจิตร" },
+    { value: "เพชรบูรณ์", label: "เพชรบูรณ์" },
+    { value: "ราชบุรี", label: "ราชบุรี" },
+    { value: "กาญจนบุรี", label: "กาญจนบุรี" },
+    { value: "สุพรรณบุรี", label: "สุพรรณบุรี" },
+    { value: "นครปฐม", label: "นครปฐม" },
+    { value: "สมุทรสาคร", label: "สมุทรสาคร" },
+    { value: "สมุทรสงคราม", label: "สมุทรสงคราม" },
+    { value: "เพชรบุรี", label: "เพชรบุรี" },
+    { value: "ประจวบคีรีขันธ์", label: "ประจวบคีรีขันธ์" },
+    { value: "นครศรีธรรมราช", label: "นครศรีธรรมราช" },
+    { value: "กระบี่", label: "กระบี่" },
+    { value: "พังงา", label: "พังงา" },
+    { value: "ภูเก็ต", label: "ภูเก็ต" },
+    { value: "สุราษฎร์ธานี", label: "สุราษฎร์ธานี" },
+    { value: "ระนอง", label: "ระนอง" },
+    { value: "ชุมพร", label: "ชุมพร" },
+    { value: "สงขลา", label: "สงขลา" },
+    { value: "สตูล", label: "สตูล" },
+    { value: "ตรัง", label: "ตรัง" },
+    { value: "พัทลุง", label: "พัทลุง" },
+    { value: "ปัตตานี", label: "ปัตตานี" },
+    { value: "ยะลา", label: "ยะลา" },
+    { value: "นราธิวาส", label: "นราธิวาส" },
   ];
 
   // สร้าง state สำหรับเก็บค่าที่เลือก
@@ -176,6 +177,7 @@ function Account1() {
     formData.append("lineId", e.target.lineId.value);
     formData.append("Facebook", e.target.Facebook.value);
     formData.append("Instagram", e.target.Instagram.value);
+    formData.append("Tel", e.target.Tel.value);
     formData.append(
       "selectedOptions",
       selected.map((option) => option.value)
@@ -290,12 +292,8 @@ function Account1() {
 
   if (!loading && profileData) {
     return (
-      <div className="mx-auto h-auto pt-20 px-20 flex flex-col items-center">
-        <h1 className="text-3xl font-bold text-start mb-4">โปรไฟล์</h1>
-        <form onSubmit={handleSubmit}>
-          
-          {/* ส่วนของฟอร์มที่ต้องการแสดงข้อมูลโปรไฟล์ */}
-        </form>
+      <div>
+        <Profile_Photographer />
       </div>
     );
   } else {
@@ -489,6 +487,24 @@ function Account1() {
                       name="Instagram"
                       type="Instagram"
                       autoComplete="Instagram"
+                      disabled={isFormDisabled}
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="Tel"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Tel
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="Tel"
+                      name="Tel"
+                      type="Tel"
+                      autoComplete="Tel"
                       disabled={isFormDisabled}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
