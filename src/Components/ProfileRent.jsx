@@ -6,6 +6,7 @@ import makeAnimated from "react-select/animated";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Profile_Rent from "./Profile_Rent";
+import ProductAllProfile from "./ProductAllProfile";
 
 
 function ProfileRent() {
@@ -267,6 +268,7 @@ function ProfileRent() {
     return (
       <div>
         <Profile_Rent />
+        <ProductAllProfile />
       </div>
     );
   } else {
