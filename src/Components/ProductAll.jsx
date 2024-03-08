@@ -15,7 +15,7 @@ function ProductAll() {
   const token = localStorage.getItem("token");
 
   const categories = [
-    { value: "", label: "All" },
+    { value: "", label: "All", image:"/svg/list-svgrepo-com.svg" },
     {
       value: "camera",
       label: "กล้องถ่ายรูป/วีดีโอ",
