@@ -10,66 +10,9 @@ function ProductAll() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [newPrices, setNewPrices] = useState([]);
 
   const token = localStorage.getItem("token");
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        let url = `http://localhost:3001/api/getAllProducts/${id}`;
-        if (selectedCategory) {
-          url += `?category=${selectedCategory}`;
-        }
-        const response = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        // ดึงค่าเฉลี่ยของคะแนนดาวของแต่ละสินค้าแล้วเก็บไว้ในข้อมูลสินค้า
-        const productsWithAverageRating = await Promise.all(
-          response.data.products.map(async (product) => {
-            try {
-              const ratingResponse = await axios.get(
-                `http://localhost:3001/api/product/average-rating/${product.id}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
-              const reviewCountResponse = await axios.get(
-                `http://localhost:3001/api/product/getReviewCount/${product.id}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
-              let  averageRating = ratingResponse.data.averageRating;
-              let reviewCount = reviewCountResponse.data.reviewCount;
-              if (isNaN(averageRating)) {
-                averageRating = 0;
-              }
-              return { ...product, averageRating, reviewCount };
-            } catch (error) {
-              console.error(
-                "Error fetching average rating for product:",
-                error
-              );
-              return product;
-            }
-          })
-        );
-
-        setProducts(productsWithAverageRating);
-      } catch (error) {
-        message.error("ไม่มีสินค้า");
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [id, selectedCategory]);
 
   const categories = [
     { value: "", label: "All" },
@@ -135,6 +78,95 @@ function ProductAll() {
     }
   };
 
+  const fetchProducts = async () => {
+    try {
+      let url = `http://localhost:3001/api/getAllProducts/${id}`;
+      if (selectedCategory) {
+        url += `?category=${selectedCategory}`;
+      }
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // ดึงค่าเฉลี่ยของคะแนนดาวของแต่ละสินค้าแล้วเก็บไว้ในข้อมูลสินค้า
+      const productsWithAverageRating = await Promise.all(
+        response.data.products.map(async (product) => {
+          try {
+            const ratingResponse = await axios.get(
+              `http://localhost:3001/api/product/average-rating/${product.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            const reviewCountResponse = await axios.get(
+              `http://localhost:3001/api/product/getReviewCount/${product.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            let averageRating = ratingResponse.data.averageRating;
+            let reviewCount = reviewCountResponse.data.reviewCount;
+            if (isNaN(averageRating)) {
+              averageRating = 0;
+            }
+            return { ...product, averageRating, reviewCount };
+          } catch (error) {
+            console.error("Error fetching average rating for product:", error);
+            return product;
+          }
+        })
+      );
+
+      setProducts(productsWithAverageRating);
+    } catch (error) {
+      message.error("ไม่มีสินค้า");
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const fetchAverageRating = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/api/photographer/check-average-rating/:id",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Average rating is 5.0"
+      ) {
+        // หากค่าเฉลี่ยของรีวิวเป็น 5.0 ให้ปรับราคาสินค้าลง 5%
+        const updatedPrices = products.map((product) => {
+          const updatedPrice = parseFloat(product.price) * 0.95; // ลดราคาลง 5%
+          return updatedPrice.toFixed(2); // ปรับให้เป็นทศนิยม 2 ตำแหน่ง
+        });
+        setNewPrices(updatedPrices); // อัพเดทราคาใหม่
+        console.log(updatedPrices);
+      }
+    } catch (error) {
+      console.error("Error fetching average rating:", error);
+      message.error("ไม่สามารถตรวจสอบค่าเฉลี่ยของรีวิวได้");
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [id, selectedCategory]);
+
+  useEffect(() => {
+    fetchAverageRating();
+  }, [products]);
+
   return (
     <div className="bg-[#f6f9fc]">
       <div className="flex flex-wrap justify-center">
@@ -154,7 +186,7 @@ function ProductAll() {
         ))}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-        {products.map((product) => (
+        {products.map((product, index) => (
           <div
             key={product.id}
             className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-4 "
@@ -174,7 +206,7 @@ function ProductAll() {
                 </h5>
               </a>
               <Stack direction="row" spacing={1} alignItems="center">
-              <span className="text-lg text-gray-600">
+                <span className="text-lg text-gray-600">
                   {product.averageRating}
                 </span>
                 <Rating
@@ -186,12 +218,24 @@ function ProductAll() {
                 <span className="text-lg text-gray-600">
                   ({product.reviewCount} รีวิว)
                 </span>
-                
               </Stack>
               <div className="flex items-center mt-2.5 mb-5">
                 <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  ค่าเช่า {product.price} บาท/วัน
+                  ค่าเช่า{" "}
+                  {newPrices[index] ? (
+                    <del className="text-gray-500">{product.price} บาท/วัน</del>
+                  ) : (
+                    `${product.price} บาท/วัน`
+                  )}{" "}
+                  {newPrices[index] && (
+                    <span className="text-red-500">-5%</span>
+                  )}
                 </span>
+                {newPrices[index] && (
+                  <span className="text-xl font-bold text-gray-900 dark:text-white ml-2">
+                    {newPrices[index]} บาท/วัน
+                  </span>
+                )}
               </div>
             </div>
           </div>
