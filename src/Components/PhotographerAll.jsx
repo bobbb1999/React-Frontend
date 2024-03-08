@@ -206,8 +206,8 @@ const PhotographerAll = () => {
             placeholder="เลือกจังหวัด"
           />
         </div>
-        <div className="mt-4 flex items-center justify-center">
-          
+        <div className="mt-4 flex ">
+          <span>ค้นหาช่างภาพจากคะแนนรวม : </span>
           <Rating
             name="search-rating"
             value={selectedRating}
@@ -221,6 +221,7 @@ const PhotographerAll = () => {
             onChangeActive={(event, newHover) => {
               setHover(newHover);
             }}
+            
           />
           
         </div>
