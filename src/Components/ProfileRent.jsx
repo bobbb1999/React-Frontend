@@ -5,6 +5,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Profile_Rent from "./Profile_Rent";
+
 
 function ProfileRent() {
   const getBase64 = (file) =>
@@ -263,12 +265,8 @@ function ProfileRent() {
 
   if (!loading && profileData) {
     return (
-      <div className="mx-auto h-auto pt-20 px-20 flex flex-col items-center">
-        <h1 className="text-3xl font-bold text-start mb-4">โปรไฟล์</h1>
-        <form onSubmit={handleSubmit}>
-          
-          {/* ส่วนของฟอร์มที่ต้องการแสดงข้อมูลโปรไฟล์ */}
-        </form>
+      <div>
+        <Profile_Rent />
       </div>
     );
   } else {
