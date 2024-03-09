@@ -9,7 +9,7 @@ function Photographer_Detail() {
   const { id } = useParams();
   const [photographerProfile, setPhotographerProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [imageUrls, setImageUrls] = useState([])
+  const [imageUrls, setImageUrls] = useState([]);
   useEffect(() => {
     const fetchPhotographerProfile = async () => {
       try {
@@ -46,9 +46,9 @@ function Photographer_Detail() {
             },
           }
         );
-        const imageGalleries = response.data.workings.map(working => {
+        const imageGalleries = response.data.workings.map((working) => {
           return {
-            images: working.imageUrls.map(url => {
+            images: working.imageUrls.map((url) => {
               return {
                 original: url,
                 thumbnail: url,
@@ -103,18 +103,23 @@ function Photographer_Detail() {
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
               {photographerProfile.username}
             </h3>
-            <p className="font-medium">{photographerProfile.selectedOptions}</p>
+            <p className="font-medium">
+              {photographerProfile.selectedOptions &&
+                JSON.parse(photographerProfile.selectedOptions).join(", ")}
+            </p>
             <div className="mx-auto max-w-180">
-              <h4 className="font-semibold text-black dark:text-white">About Me</h4>
+              <h4 className="font-semibold text-black dark:text-white">
+                About Me
+              </h4>
               <p className="mt-4.5">
-              {photographerProfile.about && photographerProfile.about.split('\n').map((line, index) => (
-            <span key={index}>
-              {line}
-              <br />
-            </span>
-          ))}
-          </p>
-              
+                {photographerProfile.about &&
+                  photographerProfile.about.split("\n").map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+              </p>
             </div>
             {/* Social Media Links */}
             <div className="mt-6.5">
@@ -168,16 +173,19 @@ function Photographer_Detail() {
 
       {/* Image Gallery */}
       {imageUrls.map((working, index) => (
-          <div key={index} className="my-4 flex flex-col sm:flex-row border border-gray-300 rounded-lg shadow-md">
-            <div className="w-full sm:w-1/2 p-4">
-              <h2 className="font-semibold">{working.work_name}</h2>
-              <p>{working.description}</p>
-            </div>
-            <div className="w-full sm:w-1/2">
-              <ImageGallery items={working.images} />
-            </div>
+        <div
+          key={index}
+          className="my-4 flex flex-col sm:flex-row border border-gray-300 rounded-lg shadow-md"
+        >
+          <div className="w-full sm:w-1/2 p-4">
+            <h2 className="font-semibold">{working.work_name}</h2>
+            <p>{working.description}</p>
           </div>
-        ))}
+          <div className="w-full sm:w-1/2">
+            <ImageGallery items={working.images} />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
