@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Upload, Input, Button , Space } from "antd";
+import { Upload, Input, Button , Space , message} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 
@@ -39,7 +39,16 @@ const FormWorkings = () => {
       console.error("Error uploading files:", error);
     }
   };
+  function checkFileSize(file) {
+    const fileSize = file.size / 1024 / 1024; // convert bytes to MB
+    const maxSize = 15; // กำหนดขนาดไฟล์สูงสุดเป็น 5 MB
   
+    if (fileSize > maxSize) {
+      message.error(`${file.name} มีขนาดใหญ่เกิน ${maxSize}MB`);
+      return false; // ถ้าขนาดใหญ่เกินกำหนดให้ return false เพื่อยกเลิกการอัปโหลดไฟล์
+    }
+    return true; // ถ้าขนาดไม่เกินกำหนดให้ return true เพื่ออนุญาตให้อัปโหลดไฟล์
+  }
   return (
     <>
     <h4 className="text-title-md2 font-semibold text-black dark:text-white ml-4 mt-4">
@@ -59,6 +68,7 @@ const FormWorkings = () => {
         maxCount={12} 
         onChange={handleFileChange} 
         multiple
+        beforeUpload={checkFileSize}
         >
           <Button icon={<UploadOutlined />}>อัพโหลดรูปภาพ (สูงสุด : 12 รูปภาพ)</Button>
         </Upload>
