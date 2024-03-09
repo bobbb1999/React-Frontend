@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link , useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaFacebook, FaInstagram, FaLine } from "react-icons/fa";
 import ImageGallery from "react-image-gallery";
@@ -93,12 +93,17 @@ function Profile_Photographer() {
   }, []);
 
   const renderAlert = () => {
-    if (status === 'pending') {
+    if (status === "pending") {
       return (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
           <strong className="font-bold">แจ้งเตือน!</strong>
           <span className="block sm:inline">
-            { ' โปรไฟล์ของคุณจะยังไม่แสดงหน้าเว็บไซต์ ถ้าหากแอดมินยังไม่อนุมัติการยืนยันตัวตนของคุณ'}
+            {
+              " โปรไฟล์ของคุณจะยังไม่แสดงหน้าเว็บไซต์ ถ้าหากแอดมินยังไม่อนุมัติการยืนยันตัวตนของคุณ"
+            }
           </span>
         </div>
       );
@@ -124,15 +129,19 @@ function Profile_Photographer() {
         </h2>
         {renderAlert()}
         <nav>
-        <ol className="flex items-center gap-2">
-          <li>
-          <Link to={`/EditProfilePhotographer`} className="font-medium text-blue-500 hover:text-blue-700">แก้ไขโปรไฟล์</Link>
-          </li>
-        </ol>
-      </nav>
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link
+                to={`/EditProfilePhotographer`}
+                className="font-medium text-blue-500 hover:text-blue-700"
+              >
+                แก้ไขโปรไฟล์
+              </Link>
+            </li>
+          </ol>
+        </nav>
       </div>
 
-      
       {/* Profile Card */}
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
@@ -155,7 +164,7 @@ function Profile_Photographer() {
               <h4 className="font-semibold text-black dark:text-white">
                 About Me
               </h4>
-              <p className="mt-4.5">
+              <p className="mt-4.5 mx-auto text-left max-w-max">
                 {photographerProfile.about &&
                   photographerProfile.about.split("\n").map((line, index) => (
                     <span key={index}>
