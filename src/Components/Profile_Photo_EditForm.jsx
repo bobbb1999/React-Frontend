@@ -5,7 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { FaFacebook, FaInstagram, FaLine } from "react-icons/fa";
+
 
 const jobTypesOptions1 = [
   { value: "ถ่ายภาพบุคคล", label: "ถ่ายภาพบุคคล" },
@@ -114,7 +114,9 @@ function Profile_Photo_EditForm() {
   const [loading, setLoading] = useState(true);
   const animatedComponents = makeAnimated();
   const { id } = useParams();
-
+  const [imgProfileURL, setImgProfileURL] = useState("");
+  const [uploadedFile, setUploadedFile] = useState(null);
+  
   useEffect(() => {
     const fetchPhotographerProfile = async () => {
       try {
@@ -129,11 +131,11 @@ function Profile_Photo_EditForm() {
         );
         const photographerProfile = response.data.photographerProfile;
 
+        const selectedOptionsCleaned = photographerProfile.selectedOptions.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '');
+        const selectedOptions2Cleaned = photographerProfile.selectedOptions2.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '');
         // Split string values to arrays for selectedOptions and selectedOptions2
-        const selectedOptionsArray =
-          photographerProfile.selectedOptions.split(",");
-        const selectedOptions2Array =
-          photographerProfile.selectedOptions2.split(",");
+        const selectedOptionsArray = selectedOptionsCleaned.split(",");
+        const selectedOptions2Array = selectedOptions2Cleaned.split(",");
 
         // Map the arrays to the appropriate format for react-select
         const selectedOptions = selectedOptionsArray.map((option) => ({
@@ -156,6 +158,18 @@ function Profile_Photo_EditForm() {
           lineId: photographerProfile.lineId,
           fileList: [],
         });
+        setFormData((prevData) => ({
+          ...prevData,
+          fileList: [
+            {
+              uid: '-1',
+              name: photographerProfile.imgProfileURL,
+              status: 'done',
+              url: photographerProfile.imgProfileURL,
+            },
+          ],
+        }));
+        setImgProfileURL(photographerProfile.imgProfileURL);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching PhotographerProfile:", error);
@@ -174,12 +188,34 @@ function Profile_Photo_EditForm() {
     }));
   };
 
-  const handleFileChange = ({ fileList }) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      fileList,
-    }));
+  const handleFileChange = async ({ fileList }) => {
+    try {
+      if (fileList.length > 0) {
+        setUploadedFile(fileList[0].originFileObj);
+      }
+      setImgProfileURL(""); // Clear imgProfileURL when a new image is selected
+      setFormData((prevData) => ({
+        ...prevData,
+        imgProfile: null, // Remove existing image data from formData
+        fileList,
+      }));
+    } catch (error) {
+      console.error("Error handling file change:", error);
+    }
   };
+  
+  const getBinaryData = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const binaryData = reader.result;
+        resolve(binaryData);
+      };
+      reader.onerror = reject;
+      reader.readAsBinaryString(file);
+    });
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -197,9 +233,23 @@ function Profile_Photo_EditForm() {
         selectedOptions: selectedOptionsValues,
         selectedOptions2: selectedOptions2Values,
       };
+      
+      const formDataToSend = new FormData();
+    formDataToSend.append("username", updatedFormData.username);
+    formDataToSend.append("about", updatedFormData.about);
+    formDataToSend.append("Facebook", updatedFormData.Facebook);
+    formDataToSend.append("Instagram", updatedFormData.Instagram);
+    formDataToSend.append("lineId", updatedFormData.lineId);
+    formDataToSend.append("selectedOptions", selectedOptionsValues.join(","));
+    formDataToSend.append("selectedOptions2", selectedOptions2Values.join(","));
+    // formDataToSend.append("imgProfile", updatedFormData.fileList[0].originFileObj);
+    if (uploadedFile) {
+      formDataToSend.append("imgProfile", uploadedFile);
+    }
+
       await axios.patch(
         "http://localhost:3001/api/updateProfilePhotographer",
-        updatedFormData,
+        formDataToSend,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -229,7 +279,7 @@ function Profile_Photo_EditForm() {
               style={{ margin: "auto", textAlign: "center" }}
             >
               <Upload
-                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                action="https://photographer-testz.free.beeceptor.com/photos"
                 listType="picture-circle"
                 fileList={formData.fileList}
                 onChange={handleFileChange}
