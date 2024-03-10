@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaLine , FaPhone } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
 const Profile_Rent = () => {
   const [profileData, setProfileData] = useState({});
   const { id } = useParams();
@@ -30,6 +30,18 @@ const Profile_Rent = () => {
 
   return (
     <div className="bg-white shadow-md rounded-md p-4">
+      <nav>
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link
+                to={`/EditProfileRent`}
+                className="font-medium text-blue-500 hover:text-blue-700"
+              >
+                แก้ไขโปรไฟล์
+              </Link>
+            </li>
+          </ol>
+        </nav>
       <div className="flex flex-col items-center">
         <img
           className="w-32 h-32 rounded-full object-cover"

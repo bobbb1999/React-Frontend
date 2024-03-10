@@ -33,6 +33,7 @@ import Admin_Verify_Photo from './Pages/Admin_Verify_Photo.jsx';
 import Admin_Verify_Rent from './Pages/Admin_Verify_Rent.jsx';
 import ProfilePhotographer from './Pages/ProfilePhotographer.jsx';
 import ProfileEditPhotographer from './Pages/ProfileEditPhotographer.jsx';
+import ProfileEditRent from './Pages/ProfileEditRent.jsx';
 
 
 const router = createBrowserRouter([
@@ -183,6 +184,10 @@ const router = createBrowserRouter([
   {
     path: "/EditProfilePhotographer",
     element: <ProfileEditPhotographer />
+  },
+  {
+    path: "/EditProfileRent",
+    element: <ProfileEditRent />
   },
   
   
