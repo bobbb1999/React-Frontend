@@ -104,8 +104,8 @@ function Photographer_Detail() {
               {photographerProfile.username}
             </h3>
             <p className="font-medium">
-              {photographerProfile.selectedOptions &&
-                JSON.parse(photographerProfile.selectedOptions).join(", ")}
+            {photographerProfile.selectedOptions &&
+                (photographerProfile.selectedOptions)}
             </p>
             <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
@@ -168,7 +168,7 @@ function Photographer_Detail() {
 
       {/* Works Section */}
       <div className="mt-6.5">
-        <h4 className="mb-3.5 font-medium text-black dark:text-white">Works</h4>
+        <h4 className="mb-3.5 font-medium text-black dark:text-white">ผลงาน</h4>
       </div>
 
       {/* Image Gallery */}
