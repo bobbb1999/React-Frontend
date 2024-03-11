@@ -5,7 +5,7 @@ import ModalImage from "react-modal-image";
 function Admin_VerifyPhoto() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState({});
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
@@ -37,18 +37,26 @@ function Admin_VerifyPhoto() {
           },
         }
       );
-      // Reload data after status update
-      const result = await axios("http://localhost:3001/api/getDataVerify", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(result.data);
+
+      // Update status for selected id only
+      setData(data.map(item => {
+        if (item.photographerVerify.id === id) {
+          return {
+            ...item,
+            photographerVerify: {
+              ...item.photographerVerify,
+              status: status
+            }
+          };
+        }
+        return item;
+      }));
     } catch (error) {
       console.error("Error updating status:", error);
       // Handle error
     }
   };
+
   return (
     <div className="container mx-auto my-8">
       <h1 className="text-3xl font-bold mb-4">รายการผู้ใช้ที่ยืนยันตัวตน</h1>
@@ -151,9 +159,13 @@ function Admin_VerifyPhoto() {
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
                   <select
-                    value={item.photographerVerify.status}
+                    value={selectedStatus[item.photographerVerify.id] || ""}
                     onChange={(e) => {
-                      setSelectedStatus(e.target.value);
+                      const status = e.target.value;
+                      setSelectedStatus(prevState => ({
+                        ...prevState,
+                        [item.photographerVerify.id]: status
+                      }));
                       setSelectedId(item.photographerVerify.id); // Store id to update later
                     }}
                   >
@@ -163,7 +175,7 @@ function Admin_VerifyPhoto() {
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap text-sm font-medium">
                   <button
-                    onClick={() => handleStatusChange(selectedId, selectedStatus)}
+                    onClick={() => handleStatusChange(selectedId, selectedStatus[selectedId])}
                     className="text-indigo-600 hover:text-indigo-900"
                   >
                     Update Status
