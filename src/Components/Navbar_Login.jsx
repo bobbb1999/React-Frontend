@@ -235,6 +235,23 @@ function Navbar_Login() {
                               </Link>
                             )}
                           </Menu.Item>
+                          {/* ข้อมูลยืนยันตัวตนสำหรับผู้ให้เช่าอุปกรณ์ */}
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/Admin/AllUsers"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />{" "}
+                                <span>
+                                  ข้อมูลผู้ใช้งาน
+                                </span>{" "}
+                              </Link>
+                            )}
+                          </Menu.Item>
                         </div>
                       )}
                       <Menu.Item as="div">

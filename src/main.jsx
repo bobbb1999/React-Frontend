@@ -34,6 +34,7 @@ import Admin_Verify_Rent from './Pages/Admin_Verify_Rent.jsx';
 import ProfilePhotographer from './Pages/ProfilePhotographer.jsx';
 import ProfileEditPhotographer from './Pages/ProfileEditPhotographer.jsx';
 import ProfileEditRent from './Pages/ProfileEditRent.jsx';
+import Admin_AllUsers from './Pages/Admin_AllUsers.jsx';
 
 
 const router = createBrowserRouter([
@@ -110,7 +111,16 @@ const router = createBrowserRouter([
           <Admin_Verify_Rent />
         </AllowRole>
       </RequireAuth>
-
+    ),
+  },
+  {
+    path: "/Admin/AllUsers",
+    element: (
+      <RequireAuth>
+        <AllowRole allowedRoles={['admin']}>
+          <Admin_AllUsers />
+        </AllowRole>
+      </RequireAuth>
     ),
   },
   {
