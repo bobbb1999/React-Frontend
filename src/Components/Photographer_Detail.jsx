@@ -4,12 +4,17 @@ import axios from "axios";
 import { FaFacebook, FaInstagram, FaLine } from "react-icons/fa";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { message } from "antd";
+import Swal from "sweetalert2";
 
 function Photographer_Detail() {
   const { id } = useParams();
   const [photographerProfile, setPhotographerProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imageUrls, setImageUrls] = useState([]);
+  const [jobDescription, setJobDescription] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const fetchPhotographerProfile = async () => {
       try {
@@ -69,6 +74,42 @@ function Photographer_Detail() {
     }
   }, [id, photographerProfile]);
 
+  const handleHirePhotographer = async () => {
+    try {
+      if (!jobDescription.trim()) {
+        // If jobDescription is empty, display an alert using Ant Design message
+        message.error("Please enter a job description");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:3001/api/user/job-hiring",
+        {
+          photographerId: photographerProfile.user_id,
+          job_description: jobDescription,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'ส่งข้อมูลการจ้างงานสำเร็จ',
+      });
+  
+      // Close Modal
+      setShowModal(false);
+      console.log("Job hiring success:", response.data);
+      // ทำอย่างไรก็ตามที่คุณต้องการหลังจากส่งงานแล้ว เช่น ปิด Modal, รีเซ็ตค่า jobDescription, แจ้งเตือนผู้ใช้ เป็นต้น
+    } catch (error) {
+      console.error("Error hiring photographer:", error);
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -84,6 +125,12 @@ function Photographer_Detail() {
         <h2 className="text-title-md2 font-semibold text-black dark:text-white">
           Profile Photographer
         </h2>
+        <button
+        onClick={() => setShowModal(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        >
+          จ้างงานช่างภาพ
+        </button>
       </div>
 
       {/* Profile Card */}
@@ -104,8 +151,8 @@ function Photographer_Detail() {
               {photographerProfile.username}
             </h3>
             <p className="font-medium">
-            {photographerProfile.selectedOptions &&
-                (photographerProfile.selectedOptions)}
+              {photographerProfile.selectedOptions &&
+                photographerProfile.selectedOptions}
             </p>
             <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
@@ -165,6 +212,35 @@ function Photographer_Detail() {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">จ้างงานช่างภาพ</h2>
+            <label>รายละเอียดการจ้างงาน</label>
+            <textarea
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              className="w-full h-32 border border-gray-300 rounded-md p-2 mb-4"
+              placeholder="ใส่รายละเอียดการจ้างงาน"
+            />
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-gray-600 mr-4 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleHirePhotographer}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Works Section */}
       <div className="mt-6.5">

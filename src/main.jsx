@@ -35,6 +35,7 @@ import ProfilePhotographer from './Pages/ProfilePhotographer.jsx';
 import ProfileEditPhotographer from './Pages/ProfileEditPhotographer.jsx';
 import ProfileEditRent from './Pages/ProfileEditRent.jsx';
 import Admin_AllUsers from './Pages/Admin_AllUsers.jsx';
+import Job_Hiring from './Pages/Job_Hiring.jsx';
 
 
 const router = createBrowserRouter([
@@ -198,6 +199,10 @@ const router = createBrowserRouter([
   {
     path: "/EditProfileRent",
     element: <ProfileEditRent />
+  },
+  {
+    path: "/JobHiring",
+    element: <Job_Hiring />
   },
   
   

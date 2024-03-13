@@ -246,9 +246,7 @@ function Navbar_Login() {
                                 )}
                               >
                                 <UserCircleIcon className="h-5 w-5 mr-2" />{" "}
-                                <span>
-                                  ข้อมูลผู้ใช้งาน
-                                </span>{" "}
+                                <span>ข้อมูลผู้ใช้งาน</span>{" "}
                               </Link>
                             )}
                           </Menu.Item>
@@ -342,7 +340,29 @@ function Navbar_Login() {
                           }
                         }}
                       </Menu.Item>
-
+                      <Menu.Item as="div">
+                        {({ active }) => {
+                          const role = localStorage.getItem("role");
+                          if (role === "photo") {
+                            // เพิ่มเงื่อนไขสำหรับบทบาท "photo" เพื่อแสดงลิงก์ไปยังหน้า "JobHiring"
+                            return (
+                              <Link
+                                to="/JobHiring" // กำหนด path ของหน้า "JobHiring" ที่ต้องการเชื่อมโยง
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 flex items-center"
+                                )}
+                              >
+                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <span>การรับงาน</span>{" "}
+                                {/* เพิ่มข้อความที่ต้องการให้แสดง */}
+                              </Link>
+                            );
+                          } else {
+                            return null;
+                          }
+                        }}
+                      </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <a
