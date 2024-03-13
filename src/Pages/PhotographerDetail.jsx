@@ -9,7 +9,7 @@ function PhotographerDetail() {
     <>
     <Navbar_Login />
     <Photographer_Detail />
-    <Reviews_Photographer />
+    {/* <Reviews_Photographer /> */}
     {/* <ShowAlbumPhoto /> */}
     </>
   )
