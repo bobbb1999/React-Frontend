@@ -70,21 +70,21 @@ const formatDate = (dateString) => {
   
   
   return (
-    <div className="w-full overflow-x-auto">
-      <h1 className="text-4xl font-bold mb-4">Job Hirings</h1>
+    <div className="w-full overflow-x-auto mt-4 ml-4">
+      <h1 className="text-2xl font-bold mb-4">คำขอการจ้างงาน</h1>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ชื่อผู้จ้าง</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">รายละเอียด</th>
             <th 
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" 
               onClick={sortByCreatedAt}
             >
-              Created At
+              วันที่
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">สถานะ</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">การรับงาน</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
