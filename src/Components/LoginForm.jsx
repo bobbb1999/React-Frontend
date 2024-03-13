@@ -47,11 +47,13 @@ export default function LoginForm() {
                 
                 const decoded = jwt_decode(token);
                 const role = decoded.role;
+                const UserId = decoded.id
                 console.log(decoded);
                 // console.log(role)
                 
                 login(token, role);
                 localStorage.setItem("token", token);
+                localStorage.setItem("useridlogin", UserId);
 
                 
                 // Redirect ไปที่หน้า Homepage
