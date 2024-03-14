@@ -1,11 +1,10 @@
-import React , { useState , useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Datepicker from "tailwind-datepicker-react"
-import axios from 'axios';
-import { message } from 'antd';
-
+import Datepicker from "tailwind-datepicker-react";
+import axios from "axios";
+import { message } from "antd";
 
 // สร้าง schema สำหรับ validate ข้อมูล
 const schema = yup.object().shape({
@@ -70,7 +69,7 @@ const Verifyrent = () => {
   const [showDatepicker, setShowDatepicker] = useState(false);
   const handleChangeDate = (date) => {
     // ใช้ setValue เพื่อกำหนดค่าในฟอร์ม
-    setValue('birthday', date);
+    setValue("birthday", date);
   };
 
   // สร้างฟังก์ชันสำหรับการ submit ข้อมูล
@@ -79,31 +78,35 @@ const Verifyrent = () => {
       const token = localStorage.getItem("token");
       // Prepare form data for file uploads
       const formData = new FormData();
-      formData.append('imgFace', data.face[0]); // Assuming 'face' is the file input name
-      formData.append('imgCardId', data.imgidCard[0]); // Assuming 'imgidCard' is the file input name
+      formData.append("imgFace", data.face[0]); // Assuming 'face' is the file input name
+      formData.append("imgCardId", data.imgidCard[0]); // Assuming 'imgidCard' is the file input name
 
       // Add other form data fields
-      formData.append('fullName', data.name);
-      formData.append('email', data.email);
-      formData.append('birthdate', data.birthday);
-      formData.append('lineId', data.lineId);
-      formData.append('address', data.address);
-      formData.append('idCardNumber', data.idCard);
+      formData.append("fullName", data.name);
+      formData.append("email", data.email);
+      formData.append("birthdate", data.birthday);
+      formData.append("lineId", data.lineId);
+      formData.append("address", data.address);
+      formData.append("idCardNumber", data.idCard);
 
       // Make the POST request using Axios
-      const response = await axios.post('http://localhost:3001/api/VerifyRent', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`, // Add your authentication token here
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3001/api/VerifyRent",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`, // Add your authentication token here
+          },
+        }
+      );
 
       // Handle the response as needed
       console.log(response.data);
       message.success("ยืนยันตัวตนสำเร็จ");
     } catch (error) {
       // Handle errors
-      console.error('Error submitting data:', error);
+      console.error("Error submitting data:", error);
     }
   };
   // สร้างฟังก์ชันสำหรับแปลงไฟล์เป็น base64
@@ -138,7 +141,8 @@ const Verifyrent = () => {
             },
           }
         );
-        const { EquipmentRentalVerifys, imgCardURL, imgFaceURL } = response.data;
+        const { EquipmentRentalVerifys, imgCardURL, imgFaceURL } =
+          response.data;
         if (EquipmentRentalVerifys) {
           setVerified(true);
           setUserData(EquipmentRentalVerifys);
@@ -152,28 +156,28 @@ const Verifyrent = () => {
 
     fetchData();
   }, []);
-  
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-  
+
   if (verified) {
-    let statusMessage = '';
-    let statusColor = '';
-  
+    let statusMessage = "";
+    let statusColor = "";
+
     switch (userData.status) {
-      case 'pending':
-        statusMessage = 'รอแอดมินอนุมัติการยืนยันตัวตน';
-        statusColor = 'text-yellow-600';
+      case "pending":
+        statusMessage = "รอแอดมินอนุมัติการยืนยันตัวตน";
+        statusColor = "text-yellow-600";
         break;
-      case 'success':
-        statusMessage = 'แอดมินอนุมัติเรียบร้อยแล้ว';
-        statusColor = 'text-green-600';
+      case "success":
+        statusMessage = "แอดมินอนุมัติเรียบร้อยแล้ว";
+        statusColor = "text-green-600";
         break;
-      case 'rejected':
-        statusMessage = 'ไม่ผ่านการอนุมัติ';
-        statusColor = 'text-red-600';
+      case "rejected":
+        statusMessage = "ไม่ผ่านการอนุมัติ";
+        statusColor = "text-red-600";
         break;
       default:
         break;
@@ -184,15 +188,17 @@ const Verifyrent = () => {
           ข้อมูลการยืนยันตัวตน
         </h1>
         <div className="space-y-2">
-          <p >
+          <p>
             <span className="font-bold">สถานะ :</span>{" "}
             <span className={statusColor}>{statusMessage}</span>
           </p>
           <p>
-            <span className="font-bold">ชื่อ-นามสกุล :</span> {userData.fullName}
+            <span className="font-bold">ชื่อ-นามสกุล :</span>{" "}
+            {userData.fullName}
           </p>
           <p>
-            <span className="font-bold">วันเกิด :</span> {formatDate(userData.birthdate)}
+            <span className="font-bold">วันเกิด :</span>{" "}
+            {formatDate(userData.birthdate)}
           </p>
           <p>
             <span className="font-bold">Line ID :</span> {userData.lineId}
@@ -225,154 +231,159 @@ const Verifyrent = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-screen-sm ">
+    <div className="container mx-auto p-4 flex flex-col">
       <h1 className="text-center text-3xl font-bold mb-4 ">ยืนยันตัวตน</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-xl font-medium">
-            ชื่อ-นามสกุล
-          </label>
-          <input
-            type="text"
-            id="name"
-            {...register("name")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="เช่น สมชาย ใจดี"
-          />
-          {errors.name && <p className="text-red-600">{errors.name.message}</p>}
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-grow w-full">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="name" className="block text-xl font-medium">
+              ชื่อ-นามสกุล
+            </label>
+            <input
+              type="text"
+              id="name"
+              {...register("name")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="เช่น สมชาย ใจดี"
+            />
+            {errors.name && (
+              <p className="text-red-600">{errors.name.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="birthday" className="block text-xl font-medium">
-            วันเกิด
-          </label>
-          <Datepicker
-            id="birthday"
-            {...register("birthday")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="เลือกวันเกิด"
-            show={showDatepicker}  // Pass the correct prop for managing visibility
-            setShow={setShowDatepicker} 
-            onChange={handleChangeDate} 
-          />
-          {errors.birthday && (
-            <p className="text-red-600">{errors.birthday.message}</p>
-          )}
-        </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="birthday" className="block text-xl font-medium">
+              วันเกิด
+            </label>
+            <Datepicker
+              id="birthday"
+              {...register("birthday")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="เลือกวันเกิด"
+              show={showDatepicker} // Pass the correct prop for managing visibility
+              setShow={setShowDatepicker}
+              onChange={handleChangeDate}
+            />
+            {errors.birthday && (
+              <p className="text-red-600">{errors.birthday.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="lineId" className="block text-xl font-medium">
-            Line ID
-          </label>
-          <input
-            type="text"
-            id="lineId"
-            {...register("lineId")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="เช่น line_id"
-          />
-          {errors.lineId && (
-            <p className="text-red-600">{errors.lineId.message}</p>
-          )}
-        </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="lineId" className="block text-xl font-medium">
+              Line ID
+            </label>
+            <input
+              type="text"
+              id="lineId"
+              {...register("lineId")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="เช่น line_id"
+            />
+            {errors.lineId && (
+              <p className="text-red-600">{errors.lineId.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-xl font-medium">
-            อีเมล
-          </label>
-          <input
-            type="email"
-            id="email"
-            {...register("email")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="เช่น example@example.com"
-          />
-          {errors.email && (
-            <p className="text-red-600">{errors.email.message}</p>
-          )}
-        </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="email" className="block text-xl font-medium">
+              อีเมล
+            </label>
+            <input
+              type="email"
+              id="email"
+              {...register("email")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="เช่น example@example.com"
+            />
+            {errors.email && (
+              <p className="text-red-600">{errors.email.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="address" className="block text-xl font-medium">
-            ที่อยู่ที่ติดต่อได้
-          </label>
-          <textarea
-            id="address"
-            {...register("address")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="กรอกที่อยู่ของคุณที่นี่"
-          ></textarea>
-          {errors.address && (
-            <p className="text-red-600">{errors.address.message}</p>
-          )}
-        </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="address" className="block text-xl font-medium">
+              ที่อยู่ที่ติดต่อได้
+            </label>
+            <textarea
+              id="address"
+              {...register("address")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="กรอกที่อยู่ของคุณที่นี่"
+            ></textarea>
+            {errors.address && (
+              <p className="text-red-600">{errors.address.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="idCard" className="block text-xl font-medium">
-            รหัสบัตรประชาชน
-          </label>
-          <input
-            type="text"
-            id="idCard"
-            {...register("idCard")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
-            placeholder="0123456789101"
-          />
-          {errors.idCard && (
-            <p className="text-red-600">{errors.idCard.message}</p>
-          )}
-        </div>
+          <div className="col-span-2 sm:col-span-1">
+            <label htmlFor="idCard" className="block text-xl font-medium">
+              รหัสบัตรประชาชน
+            </label>
+            <input
+              type="text"
+              id="idCard"
+              {...register("idCard")}
+              className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+              placeholder="0123456789101"
+            />
+            {errors.idCard && (
+              <p className="text-red-600">{errors.idCard.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="imgidCard" className="block text-xl font-medium">
-            รูปภาพบัตรประชาชน
-          </label>
-          <input
-            type="file"
-            id="imgidCard"
-            accept="image/*"
-            {...register("imgidCard")}
-            onChange={(e) => {
-              register("imgidCard").onChange(e);
-              showImage(e);
-            }}
-            className="hidden"
-          />
-          <img
-            src="https://via.placeholder.com/150"
-            alt="imgidCard"
-            className="w-36 h-36 rounded object-cover mt-2 cursor-pointer"
-            onClick={() => document.getElementById("imgidCard").click()}
-          />
-          {errors.imgidCard && (
-            <p className="text-red-600">{errors.imgidCard.message}</p>
-          )}
-        </div>
+          <div className="mb-4">
+            <label htmlFor="imgidCard" className="block text-xl font-medium">
+              รูปภาพบัตรประชาชน
+            </label>
+            <input
+              type="file"
+              id="imgidCard"
+              accept="image/*"
+              {...register("imgidCard")}
+              onChange={(e) => {
+                register("imgidCard").onChange(e);
+                showImage(e);
+              }}
+              className="hidden"
+            />
+            <img
+              src="https://via.placeholder.com/150"
+              alt="imgidCard"
+              className="w-36 h-36 rounded object-cover mt-2 cursor-pointer"
+              onClick={() => document.getElementById("imgidCard").click()}
+            />
+            {errors.imgidCard && (
+              <p className="text-red-600">{errors.imgidCard.message}</p>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="face" className="block text-xl font-medium">
-            รูปภาพหน้าจริง
-          </label>
-          <input
-            type="file"
-            id="face"
-            accept="image/*"
-            {...register("face")}
-            onChange={(e) => {
-              register("face").onChange(e);
-              showImage(e);
-            }}
-            className="hidden"
-          />
-          <img
-            src="https://via.placeholder.com/150"
-            alt="face"
-            className="w-36 h-36 rounded object-cover mt-2 cursor-pointer"
-            onClick={() => document.getElementById("face").click()}
-          />
-          {errors.face && <p className="text-red-600">{errors.face.message}</p>}
+          <div className="mb-4">
+            <label htmlFor="face" className="block text-xl font-medium">
+              รูปภาพหน้าจริง
+            </label>
+            <input
+              type="file"
+              id="face"
+              accept="image/*"
+              {...register("face")}
+              onChange={(e) => {
+                register("face").onChange(e);
+                showImage(e);
+              }}
+              className="hidden"
+            />
+            <img
+              src="https://via.placeholder.com/150"
+              alt="face"
+              className="w-36 h-36 rounded object-cover mt-2 cursor-pointer"
+              onClick={() => document.getElementById("face").click()}
+            />
+            {errors.face && (
+              <p className="text-red-600">{errors.face.message}</p>
+            )}
+          </div>
         </div>
-
         <button
           type="submit"
           className="justify-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
@@ -385,5 +396,3 @@ const Verifyrent = () => {
 };
 
 export default Verifyrent;
-
-
