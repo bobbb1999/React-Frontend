@@ -206,7 +206,7 @@ function ProductAll() {
                 </h5>
               </a>
               <Stack direction="row" spacing={1} alignItems="center">
-                <span className="text-lg text-gray-600">
+                <span className="text-sm text-gray-600">
                   {product.averageRating}
                 </span>
                 <Rating
@@ -215,7 +215,7 @@ function ProductAll() {
                   precision={0.1}
                   readOnly
                 />
-                <span className="text-lg text-gray-600">
+                <span className="text-sm text-gray-600">
                   ({product.reviewCount} รีวิว)
                 </span>
               </Stack>

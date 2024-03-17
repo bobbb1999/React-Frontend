@@ -51,7 +51,7 @@ function Admin_VerifyRent() {
   };
   return (
     <div className="container mx-auto my-8">
-      <h1 className="text-3xl font-bold mb-4">รายการผู้ใช้ที่ยืนยันตัวตน</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">รายชื่อผู้ให้เช่าที่ยืนยันตัวตน</h1>
       <div className="overflow-x-auto">
         <table className="w-full whitespace-nowrap">
           <thead className="bg-gray-50">
@@ -151,6 +151,7 @@ function Admin_VerifyRent() {
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
                   <select
+                  className="px-2 py-1 rounded-md"
                     value={item.EquipmentRentalVerify.status}
                     onChange={(e) => {
                       setSelectedStatus(e.target.value);
@@ -164,9 +165,9 @@ function Admin_VerifyRent() {
                 <td className="px-2 py-2 whitespace-nowrap text-sm font-medium">
                   <button
                     onClick={() => handleStatusChange(selectedId, selectedStatus)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-white hover:bg-indigo-700 bg-indigo-600 px-3 py-1 rounded-md"
                   >
-                    Update Status
+                    Update
                   </button>
                 </td>
               </tr>

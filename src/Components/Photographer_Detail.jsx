@@ -6,6 +6,8 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { message } from "antd";
 import Swal from "sweetalert2";
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
 
 function Photographer_Detail() {
   const { id } = useParams();
@@ -14,6 +16,11 @@ function Photographer_Detail() {
   const [imageUrls, setImageUrls] = useState([]);
   const [jobDescription, setJobDescription] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [reviewsData, setReviewsData] = useState([]);
+  const [selectedWorkingId, setSelectedWorkingId] = useState(null);
+  const [rating, setRating] = useState(0); // เพิ่ม state สำหรับ rating
+  const [comment, setComment] = useState(""); // เพิ่ม state สำหรับ comment
+  const useridlogin = localStorage.getItem("useridlogin");
 
   useEffect(() => {
     const fetchPhotographerProfile = async () => {
@@ -39,19 +46,25 @@ function Photographer_Detail() {
   }, [id]);
 
   useEffect(() => {
-    const fetchWorkings = async () => {
+    const fetchWorkingsAndReviews = async () => {
       try {
         const token = localStorage.getItem("token");
         const user_id = photographerProfile.user_id;
-        const response = await axios.get(
-          `http://localhost:3001/api/getworkings/${user_id}`,
-          {
+
+        const [workingsResponse, reviewsResponse] = await Promise.all([
+          axios.get(`http://localhost:3001/api/getworkings/${user_id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
-        );
-        const imageGalleries = response.data.workings.map((working) => {
+          }),
+          axios.get(`http://localhost:3001/api/getreview_workings/${user_id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        const imageGalleries = workingsResponse.data.workings.map((working) => {
           return {
             images: working.imageUrls.map((url) => {
               return {
@@ -61,23 +74,51 @@ function Photographer_Detail() {
             }),
             work_name: working.work_name,
             description: working.description,
+            employer_id: working.employer_id,
+            id: working.id,
           };
         });
         setImageUrls(imageGalleries);
+
+        setReviewsData(reviewsResponse.data.reviews);
+
       } catch (error) {
-        console.error("Error fetching workings:", error);
+        console.error("Error fetching workings and reviews:", error);
       }
     };
 
     if (photographerProfile) {
-      fetchWorkings();
+      fetchWorkingsAndReviews();
     }
   }, [id, photographerProfile]);
+
+
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         `http://localhost:3001/api/getreview_workings/${user_id}`, // Fetch reviews for the photographer
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       setReviewsData(response.data.reviews);
+  //     } catch (error) {
+  //       console.error("Error fetching reviews:", error);
+  //     }
+  //   };
+
+  //   if (photographerProfile) {
+  //     fetchReviews();
+  //   }
+  // }, [id, photographerProfile]);
 
   const handleHirePhotographer = async () => {
     try {
       if (!jobDescription.trim()) {
-        // If jobDescription is empty, display an alert using Ant Design message
         message.error("Please enter a job description");
         return;
       }
@@ -96,18 +137,67 @@ function Photographer_Detail() {
         }
       );
       Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'ส่งข้อมูลการจ้างงานสำเร็จ',
+        icon: "success",
+        title: "Success",
+        text: "ส่งข้อมูลการจ้างงานสำเร็จ",
       });
-  
-      // Close Modal
+
       setShowModal(false);
       console.log("Job hiring success:", response.data);
-      // ทำอย่างไรก็ตามที่คุณต้องการหลังจากส่งงานแล้ว เช่น ปิด Modal, รีเซ็ตค่า jobDescription, แจ้งเตือนผู้ใช้ เป็นต้น
     } catch (error) {
       console.error("Error hiring photographer:", error);
     }
+  };
+
+  const handleReview = async (index) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:3001/api/review_workings",
+        {
+          photographer_id: photographerProfile.user_id,
+          working_id: imageUrls[index].id,
+          rating: rating,
+          comment: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      message.success("Review submitted successfully");
+      
+      // หลังจากรีวิวสำเร็จ อัพเดท reviewsData ด้วยข้อมูลรีวิวล่าสุด
+      fetchWorkingsAndReviews();
+  
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  };
+  
+
+
+  const handleRatingChange = (newValue, index) => {
+    const updatedReviewsData = [...reviewsData];
+    updatedReviewsData[index] = {
+      ...updatedReviewsData[index],
+      rating: newValue,
+    };
+    setReviewsData(updatedReviewsData);
+  };
+
+  const handleCommentChange = (value, index) => {
+    const updatedReviewsData = [...reviewsData];
+    updatedReviewsData[index] = {
+      ...updatedReviewsData[index],
+      comment: value,
+    };
+    setReviewsData(updatedReviewsData);
+  };
+
+  const handleSelectWorking = (workingId) => {
+    setSelectedWorkingId(workingId);
   };
 
   if (loading) {
@@ -120,20 +210,18 @@ function Photographer_Detail() {
 
   return (
     <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-      {/* Profile Section */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white">
           Profile Photographer
         </h2>
         <button
-        onClick={() => setShowModal(true)}
+          onClick={() => setShowModal(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
         >
           จ้างงานช่างภาพ
         </button>
       </div>
 
-      {/* Profile Card */}
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="flex flex-wrap justify-center">
@@ -145,7 +233,6 @@ function Photographer_Detail() {
               />
             </div>
           </div>
-          {/* Profile Information */}
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
               {photographerProfile.username}
@@ -168,7 +255,6 @@ function Photographer_Detail() {
                   ))}
               </p>
             </div>
-            {/* Social Media Links */}
             <div className="mt-6.5">
               <h4 className="mb-3.5 font-medium text-black dark:text-white">
                 Follow me on
@@ -242,12 +328,9 @@ function Photographer_Detail() {
         </div>
       )}
 
-      {/* Works Section */}
       <div className="mt-6.5">
         <h4 className="mb-3.5 font-medium text-black dark:text-white">ผลงาน</h4>
       </div>
-
-      {/* Image Gallery */}
       {imageUrls.map((working, index) => (
         <div
           key={index}
@@ -256,12 +339,56 @@ function Photographer_Detail() {
           <div className="w-full sm:w-1/2 p-4">
             <h2 className="font-semibold">{working.work_name}</h2>
             <p>{working.description}</p>
+
+            {/* ฟอร์มรีวิว */}
+            {useridlogin && working.employer_id === parseInt(useridlogin) && !reviewsData.some(review => review.working_id === working.id) && (
+              <div className="mt-4 w-3/4">
+                <Box component="fieldset" mb={3} borderColor="transparent">
+                  <legend>Rate this working</legend>
+                  <Rating
+                    name={`rating-${working.id}`}
+                    value={rating}
+                    onChange={(event, newValue) => setRating(newValue)}
+                  />
+                </Box>
+                <textarea
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  placeholder="Add your comment..."
+                  className="w-full h-20 border border-gray-300 rounded-md p-2 mt-2"
+                />
+                <button
+                  onClick={() => handleReview(index)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600"
+                >
+                  Submit Review
+                </button>
+              </div>
+            )}
+
+
+            {/* แสดงรีวิว */}
+            {reviewsData.map((review, reviewIndex) => {
+              if (review.working_id === working.id) {
+                return (
+                  <div key={reviewIndex} className="mt-4 border border-gray-300 rounded p-4">
+                    <p><strong>{review.user.firstname} {review.user.lastname}</strong></p>
+                    <Rating name="read-only" value={review.rating} readOnly />
+                    <p>{review.comment}</p>
+                  </div>
+                );
+              }
+              return null;
+            })}
+
           </div>
+
           <div className="w-full sm:w-1/2">
             <ImageGallery items={working.images} />
           </div>
         </div>
       ))}
+
     </div>
   );
 }

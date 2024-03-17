@@ -251,7 +251,7 @@ const Productmanage = () => {
           <h2 className="text-2xl font-semibold leading-tight">All Products</h2>
         </div>
         <div className="my-2 flex sm:flex-row flex-col justify-between">
-          <div className="flex flex-row mb-1 sm:mb-0">
+          {/* <div className="flex flex-row mb-1 sm:mb-0">
             <div className="relative">
               <select className="h-full rounded-l border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white">
                 <option>All</option>
@@ -259,7 +259,7 @@ const Productmanage = () => {
                 <option>Angular</option>
               </select>
             </div>
-          </div>
+          </div> */}
           <div className="block relative">
             <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
               <svg
@@ -473,7 +473,7 @@ const Productmanage = () => {
                         onClick={() => editItem(product)}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-4"
                       >
-                        Edit item
+                        Edit
                       </button>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -481,7 +481,7 @@ const Productmanage = () => {
                         onClick={() => deleteItem(product.id)}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
                       >
-                        Delete item
+                        Delete
                       </button>
                     </td>
                   </tr>

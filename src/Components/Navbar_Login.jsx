@@ -7,6 +7,8 @@ import {
   LifebuoyIcon,
   PowerIcon,
   CheckBadgeIcon,
+  BriefcaseIcon,
+  CogIcon,
 } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -317,7 +319,7 @@ function Navbar_Login() {
 
                             if (role === "photo") {
                               linkTo = "/UploadWorkings";
-                              displayText = "อัพโหลดผลงาน";
+                              displayText = "จัดการผลงาน";
                             } else if (role === "rent") {
                               linkTo = "/Product";
                               displayText = "จัดการสินค้า";
@@ -331,7 +333,7 @@ function Navbar_Login() {
                                   "block px-4 py-2 text-sm text-gray-700 flex items-center"
                                 )}
                               >
-                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <CogIcon className="h-5 w-5 mr-2" />
                                 <span>{displayText}</span>
                               </Link>
                             );
@@ -353,7 +355,7 @@ function Navbar_Login() {
                                   "block px-4 py-2 text-sm text-gray-700 flex items-center"
                                 )}
                               >
-                                <UserCircleIcon className="h-5 w-5 mr-2" />
+                                <BriefcaseIcon className="h-5 w-5 mr-2" />
                                 <span>การรับงาน</span>{" "}
                                 {/* เพิ่มข้อความที่ต้องการให้แสดง */}
                               </Link>

@@ -59,7 +59,7 @@ function Admin_VerifyPhoto() {
 
   return (
     <div className="container mx-auto my-8">
-      <h1 className="text-3xl font-bold mb-4">รายการผู้ใช้ที่ยืนยันตัวตน</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center">รายชื่อช่างภาพที่ยืนยันตัวตน</h1>
       <div className="overflow-x-auto">
         <table className="w-full whitespace-nowrap">
           <thead className="bg-gray-50">
@@ -159,6 +159,7 @@ function Admin_VerifyPhoto() {
                 </td>
                 <td className="px-2 py-2 whitespace-nowrap">
                   <select
+                  className="px-2 py-1 rounded-md"
                     value={selectedStatus[item.photographerVerify.id] || ""}
                     onChange={(e) => {
                       const status = e.target.value;
@@ -176,9 +177,9 @@ function Admin_VerifyPhoto() {
                 <td className="px-2 py-2 whitespace-nowrap text-sm font-medium">
                   <button
                     onClick={() => handleStatusChange(selectedId, selectedStatus[selectedId])}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-white hover:bg-indigo-700 bg-indigo-600 px-3 py-1 rounded-md"
                   >
-                    Update Status
+                    Update
                   </button>
                 </td>
               </tr>
