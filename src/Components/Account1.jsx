@@ -301,8 +301,9 @@ function Account1() {
       <div className="mx-auto h-auto pt-4 px-20 flex flex-col items-center">
         {renderAlert()}
         <h1 className="text-3xl font-bold text-start mb-4 pt-4">โปรไฟล์</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-12">
+        <div className="container mx-auto max-w-screen-lg p-4 sm:p-6">
+        <form onSubmit={handleSubmit} className="flex-grow w-full">
+          <div className="space-y-6 h-full overflow-y-auto">
             <div className="border-b border-gray-900/10 pb-12">
               <div
                 className="mt-10"
@@ -335,8 +336,8 @@ function Account1() {
                 />
               </Modal>
 
-              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="sm:col-span-4">
+              <div className="grid grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-2">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="username"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -376,11 +377,11 @@ function Account1() {
                       disabled={isFormDisabled}
                     />
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-gray-600">
+                  {/* <p className="mt-3 text-sm leading-6 text-gray-600">
                     ความยาวไม่เกิน 200 ตัวอักษร
-                  </p>
+                  </p> */}
                 </div>
-                <div className="col-span-full">
+                <div className="col-span-2 sm:col-span-1">
                   <h1 className="text-xl font-bold mb-2">ประเภทงานที่รับ</h1>
                   <Select
                     className="w-96"
@@ -394,7 +395,7 @@ function Account1() {
                   />
                 </div>
 
-                <div className="col-span-full">
+                <div className="col-span-2 sm:col-span-1">
                   <h1 className="text-xl font-bold mb-2">จังหวัดที่รับงาน</h1>
                   <Select
                     className="w-96"
@@ -409,22 +410,14 @@ function Account1() {
                 </div>
               </div>
             </div>
-
             <div className="border-b border-gray-900/10 pb-12">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">
-                Personal Information
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                Use a permanent address where you can receive mail.
-              </p>
-
-              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="sm:col-span-4">
+              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="first-name"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    ชื่อ - นามสกุลจริง *
+                    ชื่อ - นามสกุลจริง
                   </label>
                   <div className="mt-2">
                     <input
@@ -437,7 +430,7 @@ function Account1() {
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="lineId"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -456,7 +449,7 @@ function Account1() {
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="lineId"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -474,7 +467,7 @@ function Account1() {
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="lineId"
                     className="block text-sm font-medium leading-6 text-gray-900"
@@ -492,12 +485,12 @@ function Account1() {
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="col-span-2 sm:col-span-1">
                   <label
                     htmlFor="Tel"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Tel
+                    เบอร์โทรศัพท์
                   </label>
                   <div className="mt-2">
                     <input
@@ -529,6 +522,7 @@ function Account1() {
             </button>
           </div>
         </form>
+        </div>
       </div>
     );
   }

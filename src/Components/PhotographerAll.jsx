@@ -133,7 +133,7 @@ const PhotographerAll = () => {
     const fetchAverageRating = async (photographerId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/photographer/average-rating/${photographerId}`
+          `http://localhost:3001/api/photographer/avg-rating/${photographerId}`
         );
         setAverageRatings((prevRatings) => ({
           ...prevRatings,
@@ -147,7 +147,7 @@ const PhotographerAll = () => {
     const fetchReviewCount = async (photographerId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/photographer/getReviewCount/${photographerId}`
+          `http://localhost:3001/api/photographer/ReviewCount/${photographerId}`
         );
         setReviewCounts((prevCounts) => ({
           ...prevCounts,

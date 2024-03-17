@@ -109,6 +109,7 @@ function Profile_Photo_EditForm() {
     Facebook: "",
     Instagram: "",
     lineId: "",
+    Tel:"",
     fileList: [],
   });
   const [loading, setLoading] = useState(true);
@@ -156,6 +157,7 @@ function Profile_Photo_EditForm() {
           Facebook: photographerProfile.Facebook,
           Instagram: photographerProfile.Instagram,
           lineId: photographerProfile.lineId,
+          Tel: photographerProfile.Tel,
           fileList: [],
         });
         setFormData((prevData) => ({
@@ -240,6 +242,7 @@ function Profile_Photo_EditForm() {
     formDataToSend.append("Facebook", updatedFormData.Facebook);
     formDataToSend.append("Instagram", updatedFormData.Instagram);
     formDataToSend.append("lineId", updatedFormData.lineId);
+    formDataToSend.append("Tel", updatedFormData.Tel);
     formDataToSend.append("selectedOptions", selectedOptionsValues.join(","));
     formDataToSend.append("selectedOptions2", selectedOptions2Values.join(","));
     // formDataToSend.append("imgProfile", updatedFormData.fileList[0].originFileObj);
@@ -311,7 +314,7 @@ function Profile_Photo_EditForm() {
               </Modal>
             </div>
             {/* Rest of the form fields */}
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 ">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 ">
               <div className="sm:col-span-4">
                 <label
                   htmlFor="username"
@@ -343,10 +346,80 @@ function Profile_Photo_EditForm() {
                   className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md w-full dark:bg-gray-700 dark:text-white"
                   rows="8"
                 ></textarea>
-                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                  Maximum length: 200 characters
-                </p>
               </div>
+              <div className="sm:col-span-4">
+  <div className="grid grid-cols-2 gap-x-6">
+    <div>
+      <label
+        htmlFor="Facebook"
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        Facebook
+      </label>
+      <input
+        type="text"
+        id="Facebook"
+        name="Facebook"
+        value={formData.Facebook}
+        onChange={handleChange}
+        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+      />
+    </div>
+    <div>
+      <label
+        htmlFor="Instagram"
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        Instagram
+      </label>
+      <input
+        type="text"
+        id="Instagram"
+        name="Instagram"
+        value={formData.Instagram}
+        onChange={handleChange}
+        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+      />
+    </div>
+  </div>
+</div>
+<div className="sm:col-span-4">
+  <div className="grid grid-cols-2 gap-x-6">
+    <div>
+      <label
+        htmlFor="lineId"
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        Line ID
+      </label>
+      <input
+        type="text"
+        id="lineId"
+        name="lineId"
+        value={formData.lineId}
+        onChange={handleChange}
+        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+      />
+    </div>
+    <div>
+      <label
+        htmlFor="Tel"
+        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        Tel
+      </label>
+      <input
+        type="text"
+        id="Tel"
+        name="Tel"
+        value={formData.Tel}
+        onChange={handleChange}
+        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+      />
+    </div>
+  </div>
+</div>
+
               <div className="sm:col-span-4">
                 <label
                   htmlFor="selectedOptions"
@@ -385,54 +458,6 @@ function Profile_Photo_EditForm() {
                   options={provinceOptions1}
                   isMulti
                   className="text-gray-700 dark:text-gray-300"
-                />
-              </div>
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Facebook"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Facebook
-                </label>
-                <input
-                  type="text"
-                  id="Facebook"
-                  name="Facebook"
-                  value={formData.Facebook}
-                  onChange={handleChange}
-                  className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Instagram"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Instagram
-                </label>
-                <input
-                  type="text"
-                  id="Instagram"
-                  name="Instagram"
-                  value={formData.Instagram}
-                  onChange={handleChange}
-                  className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="lineId"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Line ID
-                </label>
-                <input
-                  type="text"
-                  id="lineId"
-                  name="lineId"
-                  value={formData.lineId}
-                  onChange={handleChange}
-                  className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>

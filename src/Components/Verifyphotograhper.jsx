@@ -227,9 +227,10 @@ const Verifyphotograhper = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 max-w-screen-sm ">
+    <div className="container mx-auto max-w-screen-lg p-4 sm:p-6">
       <h1 className="text-center text-3xl font-bold mb-4 ">ยืนยันตัวตน</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-grow w-full">
+      <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
         <div className="mb-4">
           <label htmlFor="name" className="block text-xl font-medium">
             ชื่อ-นามสกุล
@@ -238,7 +239,7 @@ const Verifyphotograhper = () => {
             type="text"
             id="name"
             {...register("name")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="เช่น สมชาย ใจดี"
           />
           {errors.name && <p className="text-red-600">{errors.name.message}</p>}
@@ -251,7 +252,7 @@ const Verifyphotograhper = () => {
           <Datepicker
             id="birthday"
             {...register("birthday")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="เลือกวันเกิด"
             show={showDatepicker} // Pass the correct prop for managing visibility
             setShow={setShowDatepicker}
@@ -270,7 +271,7 @@ const Verifyphotograhper = () => {
             type="text"
             id="lineId"
             {...register("lineId")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="เช่น line_id"
           />
           {errors.lineId && (
@@ -286,7 +287,7 @@ const Verifyphotograhper = () => {
             type="email"
             id="email"
             {...register("email")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="เช่น example@example.com"
           />
           {errors.email && (
@@ -301,7 +302,7 @@ const Verifyphotograhper = () => {
           <textarea
             id="address"
             {...register("address")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="กรอกที่อยู่ของคุณที่นี่"
           ></textarea>
           {errors.address && (
@@ -317,7 +318,7 @@ const Verifyphotograhper = () => {
             type="text"
             id="idCard"
             {...register("idCard")}
-            className="w-full border border-gray-300 rounded-lg p-2 mt-2"
+            className="w-full border border-gray-300 rounded-lg p-2"
             placeholder="0123456789101"
           />
           {errors.idCard && (
@@ -374,13 +375,15 @@ const Verifyphotograhper = () => {
           />
           {errors.face && <p className="text-red-600">{errors.face.message}</p>}
         </div>
-
+        </div>
+        <div class="flex justify-center">
         <button
           type="submit"
           className="justify-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           ยืนยันข้อมูล
         </button>
+        </div>
       </form>
     </div>
   );

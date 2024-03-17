@@ -127,7 +127,7 @@ function ProductAllProfile() {
       }
     } catch (error) {
       console.error("Error fetching average rating:", error);
-      message.error("ไม่สามารถตรวจสอบค่าเฉลี่ยของรีวิวได้");
+      // message.error("ไม่สามารถตรวจสอบค่าเฉลี่ยของรีวิวได้");
     }
   };
 

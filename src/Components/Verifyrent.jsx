@@ -231,10 +231,10 @@ const Verifyrent = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 flex flex-col">
-      <h1 className="text-center text-3xl font-bold mb-4 ">ยืนยันตัวตน</h1>
+    <div className="container mx-auto max-w-screen-lg p-4 sm:p-6">
+      <h1 className="text-center text-3xl font-bold">ยืนยันตัวตน</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex-grow w-full">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+        <div className="mt-2 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
           <div className="col-span-2 sm:col-span-1">
             <label htmlFor="name" className="block text-xl font-medium">
               ชื่อ-นามสกุล
@@ -384,12 +384,14 @@ const Verifyrent = () => {
             )}
           </div>
         </div>
+        <div class="flex justify-center">
         <button
           type="submit"
           className="justify-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           ยืนยันข้อมูล
         </button>
+        </div>
       </form>
     </div>
   );
