@@ -349,7 +349,14 @@ function Photographer_Detail() {
         >
           <div className="w-full sm:w-1/2 p-4">
             <h2 className="font-semibold">{working.work_name}</h2>
-            <p>{working.description}</p>
+            {/* <p>{working.description}</p> */}
+            {working.description &&
+                  working.description.split("\n").map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
 
             {/* ฟอร์มรีวิว */}
             {useridlogin && working.employer_id === parseInt(useridlogin) && !reviewsData.some(review => review.working_id === working.id) && (

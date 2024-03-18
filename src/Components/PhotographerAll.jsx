@@ -160,7 +160,7 @@ const PhotographerAll = () => {
   
     if (allProfilesData) {
       allProfilesData.forEach((profileData) => {
-        const photographerId = profileData.photographerProfiles.id; // เปลี่ยน user_id เป็น id
+        const photographerId = profileData.photographerProfiles.user_id; // เปลี่ยน user_id เป็น id
         fetchAverageRating(photographerId);
         fetchReviewCount(photographerId);
       });
@@ -247,8 +247,8 @@ const PhotographerAll = () => {
             profile.selectedOptions2.includes(option)
           )) &&
         (selectedRating === null ||
-          (averageRatings[profile.id] !== undefined &&
-            averageRatings[profile.id] >= selectedRating)) && (
+          (averageRatings[profile.user_id] !== undefined &&
+            averageRatings[profile.user_id] >= selectedRating)) && (
           // รายการผ่านการกรองจากคะแนนดาวที่ถูกเลือก
           <div
             className="w-full rounded-lg shadow-md lg:max-w-sm"
@@ -263,8 +263,8 @@ const PhotographerAll = () => {
               <h4 className="text-xl font-semibold text-blue-600">
                 {profile.username}
               </h4>
-              {averageRatings[profile.id] === undefined ||
-              isNaN(averageRatings[profile.id]) ? (
+              {averageRatings[profile.user_id] === undefined ||
+              isNaN(averageRatings[profile.user_id]) ? (
                 <Stack direction="row" spacing={1} alignItems="center">
                   <span className="text-lg text-gray-600">0</span>
                   <Rating
@@ -273,20 +273,20 @@ const PhotographerAll = () => {
                     precision={0.1}
                     readOnly
                   />
-                  <span>({ReviewCounts[profile.id] || 0} รีวิว)</span>
+                  <span>({ReviewCounts[profile.user_id] || 0} รีวิว)</span>
                 </Stack>
               ) : (
                 <Stack direction="row" spacing={1} alignItems="center">
                   <span className="text-lg text-gray-600">
-                    {averageRatings[profile.id]}
+                    {averageRatings[profile.user_id]}
                   </span>
                   <Rating
                     name="read-only"
-                    value={averageRatings[profile.id]}
+                    value={averageRatings[profile.user_id]}
                     precision={0.1}
                     readOnly
                   />
-                  <span>({ReviewCounts[profile.id] || 0} รีวิว)</span>
+                  <span>({ReviewCounts[profile.user_id] || 0} รีวิว)</span>
                 </Stack>
               )}
 

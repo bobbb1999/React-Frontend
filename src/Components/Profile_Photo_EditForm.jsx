@@ -6,7 +6,6 @@ import { Modal, Upload } from "antd";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-
 const jobTypesOptions1 = [
   { value: "ถ่ายภาพบุคคล", label: "ถ่ายภาพบุคคล" },
   { value: "ถ่ายภาพงานอีเว้นท์", label: "ถ่ายภาพงานอีเว้นท์" },
@@ -109,7 +108,7 @@ function Profile_Photo_EditForm() {
     Facebook: "",
     Instagram: "",
     lineId: "",
-    Tel:"",
+    Tel: "",
     fileList: [],
   });
   const [loading, setLoading] = useState(true);
@@ -117,7 +116,7 @@ function Profile_Photo_EditForm() {
   const { id } = useParams();
   const [imgProfileURL, setImgProfileURL] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
-  
+
   useEffect(() => {
     const fetchPhotographerProfile = async () => {
       try {
@@ -132,8 +131,14 @@ function Profile_Photo_EditForm() {
         );
         const photographerProfile = response.data.photographerProfile;
 
-        const selectedOptionsCleaned = photographerProfile.selectedOptions.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '');
-        const selectedOptions2Cleaned = photographerProfile.selectedOptions2.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '');
+        const selectedOptionsCleaned = photographerProfile.selectedOptions
+          .slice(1, -1)
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, "");
+        const selectedOptions2Cleaned = photographerProfile.selectedOptions2
+          .slice(1, -1)
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, "");
         // Split string values to arrays for selectedOptions and selectedOptions2
         const selectedOptionsArray = selectedOptionsCleaned.split(",");
         const selectedOptions2Array = selectedOptions2Cleaned.split(",");
@@ -164,9 +169,9 @@ function Profile_Photo_EditForm() {
           ...prevData,
           fileList: [
             {
-              uid: '-1',
+              uid: "-1",
               name: photographerProfile.imgProfileURL,
-              status: 'done',
+              status: "done",
               url: photographerProfile.imgProfileURL,
             },
           ],
@@ -205,7 +210,7 @@ function Profile_Photo_EditForm() {
       console.error("Error handling file change:", error);
     }
   };
-  
+
   const getBinaryData = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -217,7 +222,6 @@ function Profile_Photo_EditForm() {
       reader.readAsBinaryString(file);
     });
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -235,20 +239,23 @@ function Profile_Photo_EditForm() {
         selectedOptions: selectedOptionsValues,
         selectedOptions2: selectedOptions2Values,
       };
-      
+
       const formDataToSend = new FormData();
-    formDataToSend.append("username", updatedFormData.username);
-    formDataToSend.append("about", updatedFormData.about);
-    formDataToSend.append("Facebook", updatedFormData.Facebook);
-    formDataToSend.append("Instagram", updatedFormData.Instagram);
-    formDataToSend.append("lineId", updatedFormData.lineId);
-    formDataToSend.append("Tel", updatedFormData.Tel);
-    formDataToSend.append("selectedOptions", selectedOptionsValues.join(","));
-    formDataToSend.append("selectedOptions2", selectedOptions2Values.join(","));
-    // formDataToSend.append("imgProfile", updatedFormData.fileList[0].originFileObj);
-    if (uploadedFile) {
-      formDataToSend.append("imgProfile", uploadedFile);
-    }
+      formDataToSend.append("username", updatedFormData.username);
+      formDataToSend.append("about", updatedFormData.about);
+      formDataToSend.append("Facebook", updatedFormData.Facebook);
+      formDataToSend.append("Instagram", updatedFormData.Instagram);
+      formDataToSend.append("lineId", updatedFormData.lineId);
+      formDataToSend.append("Tel", updatedFormData.Tel);
+      formDataToSend.append("selectedOptions", selectedOptionsValues.join(","));
+      formDataToSend.append(
+        "selectedOptions2",
+        selectedOptions2Values.join(",")
+      );
+      // formDataToSend.append("imgProfile", updatedFormData.fileList[0].originFileObj);
+      if (uploadedFile) {
+        formDataToSend.append("imgProfile", uploadedFile);
+      }
 
       await axios.patch(
         "http://localhost:3001/api/updateProfilePhotographer",
@@ -271,7 +278,9 @@ function Profile_Photo_EditForm() {
 
   return (
     <div className="mx-auto h-auto pt-4 px-20 flex flex-col items-center dark:bg-black shadow-md">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Profile</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        Edit Profile
+      </h2>
       <form onSubmit={handleSubmit}>
         {/* Form Content */}
         <div className="space-y-12">
@@ -336,7 +345,7 @@ function Profile_Photo_EditForm() {
                   htmlFor="about"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  About
+                  รายละเอียด
                 </label>
                 <textarea
                   id="about"
@@ -348,84 +357,84 @@ function Profile_Photo_EditForm() {
                 ></textarea>
               </div>
               <div className="sm:col-span-4">
-  <div className="grid grid-cols-2 gap-x-6">
-    <div>
-      <label
-        htmlFor="Facebook"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
-        Facebook
-      </label>
-      <input
-        type="text"
-        id="Facebook"
-        name="Facebook"
-        value={formData.Facebook}
-        onChange={handleChange}
-        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-      />
-    </div>
-    <div>
-      <label
-        htmlFor="Instagram"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
-        Instagram
-      </label>
-      <input
-        type="text"
-        id="Instagram"
-        name="Instagram"
-        value={formData.Instagram}
-        onChange={handleChange}
-        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-      />
-    </div>
-  </div>
-</div>
-<div className="sm:col-span-4">
-  <div className="grid grid-cols-2 gap-x-6">
-    <div>
-      <label
-        htmlFor="lineId"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
-        Line ID
-      </label>
-      <input
-        type="text"
-        id="lineId"
-        name="lineId"
-        value={formData.lineId}
-        onChange={handleChange}
-        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-      />
-    </div>
-    <div>
-      <label
-        htmlFor="Tel"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
-        Tel
-      </label>
-      <input
-        type="text"
-        id="Tel"
-        name="Tel"
-        value={formData.Tel}
-        onChange={handleChange}
-        className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
-      />
-    </div>
-  </div>
-</div>
+                <div className="grid grid-cols-2 gap-x-6">
+                  <div>
+                    <label
+                      htmlFor="Facebook"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      Facebook
+                    </label>
+                    <input
+                      type="text"
+                      id="Facebook"
+                      name="Facebook"
+                      value={formData.Facebook}
+                      onChange={handleChange}
+                      className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="Instagram"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      Instagram
+                    </label>
+                    <input
+                      type="text"
+                      id="Instagram"
+                      name="Instagram"
+                      value={formData.Instagram}
+                      onChange={handleChange}
+                      className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="sm:col-span-4">
+                <div className="grid grid-cols-2 gap-x-6">
+                  <div>
+                    <label
+                      htmlFor="lineId"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      Line ID
+                    </label>
+                    <input
+                      type="text"
+                      id="lineId"
+                      name="lineId"
+                      value={formData.lineId}
+                      onChange={handleChange}
+                      className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="Tel"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      เบอร์โทรศัพท์
+                    </label>
+                    <input
+                      type="text"
+                      id="Tel"
+                      name="Tel"
+                      value={formData.Tel}
+                      onChange={handleChange}
+                      className="mt-1 p-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
 
               <div className="sm:col-span-4">
                 <label
                   htmlFor="selectedOptions"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Selected Options
+                  ประเภทงานที่รับ
                 </label>
                 <Select
                   id="selectedOptions"
@@ -445,7 +454,7 @@ function Profile_Photo_EditForm() {
                   htmlFor="selectedOptions2"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Selected Options 2
+                  จังหวัดที่รับงาน
                 </label>
                 <Select
                   id="selectedOptions2"
