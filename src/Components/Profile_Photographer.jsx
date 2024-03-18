@@ -162,7 +162,7 @@ function Profile_Photographer() {
             <p className="font-medium">{photographerProfile.selectedOptions}</p>
             <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
-                About Me
+                รายละเอียด
               </h4>
               <p className="mt-4.5 mx-auto text-left max-w-max">
                 {photographerProfile.about &&
@@ -176,8 +176,8 @@ function Profile_Photographer() {
             </div>
             {/* Social Media Links */}
             <div className="mt-6.5">
-              <h4 className="mb-3.5 font-medium text-black dark:text-white">
-                Follow me on
+              <h4 className="mb-3.5 font-semibold text-black dark:text-white">
+                ติดต่อฉันได้ที่
               </h4>
             </div>
             <div className="mt-6.5 flex items-center justify-center space-x-4">
@@ -221,7 +221,7 @@ function Profile_Photographer() {
 
       {/* Works Section */}
       <div className="mt-6.5">
-        <h4 className="mb-3.5 font-medium text-black dark:text-white">Works</h4>
+        <h4 className="mb-3.5 font-semibold text-black dark:text-white">ผลงาน</h4>
       </div>
 
       {/* Image Gallery */}

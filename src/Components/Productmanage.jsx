@@ -248,7 +248,7 @@ const Productmanage = () => {
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
         <div>
-          <h2 className="text-2xl font-semibold leading-tight">All Products</h2>
+          <h2 className="text-2xl font-semibold leading-tight">สินค้า</h2>
         </div>
         <div className="my-2 flex sm:flex-row flex-col justify-between">
           {/* <div className="flex flex-row mb-1 sm:mb-0">
@@ -280,7 +280,7 @@ const Productmanage = () => {
             onClick={openAddProductModal}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
           >
-            Add Product
+            เพิ่มสินค้า
           </button>
           {isAddProductModalOpen && (
             <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -298,7 +298,7 @@ const Productmanage = () => {
                             htmlFor="product-name"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Product Name
+                            ชื่อสินค้า
                           </label>
                           <input
                             value={productName}
@@ -316,7 +316,7 @@ const Productmanage = () => {
                             htmlFor="category"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Category
+                            ประเภทของสินค้า
                           </label>
                           <Select
                             value={categoryOptions.find(
@@ -335,7 +335,7 @@ const Productmanage = () => {
                             htmlFor="price"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Price
+                            ราคาให้เช่า
                           </label>
                           <input
                             type="number"
@@ -353,7 +353,7 @@ const Productmanage = () => {
                             htmlFor="description"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Product Details
+                            รายละเอียดของสินค้า
                           </label>
                           <textarea
                             id="description"
@@ -371,7 +371,7 @@ const Productmanage = () => {
                               <InboxOutlined />
                             </p>
                             <p className="ant-upload-text">
-                              Click or drag file to this area to upload
+                              คลิ๊กเพื่อเลือกรูปภาพหรือลากไฟล์รูปภาพมาวาง
                             </p>
                             <p className="ant-upload-hint">
                               Support for a single or bulk upload.
@@ -393,7 +393,7 @@ const Productmanage = () => {
                       onClick={closeAddProductModal}
                       className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     >
-                      Cancel
+                      ยกเลิก
                     </button>
                   </div>
                 </div>
@@ -407,25 +407,25 @@ const Productmanage = () => {
               <thead>
                 <tr>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Product Name
+                    ชื่อสินค้า
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Category
+                    ประเภท
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    details
+                    รายละเอียด
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Price
+                    ราคา
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Image
+                    รูปภาพ
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    edit
+                    แก้ไข
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    delete
+                    ลบ
                   </th>
                 </tr>
               </thead>
@@ -473,7 +473,7 @@ const Productmanage = () => {
                         onClick={() => editItem(product)}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mr-4"
                       >
-                        Edit
+                        แก้ไข
                       </button>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -481,7 +481,7 @@ const Productmanage = () => {
                         onClick={() => deleteItem(product.id)}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
                       >
-                        Delete
+                        ลบ
                       </button>
                     </td>
                   </tr>
@@ -497,7 +497,7 @@ const Productmanage = () => {
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          Previous
+          ย้อนกลับ
         </button>
 
         <button
@@ -509,7 +509,7 @@ const Productmanage = () => {
               : ""
           }`}
         >
-          Next
+          ถัดไป
         </button>
         {isEditProductModalOpen && (
           <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -524,7 +524,7 @@ const Productmanage = () => {
                             htmlFor="product-name"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Product Name
+                            ชื่อสินค้า
                           </label>
                           <input
                             value={selectedProduct.product_name}
@@ -547,7 +547,7 @@ const Productmanage = () => {
                             htmlFor="category"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Category
+                            ประเภทของสินค้า
                           </label>
                           <Select
                             value={categoryOptions.find(
@@ -569,7 +569,7 @@ const Productmanage = () => {
                             htmlFor="price"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Price
+                            ราคาให้เช่า
                           </label>
                           <input
                             type="number"
@@ -592,7 +592,7 @@ const Productmanage = () => {
                             htmlFor="description"
                             className="text-sm font-medium text-gray-900 block mb-2"
                           >
-                            Product Details
+                            รายละเอียดของสินค้า
                           </label>
                           <textarea
                             id="description"
@@ -617,13 +617,13 @@ const Productmanage = () => {
                       onClick={updateProduct}
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
                     >
-                      Update Product
+                      แก้ไข
                     </button>
                     <button
                       onClick={closeEditProductModal}
                       className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     >
-                      Cancel
+                      ยกเลิก
                     </button>
                   </div>
                 </div>

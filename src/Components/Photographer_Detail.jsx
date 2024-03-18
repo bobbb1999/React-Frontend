@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { FaFacebook, FaInstagram, FaLine } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLine , FaPhone } from "react-icons/fa";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { message } from "antd";
@@ -243,7 +243,7 @@ function Photographer_Detail() {
             </p>
             <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
-                About Me
+                รายละเอียด
               </h4>
               <p className="mt-4.5">
                 {photographerProfile.about &&
@@ -256,8 +256,8 @@ function Photographer_Detail() {
               </p>
             </div>
             <div className="mt-6.5">
-              <h4 className="mb-3.5 font-medium text-black dark:text-white">
-                Follow me on
+              <h4 className="mb-3.5 font-semibold text-black dark:text-white">
+                ติดต่อฉันได้ที่
               </h4>
             </div>
             <div className="mt-6.5 flex items-center justify-center space-x-4">
@@ -292,6 +292,17 @@ function Photographer_Detail() {
                 >
                   <FaLine size={24} />
                   <span>{photographerProfile.lineId}</span>
+                </a>
+              )}
+              {photographerProfile.Tel && (
+                <a
+                  href={`https://line.me/ti/p/${photographerProfile.Tel}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-glay-500 hover:text-glay-700 flex flex-col items-center space-x-1"
+                >
+                  <FaPhone size={24} />
+                  <span>{photographerProfile.Tel}</span>
                 </a>
               )}
             </div>

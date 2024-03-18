@@ -16,6 +16,16 @@ const WorkingManage = () => {
   const [numOfWorkings, setNumOfWorkings] = useState(0);
   const token = localStorage.getItem("token");
 
+  const styles = {
+    modalFooter: {
+      backgroundColor: "#1890ff", // เพิ่มสีพื้นหลังสำหรับ Footer ของ Modal
+    },
+    okButton: {
+      backgroundColor: "#1890ff", // เพิ่มสีพื้นหลังสำหรับปุ่ม OK
+      borderColor: "#1890ff", // แก้ไขสีเส้นขอบของปุ่ม OK
+    },
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -227,7 +237,7 @@ const WorkingManage = () => {
   return (
     <div className="container mx-auto mt-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Workings</h1>
+        <h1 className="text-2xl font-bold">ผลงานของฉัน</h1>
         <button
           onClick={() => setShowModal(true)}
           className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${
@@ -235,7 +245,7 @@ const WorkingManage = () => {
           }`}
           disabled={numOfWorkings >= 3}
         >
-          Add Workings
+          เพิ่มผลงาน
         </button>
       </div>
 
@@ -263,10 +273,10 @@ const WorkingManage = () => {
                 onClick={() => handleEdit(work)}
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
-                Edit
+                แก้ไข
               </button>
               <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                Delete
+                ลบ
               </button>
               {/* <button
                 onClick={() => handleChangeStatus(work.id, work.status)}
@@ -298,22 +308,24 @@ const WorkingManage = () => {
 
       {/* Add Workings Modal */}
       <Modal
-        title="Add Workings"
+        title="เพิ่มผลงาน"
         visible={showModal}
         onOk={handleAddWorkings}
         onCancel={() => setShowModal(false)}
-        okText="Add"
-        cancelText="Cancel"
+        okText="เพิ่ม"
+        cancelText="ยกเลิก"
+        footerStyle={styles.modalFooter} // ใช้ style สำหรับ footer
+        okButtonProps={{ style: styles.okButton }} // ใช้ style สำหรับปุ่ม OK
       >
         <input
           type="text"
-          placeholder="Work Name"
+          placeholder="ชื่อของผลงาน"
           value={workName}
           onChange={(e) => setWorkName(e.target.value)}
           className="w-full border rounded px-2 py-1 mb-2"
         />
         <textarea
-          placeholder="Description"
+          placeholder="รายละเอียดของผลงาน"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full border rounded px-2 py-1 mb-2"
@@ -337,27 +349,29 @@ const WorkingManage = () => {
 
       {/* Edit Workings Modal */}
       <Modal
-        title="Edit Workings"
+        title="แก้ไขข้อมูล"
         visible={showEditModal}
         onOk={handleEditWorkings}
         onCancel={() => setShowEditModal(false)}
-        okText="Edit"
-        cancelText="Cancel"
+        okText="แก้ไข"
+        cancelText="ยกเลิก"
+        footerStyle={styles.modalFooter} // ใช้ style สำหรับ footer
+        okButtonProps={{ style: styles.okButton }} // ใช้ style สำหรับปุ่ม OK
       >
         <input
           type="text"
-          placeholder="Work Name"
+          placeholder="ชื่อผลงาน"
           value={workName}
           onChange={(e) => setWorkName(e.target.value)}
           className="w-full border rounded px-2 py-1 mb-2"
         />
         <textarea
-          placeholder="Description"
+          placeholder="รายละเอียดผลงาน"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full border rounded px-2 py-1 mb-2"
         ></textarea>
-        <Button type="danger">Delete All Images</Button>
+        {/* <Button type="danger">Delete All Images</Button> */}
         <Upload
           multiple
           listType="picture-card"

@@ -53,8 +53,8 @@ const Profile_Rent = () => {
       </div>
 
       <div className="mt-6.5">
-        <h4 className="mb-3.5 font-medium text-black dark:text-white">
-          Follow me on
+        <h4 className="mb-3.5 font-semibold text-center text-black dark:text-white">
+          ติดต่อฉันได้ที่
         </h4>
       </div>
       <div className="mt-6.5 flex items-center justify-center space-x-4">

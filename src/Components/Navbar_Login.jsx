@@ -19,11 +19,11 @@ import { BsFillSunFill, BsMoonFill, BsCheck } from "react-icons/bs";
 
 const navigation = [
   {
-    name: "Photographer",
+    name: "ช่างภาพ",
     to: "/Photograhper",
     roles: ["user", "photo", "rent", "admin"],
   },
-  { name: "Forrent", to: "/Forrent", roles: ["rent", "photo", "admin"] },
+  { name: "ผู้ให้เช่าอุปกรณ์", to: "/Forrent", roles: ["rent", "photo", "admin"] },
 ];
 
 function classNames(...classes) {
