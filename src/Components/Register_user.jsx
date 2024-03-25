@@ -23,6 +23,25 @@ function Register_user() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.password !== formData.confirm_password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'รหัสผ่านไม่ตรงกัน',
+        text: 'กรุณากรอกรหัสผ่านและยืนยันรหัสผ่านให้ตรงกัน',
+      });
+      return; // หยุดการทำงานของฟังก์ชันทันที
+    }
+
+    // เช็คว่าผู้ใช้ต้องติ๊กที่ช่องตรวจสอบเพื่อยอมรับเงื่อนไขในการให้บริการหรือไม่
+  if (!formData.marketing_accept) {
+    Swal.fire({
+      icon: 'error',
+      title: 'ยอมรับเงื่อนไข',
+      text: 'กรุณาติ๊กที่ช่องตรวจสอบเพื่อยอมรับเงื่อนไขในการให้บริการ',
+    });
+    return; // หยุดการทำงานของฟังก์ชันทันที
+  }
+
     try {
       // ส่งค่าที่ผู้ใช้กรอกไปยัง API registerforuser บนเซิร์ฟเวอร์
       const response = await axios.post('http://localhost:3001/registerforuser', formData);
@@ -225,8 +244,7 @@ function Register_user() {
                   />
 
                   <span className="text-sm text-gray-700 dark:text-white/60 ">
-                    I want to receive emails about events, product updates and
-                    company announcements.
+                    ฉันยอมรับในเงื่อนไขการใช้บริการของเว็บไซต์ EasyPhoto.
                   </span>
                 </label>
               </div>
