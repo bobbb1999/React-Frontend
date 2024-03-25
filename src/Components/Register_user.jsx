@@ -236,7 +236,7 @@ function Register_user() {
                   เมื่อคุณกดดำเนินการต่อ <br></br>
                   <a>ถือว่าคุณได้อ่านและยอมรับใน</a>
                   <a
-                    href="/term_of_service"
+                    href="/terms_of_service"
                     className="text-gray-700 underline dark:text-white"
                   >
                     เงื่อนไขในการให้บริการ

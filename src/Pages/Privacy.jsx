@@ -1,16 +1,16 @@
 import React from 'react'
+import Privacy_policy from '../Components/Privacy_policy'
 import Navbar_Login from '../Components/Navbar_Login'
-import ForrentAll from '../Components/ForrentAll'
 import Footer from '../Components/Footer'
 
-function Forrent() {
+function Privacy() {
   return (
-    <>
+    <div>
     <Navbar_Login />
-    <ForrentAll />
+    <Privacy_policy />
     <Footer />
-    </>
+    </div>
   )
 }
 
-export default Forrent
+export default Privacy

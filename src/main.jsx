@@ -36,6 +36,7 @@ import ProfileEditPhotographer from './Pages/ProfileEditPhotographer.jsx';
 import ProfileEditRent from './Pages/ProfileEditRent.jsx';
 import Admin_AllUsers from './Pages/Admin_AllUsers.jsx';
 import Job_Hiring from './Pages/Job_Hiring.jsx';
+import Privacy from './Pages/Privacy.jsx';
 
 
 const router = createBrowserRouter([
@@ -52,8 +53,12 @@ const router = createBrowserRouter([
     element: <Register />
   },
   {
-    path: "Term_of_service",
+    path: "Terms_of_service",
     element: <Term />
+  },
+  {
+    path: "PrivacyPolicy",
+    element: <Privacy />
   },
   {
     path: "RegisterForUser",

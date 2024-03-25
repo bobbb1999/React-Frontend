@@ -7,6 +7,7 @@ function ProfilePhotographer() {
     <div>
         <Navbar_Login />
       <Profile_Photographer />
+      <Footer />
     </div>
   )
 }

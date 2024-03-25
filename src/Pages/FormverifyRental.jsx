@@ -10,4 +10,4 @@ function FormverifyRental() {
   )
 }
 
-export default FormverifyRental
+export default FormverifyRental   // ไม่ได้ใช้

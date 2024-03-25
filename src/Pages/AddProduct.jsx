@@ -10,4 +10,4 @@ function AddProduct() {
   )
 }
 
-export default AddProduct
+export default AddProduct // ไม่ได้ใช้
