@@ -3,7 +3,7 @@ import React from 'react'
 function Privacy_policy() {
   return (
     <div className="pageTransition dark:bg-black">
-                <div className="relative min-h-screen py-24 overflow-hidden">
+                <div className="relative min-h-screen py-8 overflow-hidden">
                     <div className="md:container md:mx-auto px-20">
                         <div className="text-center mb-16">
                             <h1 className="tracking-tighter text-blue-500 text-4xl font-inter-bold mb-1">Privacy Policy</h1>

@@ -4,7 +4,7 @@ function Termofservice() {
     return (
 
             <div className="pageTransition dark:bg-black">
-                <div className="relative min-h-screen py-24 overflow-hidden">
+                <div className="relative min-h-screen py-20 overflow-hidden">
                     <div className="md:container md:mx-auto px-20">
                         <div className="text-center mb-16">
                             <h1 className="tracking-tighter text-blue-500 text-4xl font-inter-bold mb-1">Terms of Service</h1>
