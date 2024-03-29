@@ -39,6 +39,7 @@ import Job_Hiring from './Pages/Job_Hiring.jsx';
 import Privacy from './Pages/Privacy.jsx';
 
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -210,7 +211,7 @@ const router = createBrowserRouter([
     element: <Job_Hiring />
   },
   
-  
+
 ])
 
 
