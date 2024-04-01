@@ -51,6 +51,30 @@ const WorkingManage = () => {
   }, []);
 
   const handleAddWorkings = async () => {
+    if (files.length > 7) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "สามารถอัพโหลดรูปภาพผลงานได้แค่ 7 รูปภาพเท่านั้น.",
+      });
+      return;
+    }
+    if (!workName){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "กรุณาใส่ชื่อของผลงาน.",
+      });
+      return;
+    }
+    if (!description){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "กรุณาใส่รายละเอียดของผลงาน.",
+      });
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("work_name", workName);
@@ -105,8 +129,14 @@ const WorkingManage = () => {
   };
 
   const handleChange = ({ fileList }) => {
-    if (fileList.length > 9) {
-      message.error("You can only upload up to 9 images.");
+    const oversizedFiles = fileList.filter((file) => file.size / 1024 / 1024 > 10);
+    if (oversizedFiles.length > 0) {
+      const filenames = oversizedFiles.map((file) => file.name).join(", ");
+      message.error(`รูปภาพมีขนาดเกิน 10 Mb : ${filenames}`);
+      return;
+    }
+    if (fileList.length > 7) {
+      message.error("สามารถอัพโหลดรูปภาพผลงานได้แค่ 7 รูปภาพเท่านั้น.");
       return;
     }
     setFiles(fileList);
@@ -317,6 +347,7 @@ const WorkingManage = () => {
         footerStyle={styles.modalFooter} // ใช้ style สำหรับ footer
         okButtonProps={{ style: styles.okButton }} // ใช้ style สำหรับปุ่ม OK
       >
+        
         <input
           type="text"
           placeholder="ชื่อของผลงาน"
@@ -345,6 +376,8 @@ const WorkingManage = () => {
             </div>
           )}
         </Upload>
+        <p style={{ color: "red" }}>สามารถอัพโหลดรูปภาพได้สูงสุด 7 รูปภาพ </p>
+        <p style={{ color: "red" }}>และแต่ละรูปภาพขนาดไฟล์ต้องไม่เกิน 10MB</p>
       </Modal>
 
       {/* Edit Workings Modal */}
