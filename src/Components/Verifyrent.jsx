@@ -384,7 +384,7 @@ const Verifyrent = () => {
             )}
           </div>
         </div>
-        <div class="flex justify-center">
+        <div className="flex justify-center">
         <button
           type="submit"
           className="justify-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
