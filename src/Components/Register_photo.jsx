@@ -13,12 +13,14 @@ function Register_photo() {
     password: '',
     confirm_password: '',
   });
-
+  const [marketingAccept, setMarketingAccept] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  const handleCheckboxChange = (e) => {
+    setMarketingAccept(e.target.checked);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,7 +34,7 @@ function Register_photo() {
     }
 
     // เช็คว่าผู้ใช้ต้องติ๊กที่ช่องตรวจสอบเพื่อยอมรับเงื่อนไขในการให้บริการหรือไม่
-  if (!formData.marketing_accept) {
+  if (!marketingAccept) {
     Swal.fire({
       icon: 'error',
       title: 'ยอมรับเงื่อนไข',
@@ -239,6 +241,8 @@ function Register_photo() {
                     id="MarketingAccept"
                     name="marketing_accept"
                     className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
+                    checked={marketingAccept} // ใช้ marketingAccept เพื่อกำหนดค่าของ checkbox
+                    onChange={handleCheckboxChange} // เพิ่มฟังก์ชัน handleChange สำหรับการเปลี่ยนค่าของ checkbox
                   />
 
                   <span className="text-sm text-gray-700 dark:text-white/60 ">
