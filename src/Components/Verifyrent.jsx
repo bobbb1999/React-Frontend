@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Datepicker from "tailwind-datepicker-react";
 import axios from "axios";
 import { message } from "antd";
+import PinModal from "./PinModal";
+import "../App.css";
 
 // สร้าง schema สำหรับ validate ข้อมูล
 const schema = yup.object().shape({
@@ -67,13 +69,92 @@ const Verifyrent = () => {
     resolver: yupResolver(schema),
   });
   const [showDatepicker, setShowDatepicker] = useState(false);
+  const [verifiedEmail, setVerifiedEmail] = useState("");
   const handleChangeDate = (date) => {
     // ใช้ setValue เพื่อกำหนดค่าในฟอร์ม
     setValue("birthday", date);
   };
 
+  const [pinModalVisible, setPinModalVisible] = useState(false);
+  const togglePinModal = () => setPinModalVisible(!pinModalVisible);
+  const handleCancel = () => {
+    // Handle cancel action, e.g., close the modal
+    setPinModalVisible(false);
+  };
+  const handleChange = (e) => {
+    const { value } = e.target;
+    if (value.length <= 6 && /^[0-9]*$/.test(value)) {
+      setPinCode(value);
+      if (value.length === 6) {
+        // Auto submit when all 6 digits are entered
+        onSubmit(value);
+      }
+    }
+  };
+  const [pinCode, setPinCode] = useState("");
+  const [messages, setMessages] = useState("");
+  const [email, setEmail] = useState("");
+  const handleSendVerificationEmail = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/send-verification-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessages(data); // ข้อความที่ส่งกลับจาก API
+      } else {
+        throw new Error(data); // ข้อความผิดพลาดที่ส่งกลับจาก API
+      }
+    } catch (error) {
+      setMessages(error.messages);
+    }
+    setPinModalVisible(true);
+  };
+
+  const handlePinSubmit = async (pinCode) => {
+    try {
+      const response = await fetch("http://localhost:3001/verify-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email, // อีเมลที่ใช้สำหรับการยืนยัน
+          pin: pinCode, // รหัส PIN ที่ผู้ใช้ป้อน
+        }),
+      });
+
+      const data = await response.text();
+
+      if (response.ok) {
+        console.log(data); // พิมพ์ 'Token verified successfully'
+        message.success("ยืนยันอีเมลสำเร็จ");
+        setVerifiedEmail("true");
+        setPinModalVisible(false);
+      } else {
+        console.error(data); // พิมพ์ 'Invalid token or email' หรือ 'Token expired' หรือ 'Internal Server Error'
+        message.error("PIN ไม่ถูกต้อง หรือ หมดอายุ");
+      }
+    } catch (error) {
+      console.error("Error submitting PIN:", error);
+    }
+  };
+
   // สร้างฟังก์ชันสำหรับการ submit ข้อมูล
   const onSubmit = async (data) => {
+    if (!verifiedEmail) {
+      message.error("กรุณายืนยันอีเมลก่อนทำการยืนยันข้อมูล");
+      return; // ไม่ทำการ submit ข้อมูลเมื่อยังไม่ได้ยืนยันอีเมล
+    }
     try {
       const token = localStorage.getItem("token");
       // Prepare form data for file uploads
@@ -84,6 +165,7 @@ const Verifyrent = () => {
       // Add other form data fields
       formData.append("fullName", data.name);
       formData.append("email", data.email);
+      formData.append("verified_email", verifiedEmail);
       formData.append("birthdate", data.birthday);
       formData.append("lineId", data.lineId);
       formData.append("address", data.address);
@@ -104,6 +186,9 @@ const Verifyrent = () => {
       // Handle the response as needed
       console.log(response.data);
       message.success("ยืนยันตัวตนสำเร็จ");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // Reload after 1 second
     } catch (error) {
       // Handle errors
       console.error("Error submitting data:", error);
@@ -293,9 +378,19 @@ const Verifyrent = () => {
               type="email"
               id="email"
               {...register("email")}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2 mt-2"
               placeholder="เช่น example@example.com"
             />
+            <button
+              className={`mt-3 justify-center ${
+                verifiedEmail ? "bg-green-500" : "bg-blue-500"
+              } text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300`}
+              onClick={handleSendVerificationEmail}
+              disabled={verifiedEmail}
+            >
+              {verifiedEmail ? "ยืนยันอีเมลแล้ว" : "ยืนยันอีเมล"}
+            </button>
             {errors.email && (
               <p className="text-red-600">{errors.email.message}</p>
             )}
@@ -393,6 +488,13 @@ const Verifyrent = () => {
         </button>
         </div>
       </form>
+      {pinModalVisible && (
+        <PinModal
+          pinModalVisible={pinModalVisible}
+          handleCancel={togglePinModal}
+          handlePinSubmit={handlePinSubmit}
+        />
+      )}
     </div>
   );
 };
