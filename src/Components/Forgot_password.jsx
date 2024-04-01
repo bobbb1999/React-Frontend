@@ -1,13 +1,41 @@
-import React from 'react'
+import React , { useState } from 'react'
 
 function Forgot_password() {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:3001/generate-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setMessage(data.message);
+      } else {
+        setMessage('Error: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Internal server error');
+    }
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-black">
             <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
                 <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
                     <img
                         alt="Night"
-                        src="https://source.unsplash.com/random?wallpapers"
+                        src="https://source.unsplash.com/random?s/photos/len"
                         className="absolute inset-0 h-full w-full object-cover opacity-80"
                     />
 
@@ -32,8 +60,7 @@ function Forgot_password() {
                         </h2>
 
                         <p className="mt-4 leading-relaxed text-white/90 dark:text-white">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-                            nam dolorum aliquam, quibusdam aperiam voluptatum.
+                        ค้นหาช่างภาพที่ถูกใจและใกล้คุณ
                         </p>
                     </div>
                 </section>
@@ -64,8 +91,7 @@ function Forgot_password() {
                             </h1>
 
                             <p className="mt-4 leading-relaxed text-gray-500 dark:text-white">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
+                            ค้นหาช่างภาพที่ถูกใจและใกล้คุณ
                             </p>
                         </div>
                         <div className="mb-8">
@@ -85,7 +111,7 @@ function Forgot_password() {
                                 </a>
                             </p>
                         </div>
-                        <form action="#" className="mt-8 grid gap-6">
+                        <form onSubmit={handleSubmit} className="mt-8 grid gap-6">
                             <div className="relative col-span-6">
                                 <p className="absolute left-4 top-2 dark:text-white/60 text-[10px]">
                                     Email / อีเมล
@@ -94,6 +120,8 @@ function Forgot_password() {
                                     type="text"
                                     name="Email"
                                     id="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-white/10 pt-6 pb-2 px-4 rounded-xl dark:text-white"
                                     required=""
                                 />
@@ -105,6 +133,7 @@ function Forgot_password() {
                                 </button>
                             </div>
                         </form>
+                        {message && <p>{message}</p>}
                     </div>
                 </main>
             </div>
