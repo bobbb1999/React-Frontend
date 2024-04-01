@@ -2,7 +2,7 @@ import React from 'react'
 import Forgot_password from '../Components/Forgot_password'
 import Navbar from '../Components/Navbar'
 
-function ForgotPW() {
+function ForgotPw() {
   return (
     <>
     <Navbar />
@@ -11,4 +11,4 @@ function ForgotPW() {
   )
 }
 
-export default ForgotPW
+export default ForgotPw

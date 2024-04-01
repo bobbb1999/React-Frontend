@@ -2,7 +2,7 @@ import React from 'react'
 import Reset_password from '../Components/Reset_password'
 import Navbar from '../Components/Navbar'
 
-function ResetPW() {
+function ResetPw() {
   return (
     <>
     <Navbar />
@@ -11,4 +11,4 @@ function ResetPW() {
   )
 }
 
-export default ResetPW
+export default ResetPw
