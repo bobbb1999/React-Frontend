@@ -244,6 +244,11 @@ const Productmanage = () => {
     }
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
@@ -273,6 +278,8 @@ const Productmanage = () => {
             <input
               placeholder="Search"
               className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+              value={searchTerm}
+              onChange={handleSearch}
             />
           </div>
 
@@ -430,7 +437,10 @@ const Productmanage = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentProducts.map((product) => (
+                {currentProducts.filter((product) =>
+                  product.product_name.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((product) => (
                   <tr key={product.id}>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <div className="flex items-center">
