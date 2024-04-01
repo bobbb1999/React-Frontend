@@ -147,6 +147,9 @@ const Productmanage = () => {
       );
       message.success("สินค้าถูกเพิ่มเรียบร้อยแล้ว");
       console.log(response.data);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // Reload after 1 second
     } catch (error) {
       console.error("Error uploading product:", error);
     }
