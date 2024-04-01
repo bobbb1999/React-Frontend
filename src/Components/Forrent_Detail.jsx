@@ -36,12 +36,28 @@ const Forrent_Detail = () => {
           alt="Profile"
         />
         <h2 className="text-xl font-semibold mt-4">{profileData.username}</h2>
+        <span className="bg-green-500 text-white text-xs font-semibold py-1 px-2 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.293 13.293a1 1 0 0 1-1.414 0L4.293 9.707a1 1 0 1 1 1.414-1.414L9 10.586l5.293-5.293a1 1 0 1 1 1.414 1.414l-6 6a1 1 0 0 1 0 1.414z" clipRule="evenodd" />
+          </svg>
+          ยืนยันตัวตนแล้ว
+        </span>
         <p className="text-gray-500 text-sm mt-1">{profileData.province}</p>
       </div>
-
+      <div className="mt-4">
+        <p className="text-gray-700">
+          {profileData.about &&
+            profileData.about.split("\n").map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+        </p>
+      </div>
       <div className="mt-6.5">
-        <h4 className="mb-3.5 font-medium text-black dark:text-white">
-          Follow me on
+        <h4 className="mb-3.5 font-medium text-black text-center dark:text-white">
+          ติดต่อฉันได้ที่
         </h4>
       </div>
       <div className="mt-6.5 flex items-center justify-center space-x-4">
@@ -90,18 +106,6 @@ const Forrent_Detail = () => {
           </a>
         )}
         
-      </div>
-
-      <div className="mt-4">
-        <p className="text-gray-700">
-          {profileData.about &&
-            profileData.about.split("\n").map((line, index) => (
-              <span key={index}>
-                {line}
-                <br />
-              </span>
-            ))}
-        </p>
       </div>
     </div>
   );

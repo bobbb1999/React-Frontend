@@ -119,7 +119,7 @@ function Photographer_Detail() {
   const handleHirePhotographer = async () => {
     try {
       if (!jobDescription.trim()) {
-        message.error("Please enter a job description");
+        message.error("กรุณาใส่รายละเอียดในการจ้างช่างถาพ");
         return;
       }
 
@@ -233,10 +233,17 @@ function Photographer_Detail() {
               />
             </div>
           </div>
+          
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
               {photographerProfile.username}
             </h3>
+            <span className="bg-green-500 text-white text-xs font-semibold py-1 px-2 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9.293 13.293a1 1 0 0 1-1.414 0L4.293 9.707a1 1 0 1 1 1.414-1.414L9 10.586l5.293-5.293a1 1 0 1 1 1.414 1.414l-6 6a1 1 0 0 1 0 1.414z" clipRule="evenodd" />
+              </svg>
+              ยืนยันตัวตนแล้ว
+            </span>
             <p className="font-medium">
               {photographerProfile.selectedOptions &&
                 photographerProfile.selectedOptions}
