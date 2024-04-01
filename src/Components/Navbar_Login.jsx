@@ -78,6 +78,7 @@ function Navbar_Login() {
 
   const [imageProfile, setImageProfile] = useState("");
   const token = localStorage.getItem("token");
+  const iduser = localStorage.getItem("useridlogin");
   // ดึงข้อมูลโปรไฟล์เมื่อคอมโพเนนต์ถูกโหลด
   useEffect(() => {
     // เรียกใช้ API เพื่อดึงข้อมูลโปรไฟล์
@@ -106,6 +107,60 @@ function Navbar_Login() {
       }
     } catch (error) {
       console.error("Error fetching profile image:", error);
+    }
+  };
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleChangeOldPassword = (event) => {
+    setOldPassword(event.target.value);
+  };
+
+  const handleChangeNewPassword = (event) => {
+    setNewPassword(event.target.value);
+  };
+  const handleChangeConfirmNewPassword = (event) => {
+    setConfirmNewPassword(event.target.value);
+  };
+
+
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmNewPassword) {
+      alert('รหัสผ่านใหม่และยืนยันรหัสผ่านใหม่ไม่ตรงกัน');
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:3001/api/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: iduser,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        // เมื่อเปลี่ยนรหัสผ่านสำเร็จ ล้างค่ารหัสผ่านเดิมและรหัสผ่านใหม่
+        setOldPassword('');
+        setNewPassword('');
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน');
     }
   };
 
@@ -365,6 +420,20 @@ function Navbar_Login() {
                           }
                         }}
                       </Menu.Item>
+                      <Menu.Item as="div">
+                        {({ active }) => (
+                          <button
+                            onClick={handleOpenModal}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700 flex items-center'
+                            )}
+                          >
+                            <Cog6ToothIcon className="h-5 w-5 mr-2" />
+                            <span>เปลี่ยนรหัสผ่าน</span>{" "}
+                          </button>
+                        )}
+                      </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <a
@@ -399,7 +468,62 @@ function Navbar_Login() {
               </div>
             </div>
           </div>
-
+          <Transition
+            show={isModalOpen}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-lg font-semibold mb-4">เปลี่ยนรหัสผ่าน</h2>
+                <div className="mb-4">
+                  <input
+                    type="password"
+                    className="border-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md p-2"
+                    placeholder="รหัสผ่านเดิม"
+                    value={oldPassword}
+                    onChange={handleChangeOldPassword}
+                  />
+                </div>
+                <div className="mb-4">
+                  <input
+                    type="password"
+                    className="border-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md p-2"
+                    placeholder="รหัสผ่านใหม่"
+                    value={newPassword}
+                    onChange={handleChangeNewPassword}
+                  />
+                </div>
+                <div className="mb-4">
+                  <input
+                    type="password"
+                    className="border-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border rounded-md p-2"
+                    placeholder="ยืนยันรหัสผ่านใหม่"
+                    value={confirmNewPassword}
+                    onChange={handleChangeConfirmNewPassword}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="mr-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    onClick={handleChangePassword}
+                    className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    เปลี่ยนรหัสผ่าน
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Transition>
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
