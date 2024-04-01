@@ -213,6 +213,9 @@ function Account1() {
         text: "Data submitted successfully",
         icon: "success",
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // Reload after 1 second
     } catch (error) {
       // Handle errors (e.g., show an error message)
       console.error("Error submitting form:", error);
@@ -310,7 +313,7 @@ function Account1() {
                 style={{ margin: "auto", textAlign: "center" }}
               >
                 <Upload
-                  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                  action="https://photographer-testz.free.beeceptor.com/photos"
                   listType="picture-circle"
                   fileList={fileList}
                   onPreview={handlePreview}
