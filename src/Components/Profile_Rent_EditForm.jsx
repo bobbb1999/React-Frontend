@@ -287,7 +287,7 @@ const Profile_Rent_EditForm = () => {
             </Upload>
           </div>
           <div className="flex flex-wrap">
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="username" className="block">
               Username:
             </label>
@@ -301,7 +301,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="about" className="block">
               About:
             </label>
@@ -314,7 +314,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             ></textarea>
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="lineId" className="block">
               Line ID:
             </label>
@@ -328,7 +328,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="Facebook" className="block">
               Facebook:
             </label>
@@ -342,7 +342,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="Instagram" className="block">
               Instagram:
             </label>
@@ -356,7 +356,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <label htmlFor="Tel" className="block">
               Telephone:
             </label>
@@ -370,7 +370,7 @@ const Profile_Rent_EditForm = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div class="w-full sm:w-1/2 pr-2">
+          <div className="w-full sm:w-1/2 pr-2">
             <div className="form-group">
               <label htmlFor="province">Province:</label>
               <Select
@@ -383,7 +383,7 @@ const Profile_Rent_EditForm = () => {
             </div>
           </div>
         </div>
-        <div class="flex justify-center">
+        <div className="flex justify-center">
           <button
             type="submit"
             disabled={loading}
