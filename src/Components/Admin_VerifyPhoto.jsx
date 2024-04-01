@@ -7,19 +7,43 @@ function Admin_VerifyPhoto() {
   const [data, setData] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState({});
   const [selectedId, setSelectedId] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios("http://localhost:3001/api/getDataVerify", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(result.data);
-    };
-
     fetchData();
-  }, []);
+  }, [searchStatus]); // เรียกใช้ fetchData เมื่อมีการเปลี่ยนแปลงใน searchStatus
+
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(
+        `http://localhost:3001/api/getDataVerifyByStatus?status=${searchStatus}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData(result.data);
+      const initialSelectedStatus = {};
+      result.data.forEach((item) => {
+        initialSelectedStatus[item.photographerVerify.id] =
+          item.photographerVerify.status;
+      });
+      setSelectedStatus(initialSelectedStatus);
+      setErrorMessage("");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+        setErrorMessage(`ไม่มีผู้ใช้ในสถานะ ${searchStatus}`); // ตั้งข้อความข้อผิดพลาดจาก API response
+      } else {
+        console.error("Error fetching data:", error);
+        setErrorMessage("Internal Server Error"); // ข้อผิดพลาดเซิร์ฟเวอร์ภายใน
+      }
+    }
+  };
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -51,15 +75,51 @@ function Admin_VerifyPhoto() {
         }
         return item;
       }));
+      // Update selectedStatus
+      setSelectedStatus(prevState => ({
+        ...prevState,
+        [id]: status
+      }));
+
     } catch (error) {
       console.error("Error updating status:", error);
       // Handle error
     }
   };
 
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="container mx-auto my-8">
       <h1 className="text-3xl font-bold mb-4 text-center">รายชื่อช่างภาพที่ยืนยันตัวตน</h1>
+      <div className="flex justify-center space-x-4 mb-4">
+        {/* สร้างปุ่มสำหรับค้นหาแต่ละสถานะ */}
+        <button
+          className="text-white bg-blue-500 px-4 py-2 rounded-md"
+          onClick={() => setSearchStatus("pending")}
+        >
+          Pending
+        </button>
+        <button
+          className="text-white bg-green-500 px-4 py-2 rounded-md"
+          onClick={() => setSearchStatus("success")}
+        >
+          Success
+        </button>
+        <button
+          className="text-white bg-red-500 px-4 py-2 rounded-md"
+          onClick={() => setSearchStatus("rejected")}
+        >
+          Rejected
+        </button>
+      </div>
+      {errorMessage && <div className="text-red-500 text-center">{errorMessage}</div>}
       <div className="overflow-x-auto">
         <table className="w-full whitespace-nowrap">
           <thead className="bg-gray-50">
@@ -121,7 +181,7 @@ function Admin_VerifyPhoto() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((item, i) => (
+            {currentItems.map((item, i) => (
               <tr key={i}>
                 <td className="px-2 py-2 whitespace-nowrap">
                   {item.photographerVerify.fullName}
@@ -170,6 +230,7 @@ function Admin_VerifyPhoto() {
                       setSelectedId(item.photographerVerify.id); // Store id to update later
                     }}
                   >
+                    <option value="pending">Pending</option>
                     <option value="success">Success</option>
                     <option value="rejected">Rejected</option>
                   </select>
@@ -187,6 +248,22 @@ function Admin_VerifyPhoto() {
           </tbody>
         </table>
       </div>
+      <div className="flex justify-center mt-4">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 mx-2 bg-gray-300 rounded-md"
+          >
+            ย้อนกลับ
+          </button>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 mx-2 bg-gray-300 rounded-md"
+          >
+            ถัดไป
+          </button>
+        </div>
     </div>
   );
 }
