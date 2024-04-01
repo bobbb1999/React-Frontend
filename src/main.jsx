@@ -9,8 +9,8 @@ import RegisterUser from './Pages/RegisterUser';
 import RegisterPhoto from './Pages/RegisterPhoto'
 import RegisterforRent from './Pages/RegisterforRent'
 import Term from './Pages/Term';
-import ForgotPW from './Pages/ForgotPW';
-import ResetPW from './Pages/ResetPW';
+import ForgotPW from './Pages/ForgotPw.jsx';
+import ResetPW from './Pages/ResetPw.jsx';
 import Account from './Pages/Account';
 import { AuthProvider } from './Components/AuthProvider';
 import { RequireAuth , AllowRole  } from './Components/RequireAuth';
@@ -37,7 +37,8 @@ import ProfileEditRent from './Pages/ProfileEditRent.jsx';
 import Admin_AllUsers from './Pages/Admin_AllUsers.jsx';
 import Job_Hiring from './Pages/Job_Hiring.jsx';
 import Privacy from './Pages/Privacy.jsx';
-
+import ResetPw from './Pages/ResetPw.jsx';
+import ForgotPw from './Pages/ForgotPw.jsx';
 
 
 const router = createBrowserRouter([
@@ -210,7 +211,14 @@ const router = createBrowserRouter([
     path: "/JobHiring",
     element: <Job_Hiring />
   },
-  
+  {
+    path: "/Resetpassword",
+    element: <ResetPw />
+  },
+  {
+    path: "/Forgotpassword",
+    element: <ForgotPw />
+  },
 
 ])
 
